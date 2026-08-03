@@ -58,6 +58,8 @@ const [
   icon192,
   icon512,
   socialCard,
+  implementationPlan,
+  designPlan,
 ] = await Promise.all([
   readSource("site/index.html"),
   readSource("site/styles.css"),
@@ -72,6 +74,8 @@ const [
   readBinary("site/icon-192.png"),
   readBinary("site/icon-512.png"),
   readBinary("site/og.png"),
+  readSource("docs/plans/2026-08-03-sudoku-practice-implementation.md"),
+  readSource("docs/plans/2026-08-03-sudoku-practice-design.md"),
 ]);
 
 const manifest = parseJson(manifestSource);
@@ -359,13 +363,14 @@ test("完成面板使用原生模态对话框并覆盖完整开关生命周期",
   assert.ok(closeLifecycleCalls.length >= 4, "新局、恢复、重开与同难度流程都应关闭模态框");
 });
 
-test("Service Worker 预缓存完整应用外壳但不捆绑分享大图", () => {
+test("Service Worker 以固定白名单预缓存完整且轻量的应用外壳", () => {
   assert.match(serviceWorker, /const CACHE_PREFIX\s*=\s*["']sudoku-practice-/);
   assert.match(serviceWorker, /const CACHE_NAME\s*=/);
-  assert.match(serviceWorker, /const PRECACHE_URLS\s*=\s*Object\.freeze\(\s*\[/);
+  assert.match(serviceWorker, /const SHELL_PATHS\s*=\s*Object\.freeze\(\s*\[/);
 
-  for (const asset of [
+  const expectedShellPaths = [
     "./index.html",
+    "./404.html",
     "./styles.css",
     "./js/app.js",
     "./js/puzzles.js",
@@ -373,18 +378,21 @@ test("Service Worker 预缓存完整应用外壳但不捆绑分享大图", () =>
     "./js/sudoku.js",
     "./manifest.webmanifest",
     "./icon-192.png",
-    "./icon-512.png",
-  ]) {
-    assert.match(serviceWorker, new RegExp(`["']${asset.replaceAll(".", "\\.")}["']`));
-  }
+  ];
 
-  const precacheBlock =
-    serviceWorker.match(/const PRECACHE_URLS\s*=\s*Object\.freeze\(\s*\[[\s\S]*?\]\s*\)/)?.[0] ??
+  const shellBlock =
+    serviceWorker.match(/const SHELL_PATHS\s*=\s*Object\.freeze\(\s*\[[\s\S]*?\]\s*\)/)?.[0] ??
     "";
-  assert.doesNotMatch(precacheBlock, /og\.png/);
+  const actualShellPaths = [...shellBlock.matchAll(/["'](\.\/[^"']+)["']/g)].map(
+    (match) => match[1],
+  );
+
+  assert.deepEqual(actualShellPaths, expectedShellPaths);
+  assert.doesNotMatch(shellBlock, /(?:og|icon-512)\.png/);
+  assert.match(serviceWorker, /const SHELL_URLS\s*=\s*new Set\(/);
 });
 
-test("Service Worker 更新缓存并严格限制为同源 GET 请求", () => {
+test("Service Worker 只在完整预缓存后切换版本并清理旧应用壳", () => {
   for (const eventName of ["install", "activate", "fetch"]) {
     assert.match(
       serviceWorker,
@@ -392,7 +400,8 @@ test("Service Worker 更新缓存并严格限制为同源 GET 请求", () => {
     );
   }
 
-  assert.match(serviceWorker, /self\.skipWaiting\(\)/);
+  assert.match(serviceWorker, /cache\.addAll\(SHELL_PATHS\)/);
+  assert.doesNotMatch(serviceWorker, /skipWaiting\s*\(/);
   assert.match(serviceWorker, /self\.clients\.claim\(\)/);
   assert.match(serviceWorker, /caches\.keys\(\)/);
   assert.match(serviceWorker, /cacheName\.startsWith\(CACHE_PREFIX\)/);
@@ -402,17 +411,35 @@ test("Service Worker 更新缓存并严格限制为同源 GET 请求", () => {
   assert.match(serviceWorker, /url\.origin\s*!==\s*self\.location\.origin/);
 });
 
-test("Service Worker 导航网络优先、离线回退首页，静态资源后台更新", () => {
+test("根入口和版本耦合资源只读当前应用壳，避免跨版本混用", () => {
+  assert.match(serviceWorker, /const APP_ROOT_URL\s*=/);
+  assert.match(serviceWorker, /const INDEX_URL\s*=/);
+  assert.match(serviceWorker, /const NOT_FOUND_URL\s*=/);
+  assert.match(serviceWorker, /function isEntryNavigation\(/);
+  assert.match(serviceWorker, /function serveCachedShell\(/);
   assert.match(serviceWorker, /request\.mode\s*===\s*["']navigate["']/);
-  assert.match(serviceWorker, /function networkFirstNavigation\(/);
-  assert.match(serviceWorker, /networkFirstNavigation[\s\S]*?await fetch\(request\)/);
-  assert.match(serviceWorker, /networkFirstNavigation[\s\S]*?catch[\s\S]*?cache\.match\(INDEX_URL\)/);
+  assert.match(
+    serviceWorker,
+    /isEntryNavigation\(url\)[\s\S]*?serveCachedShell\(INDEX_URL\)/,
+  );
+  assert.match(serviceWorker, /SHELL_URLS\.has\(url\.href\)/);
+  assert.match(serviceWorker, /serveCachedShell\(url\.href\)/);
+  assert.doesNotMatch(serviceWorker, /cache\.put\(|staleWhileRevalidate|ignoreSearch/);
+});
 
-  assert.match(serviceWorker, /function staleWhileRevalidate\(/);
-  assert.match(serviceWorker, /staleWhileRevalidate[\s\S]*?cache\.match\(request\)/);
-  assert.match(serviceWorker, /staleWhileRevalidate[\s\S]*?fetch\(request\)/);
-  assert.match(serviceWorker, /staleWhileRevalidate[\s\S]*?cache\.put\(request,/);
-  assert.match(serviceWorker, /response\.ok\s*&&\s*response\.type\s*===\s*["']basic["']/);
+test("非入口导航保留在线 404，离线回退本版本 404 且不缓存任意请求", () => {
+  assert.match(serviceWorker, /function networkFirstNonEntryNavigation\(/);
+  assert.match(serviceWorker, /networkFirstNonEntryNavigation[\s\S]*?await fetch\(request\)/);
+  assert.match(
+    serviceWorker,
+    /networkFirstNonEntryNavigation[\s\S]*?catch[\s\S]*?serveCachedShell\(NOT_FOUND_URL\)/,
+  );
+  assert.match(
+    serviceWorker,
+    /request\.mode\s*===\s*["']navigate["'][\s\S]*?networkFirstNonEntryNavigation\(request\)/,
+  );
+  assert.doesNotMatch(serviceWorker, /caches\.match\(request|cache\.match\(request/);
+  assert.doesNotMatch(serviceWorker, /url\.search\s*=|searchParams|ignoreSearch/);
 });
 
 test("应用在页面加载后注册同目录 Service Worker 并允许离线功能静默降级", () => {
@@ -496,6 +523,23 @@ test("Cloudflare Pages 与 Node 构建配置保持纯静态", () => {
   ]) {
     assert.match(buildScript, new RegExp(`["']${asset.replaceAll(".", "\\.")}["']`));
   }
+});
+
+test("实施文档记录原子应用壳与真实域名确定后的元数据步骤", () => {
+  const task4 =
+    implementationPlan.match(/### Task 4:[\s\S]*?(?=### Task 5:)/)?.[0] ?? "";
+  assert.match(task4, /原子/);
+  assert.match(task4, /固定白名单/);
+  assert.match(task4, /完整预缓存/);
+  assert.doesNotMatch(task4, /导航网络优先|后台刷新|stale-while-revalidate/i);
+  assert.match(designPlan, /版本化原子应用壳/);
+
+  const task6 = implementationPlan.match(/### Task 6:[\s\S]*$/)?.[0] ?? "";
+  assert.match(task6, /真实自定义域名/);
+  for (const metadata of ["canonical", "og:url", "绝对 OG", "Twitter"]) {
+    assert.match(task6, new RegExp(metadata, "i"));
+  }
+  assert.match(task6, /域名[^。\n]*确定后/);
 });
 
 test("核心页面不引用外部资源，也不包含运行时网络请求", () => {

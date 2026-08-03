@@ -135,7 +135,7 @@ Commit: `build mobile sudoku practice interface`
 
 **Step 1: Write failing tests**
 
-验证 Manifest、图标、Service Worker 预缓存清单、离线导航回退、安全响应头和 Pages 输出目录配置。
+验证 Manifest、图标、Service Worker 固定白名单、原子应用壳、离线 404 回退、有界缓存、安全响应头和 Pages 输出目录配置。
 
 **Step 2: Verify RED**
 
@@ -145,7 +145,7 @@ Expected: FAIL on missing PWA assets/configuration.
 
 **Step 3: Implement PWA and deployment files**
 
-Service Worker 只缓存同源 GET；导航网络优先并回退首页，静态资源缓存优先并后台刷新。`wrangler.jsonc` 使用 `pages_build_output_dir: "./dist"`，不声明函数或数据库。
+Service Worker 使用版本化原子应用壳：安装阶段完整预缓存固定白名单中的首页、404、样式、脚本、题库、Manifest 和 192px 图标；不把 512px 图标或分享大图列为核心离线依赖。当前 Worker 对入口与版本耦合资源只读取自己的缓存，不调用 `skipWaiting`，待旧页面退出后再让完整安装的新版本激活。非入口导航仍访问网络以保留在线 404，离线时回退本版本 404；白名单外资源和查询变体不写入缓存。`wrangler.jsonc` 使用 `pages_build_output_dir: "./dist"`，不声明函数或数据库。
 
 **Step 4: Verify GREEN and build**
 
@@ -157,7 +157,7 @@ Expected: tests PASS and `dist/` contains all required assets.
 
 Commit: `add offline pwa and pages configuration`
 
-### Task 5: 浏览器验收、GitHub 与 Cloudflare 发布
+### Task 5: 浏览器验收、GitHub 与 Cloudflare 基础发布
 
 **Files:**
 - Modify only if validation finds defects
@@ -180,6 +180,24 @@ Expected: zero failures and exit code 0.
 
 在已认证的 Cloudflare 账号创建 Pages 项目并发布 `dist/`。若账号未授权，停在登录步骤并提供唯一必要操作。
 
-**Step 5: Mainland reachability check**
+### Task 6: 真实域名元数据、绑定与大陆可达性验收
+
+**Files:**
+- Modify: `site/index.html`
+- Modify only if deployment validation finds defects
+
+**Step 1: Confirm the real custom domain**
+
+先取得并确认用户实际拥有、准备绑定的真实自定义域名。在域名确定后才继续填写公开 URL；不得猜测域名，也不得把临时 `pages.dev` 地址当成正式地址。
+
+**Step 2: Fill production sharing metadata**
+
+在 `site/index.html` 增加该真实域名的 `canonical` 和 `og:url`，并把相对图片地址替换为绝对 OG 图片 URL 与绝对 Twitter 图片 URL。所有地址必须使用最终 HTTPS 自定义域名并指向实际存在的资源。
+
+**Step 3: Rebuild, deploy and bind**
+
+重新运行完整测试和构建，推送更新并等待 Pages 部署成功，再按 Cloudflare 的自定义域名流程完成 DNS 与证书绑定。
+
+**Step 4: Mainland reachability check**
 
 绑定用户提供的自定义域名后，从大陆多运营商检测 DNS、TLS、HTML、CSS、JS、题库、Service Worker 和图标；明确区分“本次实测可访问”与“Cloudflare 提供大陆 SLA”。

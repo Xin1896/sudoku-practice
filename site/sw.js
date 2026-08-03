@@ -1,9 +1,14 @@
 const CACHE_PREFIX = "sudoku-practice-";
-const CACHE_VERSION = "2026-08-03-1";
+const CACHE_VERSION = "2026-08-03-2";
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
-const INDEX_URL = new URL("./index.html", self.registration.scope).href;
-const PRECACHE_URLS = Object.freeze([
+const APP_ROOT_URL = new URL(self.registration.scope).href;
+const INDEX_URL = new URL("./index.html", APP_ROOT_URL).href;
+const NOT_FOUND_URL = new URL("./404.html", APP_ROOT_URL).href;
+const INDEX_PATHNAME = new URL(INDEX_URL).pathname;
+const APP_ROOT_PATHNAME = new URL(APP_ROOT_URL).pathname;
+const SHELL_PATHS = Object.freeze([
   "./index.html",
+  "./404.html",
   "./styles.css",
   "./js/app.js",
   "./js/puzzles.js",
@@ -11,15 +16,14 @@ const PRECACHE_URLS = Object.freeze([
   "./js/sudoku.js",
   "./manifest.webmanifest",
   "./icon-192.png",
-  "./icon-512.png",
 ]);
+const SHELL_URLS = new Set(SHELL_PATHS.map((path) => new URL(path, APP_ROOT_URL).href));
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
-      await cache.addAll(PRECACHE_URLS);
-      await self.skipWaiting();
+      await cache.addAll(SHELL_PATHS);
     })(),
   );
 });
@@ -40,60 +44,21 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-async function networkFirstNavigation(request) {
-  const cache = await caches.open(CACHE_NAME);
-
-  try {
-    const response = await fetch(request);
-    const url = new URL(request.url);
-
-    if (
-      response.ok &&
-      response.type === "basic" &&
-      (url.pathname.endsWith("/") || url.pathname.endsWith("/index.html"))
-    ) {
-      await cache.put(INDEX_URL, response.clone());
-    }
-
-    return response;
-  } catch {
-    const fallback = await cache.match(INDEX_URL);
-    if (fallback !== undefined) {
-      return fallback;
-    }
-
-    return Response.error();
-  }
+function isEntryNavigation(url) {
+  return url.pathname === APP_ROOT_PATHNAME || url.pathname === INDEX_PATHNAME;
 }
 
-function staleWhileRevalidate(request, event) {
-  const cachePromise = caches.open(CACHE_NAME);
-  const networkResponse = (async () => {
-    const cache = await cachePromise;
+async function serveCachedShell(url) {
+  const cache = await caches.open(CACHE_NAME);
+  return (await cache.match(url)) ?? Response.error();
+}
 
-    try {
-      const response = await fetch(request);
-      if (response.ok && response.type === "basic") {
-        await cache.put(request, response.clone());
-      }
-      return response;
-    } catch {
-      return null;
-    }
-  })();
-
-  event.waitUntil(networkResponse);
-
-  return (async () => {
-    const cache = await cachePromise;
-    const cachedResponse = await cache.match(request);
-
-    if (cachedResponse !== undefined) {
-      return cachedResponse;
-    }
-
-    return (await networkResponse) ?? Response.error();
-  })();
+async function networkFirstNonEntryNavigation(request) {
+  try {
+    return await fetch(request);
+  } catch {
+    return serveCachedShell(NOT_FOUND_URL);
+  }
 }
 
 self.addEventListener("fetch", (event) => {
@@ -105,9 +70,15 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
-    event.respondWith(networkFirstNavigation(request));
+    if (isEntryNavigation(url)) {
+      event.respondWith(serveCachedShell(INDEX_URL));
+    } else {
+      event.respondWith(networkFirstNonEntryNavigation(request));
+    }
     return;
   }
 
-  event.respondWith(staleWhileRevalidate(request, event));
+  if (SHELL_URLS.has(url.href)) {
+    event.respondWith(serveCachedShell(url.href));
+  }
 });

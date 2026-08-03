@@ -18,6 +18,23 @@ const [html, css, app] = await Promise.all([
   readSource("site/js/app.js"),
 ]);
 
+function relativeLuminance(hex) {
+  const channels = hex
+    .slice(1)
+    .match(/.{2}/g)
+    .map((channel) => Number.parseInt(channel, 16) / 255)
+    .map((channel) =>
+      channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
+    );
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrastRatio(foreground, background) {
+  const lighter = Math.max(relativeLuminance(foreground), relativeLuminance(background));
+  const darker = Math.min(relativeLuminance(foreground), relativeLuminance(background));
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 test("页面声明中文产品标题和可缩放的移动端视口", () => {
   assert.match(html, /<html[^>]+lang=["']zh-CN["']/i);
   assert.match(html, /<title>[^<]*数独[^<]*<\/title>/i);
@@ -58,7 +75,7 @@ test("页面提供数独网格、三档难度和一局练习所需的主要控�
   assert.match(html, /aria-live=["']polite["']/i);
 });
 
-test("产品脚本以模块加载并动态建立 81 个可聚焦网格按钮", () => {
+test("产品脚本以九个 ARIA 行建立 81 个可聚焦网格按钮", () => {
   assert.match(
     html,
     /<script[^>]+type=["']module["'][^>]+src=["']\.\/js\/app\.js["']/i,
@@ -66,12 +83,62 @@ test("产品脚本以模块加载并动态建立 81 个可聚焦网格按钮", (
   assert.match(html, /<link[^>]+href=["']\.\/styles\.css["'][^>]*>/i);
 
   assert.match(app, /Array\.from\(\{\s*length:\s*81\s*\}/);
+  assert.match(app, /Array\.from\(\{\s*length:\s*9\s*\}/);
   assert.match(app, /createElement\(["']button["']\)/);
+  assert.match(app, /createElement\(["']div["']\)/);
+  assert.match(app, /setAttribute\(["']role["'],\s*["']row["']\)/);
   assert.match(app, /setAttribute\(["']role["'],\s*["']gridcell["']\)/);
+  assert.match(app, /row\.append\(\.\.\.cellButtons\.slice\(/);
+  assert.doesNotMatch(app, /grid\.append\(\.\.\.cellButtons\)/);
   assert.match(app, /tabIndex\s*=/);
 
   for (const moduleName of ["sudoku", "puzzles", "storage"]) {
     assert.match(app, new RegExp(`from ["']\\.\\/${moduleName}\\.js["']`));
+  }
+});
+
+test("擦除动作委托规则引擎清理当前格", () => {
+  assert.match(
+    app,
+    /function eraseSelected\(\)[\s\S]*?game\s*=\s*setValue\(game,\s*index,\s*0\)/,
+  );
+});
+
+test("难度单选使用 roving tabindex 并响应方向键", () => {
+  assert.match(html, /data-difficulty=["']easy["'][^>]*tabindex=["']0["']/i);
+  assert.equal((html.match(/data-difficulty=["'](?:medium|hard)["'][^>]*tabindex=["']-1["']/gi) ?? []).length, 2);
+  assert.match(app, /function handleDifficultyKeydown\(/);
+  for (const key of ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]) {
+    assert.match(app, new RegExp(`case ["']${key}["']`));
+  }
+  assert.match(app, /button\.tabIndex\s*=\s*isSelected\s*\?\s*0\s*:\s*-1/);
+});
+
+test("品牌链接的可访问名称来自可见文字", () => {
+  const brandTag = html.match(/<a\b[^>]*class=["']brand["'][^>]*>/i)?.[0] ?? "";
+  assert.notEqual(brandTag, "");
+  assert.doesNotMatch(brandTag, /aria-label=/i);
+});
+
+test("辅助文字颜色在所有浅色纸面上保持舒适对比度", () => {
+  const muted = css.match(/--muted\s*:\s*(#[0-9a-f]{6})/i)?.[1];
+  assert.ok(muted, "必须声明 --muted 颜色");
+
+  for (const background of [
+    "#f4efe4",
+    "#e9dfce",
+    "#fbf8f1",
+    "#e7e2d6",
+    "#faf7ef",
+    "#ded5c5",
+    "#d8cebd",
+    "#eee3cd",
+    "#f4ddd5",
+  ]) {
+    assert.ok(
+      contrastRatio(muted, background) >= 4.8,
+      `${muted} 在 ${background} 上的对比度必须至少为 4.8:1`,
+    );
   }
 });
 

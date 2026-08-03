@@ -54,6 +54,8 @@ const cellButtons = Array.from({ length: 81 }, (_, index) => {
   button.className = "sudoku-cell";
   button.dataset.index = String(index);
   button.setAttribute("role", "gridcell");
+  button.setAttribute("aria-rowindex", String(Math.floor(index / 9) + 1));
+  button.setAttribute("aria-colindex", String((index % 9) + 1));
   button.tabIndex = index === 0 ? 0 : -1;
 
   value.className = "cell-value";
@@ -70,7 +72,18 @@ const cellButtons = Array.from({ length: 81 }, (_, index) => {
   return button;
 });
 
-grid.append(...cellButtons);
+const gridRows = Array.from({ length: 9 }, (_, rowIndex) => {
+  const row = document.createElement("div");
+  const firstCell = rowIndex * 9;
+
+  row.className = "sudoku-row";
+  row.setAttribute("role", "row");
+  row.setAttribute("aria-rowindex", String(rowIndex + 1));
+  row.append(...cellButtons.slice(firstCell, firstCell + 9));
+  return row;
+});
+
+grid.append(...gridRows);
 
 function emptyNotes() {
   return Array.from({ length: 81 }, () => []);
@@ -327,7 +340,9 @@ function renderTimer() {
 
 function renderControls() {
   difficultyButtons.forEach((button) => {
-    button.setAttribute("aria-checked", String(button.dataset.difficulty === selectedDifficulty));
+    const isSelected = button.dataset.difficulty === selectedDifficulty;
+    button.setAttribute("aria-checked", String(isSelected));
+    button.tabIndex = isSelected ? 0 : -1;
   });
 
   noteButton.setAttribute("aria-pressed", String(game.noteMode));
@@ -554,6 +569,43 @@ function moveSelection(key) {
   selectCell(next, true);
 }
 
+function selectDifficulty(difficulty, focus = false) {
+  selectedDifficulty = difficulty;
+  renderControls();
+  announce(`下一局将使用${DIFFICULTY_LABELS[selectedDifficulty]}难度。`, "neutral");
+
+  if (focus) {
+    difficultyButtons.find((button) => button.dataset.difficulty === difficulty)?.focus();
+  }
+}
+
+function handleDifficultyKeydown(event) {
+  const currentIndex = difficultyButtons.indexOf(event.currentTarget);
+  let nextIndex = null;
+
+  switch (event.key) {
+    case "ArrowLeft":
+    case "ArrowUp":
+      nextIndex = (currentIndex - 1 + difficultyButtons.length) % difficultyButtons.length;
+      break;
+    case "ArrowRight":
+    case "ArrowDown":
+      nextIndex = (currentIndex + 1) % difficultyButtons.length;
+      break;
+    case "Home":
+      nextIndex = 0;
+      break;
+    case "End":
+      nextIndex = difficultyButtons.length - 1;
+      break;
+    default:
+      return;
+  }
+
+  event.preventDefault();
+  selectDifficulty(difficultyButtons[nextIndex].dataset.difficulty, true);
+}
+
 grid.addEventListener("keydown", (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey || game === null || completed) {
     return;
@@ -586,11 +638,8 @@ grid.addEventListener("keydown", (event) => {
 });
 
 difficultyButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    selectedDifficulty = button.dataset.difficulty;
-    renderControls();
-    announce(`下一局将使用${DIFFICULTY_LABELS[selectedDifficulty]}难度。`, "neutral");
-  });
+  button.addEventListener("click", () => selectDifficulty(button.dataset.difficulty));
+  button.addEventListener("keydown", handleDifficultyKeydown);
 });
 
 numberButtons.forEach((button) => {

@@ -138,7 +138,9 @@ export function setValue(state, index, value) {
   if (!Number.isInteger(value) || value < 0 || value > 9) {
     throw new RangeError("输入数字必须在 0–9 之间");
   }
-  if (hasGiven(state, index) || state.board[index] === value) {
+  const unchangedValue = state.board[index] === value;
+  const hasNotesToClear = value === 0 && state.notes[index].length > 0;
+  if (hasGiven(state, index) || (unchangedValue && !hasNotesToClear)) {
     return state;
   }
 

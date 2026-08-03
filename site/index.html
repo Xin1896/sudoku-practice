@@ -14,7 +14,7 @@
   <body>
     <div class="page-shell">
       <header class="masthead">
-        <a class="brand" href="./" aria-label="方寸数独首页">
+        <a class="brand" href="./">
           <span class="brand__seal" aria-hidden="true">方寸</span>
           <span>
             <span class="brand__eyebrow">每日一局 · 静心落子</span>
@@ -76,13 +76,13 @@
               <span>三阶</span>
             </div>
             <div class="difficulty-picker" role="radiogroup" aria-label="新游戏难度">
-              <button type="button" data-difficulty="easy" role="radio" aria-checked="true">
+              <button type="button" data-difficulty="easy" tabindex="0" role="radio" aria-checked="true">
                 <strong>入门</strong><small>舒展起笔</small>
               </button>
-              <button type="button" data-difficulty="medium" role="radio" aria-checked="false">
+              <button type="button" data-difficulty="medium" tabindex="-1" role="radio" aria-checked="false">
                 <strong>进阶</strong><small>凝神推演</small>
               </button>
-              <button type="button" data-difficulty="hard" role="radio" aria-checked="false">
+              <button type="button" data-difficulty="hard" tabindex="-1" role="radio" aria-checked="false">
                 <strong>挑战</strong><small>深水静思</small>
               </button>
             </div>

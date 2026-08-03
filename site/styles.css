@@ -5,7 +5,7 @@
   --paper-light: #fbf8f1;
   --ink: #202725;
   --ink-blue: #19364d;
-  --muted: #777269;
+  --muted: #56534c;
   --line: #b9ae9b;
   --line-strong: #4a4a43;
   --cinnabar: #a23a2a;
@@ -292,10 +292,16 @@ button:disabled {
   width: 100%;
   min-width: 0;
   aspect-ratio: 1;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-  grid-template-rows: repeat(9, minmax(0, 1fr));
+  grid-template-rows: repeat(9, minmax(32px, 1fr));
   border: 1.5px solid var(--line-strong);
   background: #faf7ef;
+}
+
+.sudoku-row {
+  display: grid;
+  min-width: 0;
+  min-height: 32px;
+  grid-template-columns: repeat(9, minmax(32px, 1fr));
 }
 
 .sudoku-cell {
@@ -324,12 +330,12 @@ button:disabled {
   border-right: 0;
 }
 
-.sudoku-cell:nth-child(n + 19):nth-child(-n + 27),
-.sudoku-cell:nth-child(n + 46):nth-child(-n + 54) {
+.sudoku-row:nth-child(3) .sudoku-cell,
+.sudoku-row:nth-child(6) .sudoku-cell {
   border-bottom: 2px solid var(--line-strong);
 }
 
-.sudoku-cell:nth-child(n + 73) {
+.sudoku-row:last-child .sudoku-cell {
   border-bottom: 0;
 }
 

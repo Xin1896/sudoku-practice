@@ -100,6 +100,22 @@ test("setValue 以不可变方式输入数字并保存历史", () => {
   assert.deepEqual(next.history[0].notes[0], [1, 4]);
 });
 
+test("setValue 用零清除空格候选并保留可撤销历史", () => {
+  const state = makeState();
+  state.notes[7] = [2, 9];
+
+  const next = setValue(state, 7, 0);
+
+  assert.notEqual(next, state);
+  assert.equal(next.board[7], 0);
+  assert.deepEqual(next.notes[7], []);
+  assert.equal(next.history.length, 1);
+  assert.deepEqual(next.history[0].notes[7], [2, 9]);
+
+  const alreadyEmpty = makeState();
+  assert.equal(setValue(alreadyEmpty, 7, 0), alreadyEmpty);
+});
+
 test("toggleNote 会添加和移除候选数且不修改原状态", () => {
   const state = makeState();
   const withNote = toggleNote(state, 8, 6);

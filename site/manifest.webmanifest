@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "数独一刻",
+  "short_name": "数独一刻",
+  "description": "每天，安静地解一局。免登录、可离线使用的中文数独练习。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2ecdf",
+  "theme_color": "#f2ecdf",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

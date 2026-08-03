@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -12,11 +13,69 @@ async function readSource(path) {
   }
 }
 
-const [html, css, app] = await Promise.all([
+async function readBinary(path) {
+  try {
+    return await readFile(new URL(path, projectRoot));
+  } catch {
+    return Buffer.alloc(0);
+  }
+}
+
+function parseJson(source) {
+  return JSON.parse(source || "{}");
+}
+
+function pngDimensions(buffer, label) {
+  assert.ok(buffer.length >= 24, `${label} 必须是完整的 PNG 文件`);
+  assert.deepEqual(
+    [...buffer.subarray(0, 8)],
+    [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+    `${label} 必须包含 PNG 文件签名`,
+  );
+  assert.equal(buffer.toString("ascii", 12, 16), "IHDR", `${label} 必须包含 IHDR`);
+
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20),
+  };
+}
+
+function sha256(buffer) {
+  return createHash("sha256").update(buffer).digest("hex");
+}
+
+const [
+  html,
+  css,
+  app,
+  manifestSource,
+  serviceWorker,
+  headers,
+  notFound,
+  wranglerSource,
+  nodeVersion,
+  buildScript,
+  icon192,
+  icon512,
+  socialCard,
+] = await Promise.all([
   readSource("site/index.html"),
   readSource("site/styles.css"),
   readSource("site/js/app.js"),
+  readSource("site/manifest.webmanifest"),
+  readSource("site/sw.js"),
+  readSource("site/_headers"),
+  readSource("site/404.html"),
+  readSource("wrangler.jsonc"),
+  readSource(".node-version"),
+  readSource("scripts/build.mjs"),
+  readBinary("site/icon-192.png"),
+  readBinary("site/icon-512.png"),
+  readBinary("site/og.png"),
 ]);
+
+const manifest = parseJson(manifestSource);
+const wrangler = parseJson(wranglerSource);
 
 function relativeLuminance(hex) {
   const channels = hex
@@ -43,6 +102,111 @@ test("页面声明中文产品标题和可缩放的移动端视口", () => {
     /<meta[^>]+name=["']viewport["'][^>]+content=["'][^"']*width=device-width[^"']*initial-scale=1[^"']*["']/i,
   );
   assert.doesNotMatch(html, /user-scalable\s*=\s*no|maximum-scale\s*=\s*1/i);
+});
+
+test("产品品牌、安装入口与分享元数据统一为数独一刻", () => {
+  assert.match(html, /<title>数独一刻｜安静的纸上练习<\/title>/i);
+  assert.match(
+    html,
+    /<meta[^>]+name=["']description["'][^>]+content=["'][^"']*数独一刻[^"']*["']/i,
+  );
+  assert.match(html, /class=["']brand__seal["'][^>]*>数独<\/span>/i);
+  assert.match(html, /class=["']brand__name["'][^>]*>数独一刻<\/span>/i);
+  assert.doesNotMatch(html, /方寸数独/);
+
+  assert.match(
+    html,
+    /<link[^>]+rel=["']manifest["'][^>]+href=["']\.\/manifest\.webmanifest["']/i,
+  );
+  assert.match(
+    html,
+    /<link[^>]+rel=["']icon["'][^>]+sizes=["']192x192["'][^>]+href=["']\.\/icon-192\.png["']/i,
+  );
+  assert.match(
+    html,
+    /<link[^>]+rel=["']apple-touch-icon["'][^>]+href=["']\.\/icon-192\.png["']/i,
+  );
+  assert.match(html, /name=["']apple-mobile-web-app-title["'][^>]+content=["']数独一刻["']/i);
+
+  for (const [property, value] of [
+    ["og:type", "website"],
+    ["og:locale", "zh_CN"],
+    ["og:title", "数独一刻"],
+    ["og:image", "./og.png"],
+    ["og:image:width", "1731"],
+    ["og:image:height", "909"],
+  ]) {
+    assert.match(
+      html,
+      new RegExp(
+        `<meta[^>]+property=["']${property.replaceAll(":", "\\:")}["'][^>]+content=["']${value.replaceAll(".", "\\.")}["']`,
+        "i",
+      ),
+    );
+  }
+
+  for (const [name, value] of [
+    ["twitter:card", "summary_large_image"],
+    ["twitter:title", "数独一刻"],
+    ["twitter:image", "./og.png"],
+  ]) {
+    assert.match(
+      html,
+      new RegExp(
+        `<meta[^>]+name=["']${name.replaceAll(":", "\\:")}["'][^>]+content=["']${value.replaceAll(".", "\\.")}["']`,
+        "i",
+      ),
+    );
+  }
+
+  assert.doesNotMatch(html, /rel=["']canonical["']/i);
+  assert.doesNotMatch(html, /(?:og:url|https?:\/\/)/i);
+});
+
+test("Web App Manifest 描述可独立安装的中文应用", () => {
+  assert.equal(manifest.id, "/");
+  assert.equal(manifest.name, "数独一刻");
+  assert.equal(manifest.short_name, "数独一刻");
+  assert.equal(manifest.lang, "zh-CN");
+  assert.equal(manifest.start_url, "./");
+  assert.equal(manifest.scope, "./");
+  assert.equal(manifest.display, "standalone");
+  assert.equal(manifest.background_color, "#f2ecdf");
+  assert.equal(manifest.theme_color, "#f2ecdf");
+  assert.match(manifest.description ?? "", /数独/);
+  assert.deepEqual(manifest.icons, [
+    {
+      src: "./icon-192.png",
+      sizes: "192x192",
+      type: "image/png",
+      purpose: "any",
+    },
+    {
+      src: "./icon-512.png",
+      sizes: "512x512",
+      type: "image/png",
+      purpose: "any",
+    },
+  ]);
+});
+
+test("安装图标尺寸正确且批准的图片资源保持原样", () => {
+  assert.deepEqual(pngDimensions(icon192, "192 图标"), { width: 192, height: 192 });
+  assert.deepEqual(pngDimensions(icon512, "512 图标"), { width: 512, height: 512 });
+  assert.deepEqual(pngDimensions(socialCard, "分享图"), { width: 1731, height: 909 });
+
+  assert.equal(
+    sha256(icon192),
+    "fbd1037eae18e39c43a649c37eefcf675e812ace9ab40c5f87e9a096a21d5db0",
+  );
+  assert.equal(
+    sha256(icon512),
+    "921d5246654ae8e5e1e690a2e719409f34c46553fc0f773a616bb33c8d31397a",
+  );
+  assert.equal(
+    sha256(socialCard),
+    "23da83e6b6c2b67ba8509c89a082db05e50c6c9ac875db982f2777ed95ba7d7e",
+  );
 });
 
 test("页面提供数独网格、三档难度和一局练习所需的主要控件", () => {
@@ -193,6 +357,145 @@ test("完成面板使用原生模态对话框并覆盖完整开关生命周期",
 
   const closeLifecycleCalls = app.match(/closeCompletionPanel\(\)/g) ?? [];
   assert.ok(closeLifecycleCalls.length >= 4, "新局、恢复、重开与同难度流程都应关闭模态框");
+});
+
+test("Service Worker 预缓存完整应用外壳但不捆绑分享大图", () => {
+  assert.match(serviceWorker, /const CACHE_PREFIX\s*=\s*["']sudoku-practice-/);
+  assert.match(serviceWorker, /const CACHE_NAME\s*=/);
+  assert.match(serviceWorker, /const PRECACHE_URLS\s*=\s*Object\.freeze\(\s*\[/);
+
+  for (const asset of [
+    "./index.html",
+    "./styles.css",
+    "./js/app.js",
+    "./js/puzzles.js",
+    "./js/storage.js",
+    "./js/sudoku.js",
+    "./manifest.webmanifest",
+    "./icon-192.png",
+    "./icon-512.png",
+  ]) {
+    assert.match(serviceWorker, new RegExp(`["']${asset.replaceAll(".", "\\.")}["']`));
+  }
+
+  const precacheBlock =
+    serviceWorker.match(/const PRECACHE_URLS\s*=\s*Object\.freeze\(\s*\[[\s\S]*?\]\s*\)/)?.[0] ??
+    "";
+  assert.doesNotMatch(precacheBlock, /og\.png/);
+});
+
+test("Service Worker 更新缓存并严格限制为同源 GET 请求", () => {
+  for (const eventName of ["install", "activate", "fetch"]) {
+    assert.match(
+      serviceWorker,
+      new RegExp(`self\\.addEventListener\\(["']${eventName}["']`),
+    );
+  }
+
+  assert.match(serviceWorker, /self\.skipWaiting\(\)/);
+  assert.match(serviceWorker, /self\.clients\.claim\(\)/);
+  assert.match(serviceWorker, /caches\.keys\(\)/);
+  assert.match(serviceWorker, /cacheName\.startsWith\(CACHE_PREFIX\)/);
+  assert.match(serviceWorker, /cacheName\s*!==\s*CACHE_NAME/);
+  assert.match(serviceWorker, /caches\.delete\(cacheName\)/);
+  assert.match(serviceWorker, /request\.method\s*!==\s*["']GET["']/);
+  assert.match(serviceWorker, /url\.origin\s*!==\s*self\.location\.origin/);
+});
+
+test("Service Worker 导航网络优先、离线回退首页，静态资源后台更新", () => {
+  assert.match(serviceWorker, /request\.mode\s*===\s*["']navigate["']/);
+  assert.match(serviceWorker, /function networkFirstNavigation\(/);
+  assert.match(serviceWorker, /networkFirstNavigation[\s\S]*?await fetch\(request\)/);
+  assert.match(serviceWorker, /networkFirstNavigation[\s\S]*?catch[\s\S]*?cache\.match\(INDEX_URL\)/);
+
+  assert.match(serviceWorker, /function staleWhileRevalidate\(/);
+  assert.match(serviceWorker, /staleWhileRevalidate[\s\S]*?cache\.match\(request\)/);
+  assert.match(serviceWorker, /staleWhileRevalidate[\s\S]*?fetch\(request\)/);
+  assert.match(serviceWorker, /staleWhileRevalidate[\s\S]*?cache\.put\(request,/);
+  assert.match(serviceWorker, /response\.ok\s*&&\s*response\.type\s*===\s*["']basic["']/);
+});
+
+test("应用在页面加载后注册同目录 Service Worker 并允许离线功能静默降级", () => {
+  assert.match(app, /["']serviceWorker["']\s+in\s+navigator/);
+  assert.match(app, /window\.addEventListener\(\s*["']load["']/);
+  assert.match(
+    app,
+    /navigator\.serviceWorker\s*\.\s*register\(["']\.\/sw\.js["'],\s*\{[\s\S]*?scope:\s*["']\.\/["'][\s\S]*?updateViaCache:\s*["']none["'][\s\S]*?\}\)/,
+  );
+  assert.match(
+    app,
+    /navigator\.serviceWorker\s*\.\s*register[\s\S]*?\.catch\(\(\)\s*=>\s*\{\}\)/,
+  );
+});
+
+test("Cloudflare Pages 静态响应采用严格安全头且 Service Worker 不被缓存", () => {
+  assert.match(headers, /^\/\*\s*$/m);
+  assert.match(headers, /X-Frame-Options:\s*DENY/i);
+  assert.match(headers, /X-Content-Type-Options:\s*nosniff/i);
+  assert.match(headers, /Referrer-Policy:\s*no-referrer/i);
+  assert.match(
+    headers,
+    /Permissions-Policy:\s*camera=\(\),\s*microphone=\(\),\s*geolocation=\(\),\s*payment=\(\),\s*usb=\(\)/i,
+  );
+
+  for (const directive of [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self'",
+    "img-src 'self' data:",
+    "manifest-src 'self'",
+    "worker-src 'self'",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'none'",
+    "frame-ancestors 'none'",
+  ]) {
+    assert.match(headers, new RegExp(directive.replaceAll("'", "[\"']"), "i"));
+  }
+
+  assert.match(headers, /^\/sw\.js\s*$/m);
+  assert.match(headers, /Cache-Control:\s*no-cache,\s*no-store,\s*must-revalidate/i);
+  assert.doesNotMatch(headers, /immutable/i);
+});
+
+test("自定义 404 是无外链的中文页面并提供根路径返回入口", () => {
+  assert.match(notFound, /<html[^>]+lang=["']zh-CN["']/i);
+  assert.match(notFound, /<title>[^<]*未找到[^<]*<\/title>/i);
+  assert.match(notFound, /<h1[^>]*>[^<]*未找到[^<]*<\/h1>/i);
+  assert.match(notFound, /<link[^>]+href=["']\/styles\.css["']/i);
+  assert.match(notFound, /<a[^>]+href=["']\/["'][^>]*>[^<]*返回[^<]*<\/a>/i);
+  assert.doesNotMatch(notFound, /<script|https?:\/\//i);
+});
+
+test("Cloudflare Pages 与 Node 构建配置保持纯静态", () => {
+  assert.deepEqual(Object.keys(wrangler).sort(), [
+    "compatibility_date",
+    "name",
+    "pages_build_output_dir",
+  ]);
+  assert.equal(wrangler.name, "sudoku-practice");
+  assert.equal(wrangler.pages_build_output_dir, "./dist");
+  assert.equal(wrangler.compatibility_date, "2026-08-03");
+  assert.equal(nodeVersion.trim(), "22.16.0");
+
+  for (const asset of [
+    "404.html",
+    "_headers",
+    "icon-192.png",
+    "icon-512.png",
+    "index.html",
+    "js/app.js",
+    "js/puzzles.js",
+    "js/storage.js",
+    "js/sudoku.js",
+    "manifest.webmanifest",
+    "og.png",
+    "styles.css",
+    "sw.js",
+  ]) {
+    assert.match(buildScript, new RegExp(`["']${asset.replaceAll(".", "\\.")}["']`));
+  }
 });
 
 test("核心页面不引用外部资源，也不包含运行时网络请求", () => {

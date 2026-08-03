@@ -80,10 +80,33 @@ test("样式满足触控、安全区、窄屏与减少动态效果约束", () =>
   const boardRule = css.match(/#sudoku-grid\s*\{(?<body>[^}]*)\}/i)?.groups?.body ?? "";
   const viewportRule = css.match(/\.board-frame\s*\{(?<body>[^}]*)\}/i)?.groups?.body ?? "";
 
-  assert.match(cellRule, /min-(?:width|inline-size)\s*:\s*44px/i);
-  assert.match(cellRule, /min-(?:height|block-size)\s*:\s*44px/i);
-  assert.match(boardRule, /min-width\s*:\s*396px/i);
-  assert.match(viewportRule, /overflow-x\s*:\s*auto/i);
+  assert.match(cellRule, /min-(?:width|inline-size)\s*:\s*32px/i);
+  assert.match(cellRule, /min-(?:height|block-size)\s*:\s*32px/i);
+  assert.match(boardRule, /min-width\s*:\s*0/i);
+  assert.match(viewportRule, /overflow-x\s*:\s*(?:clip|hidden)/i);
+  assert.doesNotMatch(viewportRule, /overflow-x\s*:\s*(?:auto|scroll)/i);
+  assert.doesNotMatch(html, /左右滑动|横向滚动/);
+
+  for (const selector of [
+    "difficulty-picker button",
+    "paper-button",
+    "number-pad button",
+    "tool-row button",
+  ]) {
+    const rule = css.match(
+      new RegExp(`\\.${selector.replaceAll(" ", "\\s+")}\\s*\\{(?<body>[^}]*)\\}`, "i"),
+    )?.groups?.body ?? "";
+    assert.match(rule, /min-width\s*:\s*44px/i, `${selector} 宽度必须至少 44px`);
+    assert.match(
+      rule,
+      /min-height\s*:\s*(?:4[4-9]|[5-9]\d)px/i,
+      `${selector} 高度必须至少 44px`,
+    );
+  }
+
+  assert.match(css, /@media\s*\(max-width:\s*360px\)/i);
+  assert.match(css, /padding-inline\s*:\s*0/i);
+  assert.match(css, /\.practice-layout\s*\{[^}]*padding-inline\s*:\s*4px/is);
   assert.match(css, /env\(safe-area-inset-(?:top|bottom|left|right)\)/i);
   assert.match(css, /overflow-x\s*:\s*hidden/i);
   assert.match(css, /@media\s*\([^)]*min-width\s*:/i);

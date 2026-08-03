@@ -107,7 +107,7 @@ Expected: FAIL because the product page is absent.
 
 **Step 3: Implement UI**
 
-实现响应式九宫格、选择与关联高亮、输入、候选、撤销、提示、完成面板、自动保存、计时器、方向键和快捷键。触控目标至少 44px，320px 宽无横向滚动，支持 `prefers-reduced-motion`。
+实现响应式九宫格、选择与关联高亮、输入、候选、撤销、提示、完成面板、自动保存、计时器、方向键和快捷键。数字键、工具键等独立触控目标至少 44px；由于 9 × 44px 已超过 320px 视口，棋盘格在 320px 下例外采用至少 32px 的目标，并通过页面下方的 44px 数字键完成主要输入。整张棋盘必须在 320px 宽完整可见，页面和棋盘都不得横向滚动，支持 `prefers-reduced-motion`。
 
 **Step 4: Verify GREEN**
 

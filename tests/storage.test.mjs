@@ -90,6 +90,14 @@ test("保存时创建深拷贝，后续修改不会污染已保存进度", () =>
   assert.equal(restored.history[0].board[0], 0);
 });
 
+test("拒绝从原型继承必需字段的伪进度对象", () => {
+  const storage = createMemoryStorage();
+  const inheritedProgress = Object.create(makeProgress());
+
+  assert.equal(saveProgress(inheritedProgress, storage), false);
+  assert.equal(storage.getItem(STORAGE_KEY), null);
+});
+
 test("完成题目 ID 可去重保存并独立读取", () => {
   const storage = createMemoryStorage();
   const progress = makeProgress();

@@ -3,9 +3,40 @@ export const STORAGE_KEY = `sudoku-practice:v${STORAGE_VERSION}`;
 
 const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
 const CELL_COUNT = 81;
+const DOCUMENT_FIELDS = ["version", "progress", "completedPuzzleIds"];
+const PROGRESS_FIELDS = [
+  "puzzleId",
+  "difficulty",
+  "board",
+  "notes",
+  "history",
+  "selected",
+  "noteMode",
+  "elapsedSeconds",
+  "mistakes",
+  "hints",
+  "startedAt",
+];
+const SNAPSHOT_FIELDS = ["board", "notes"];
 
-function isRecord(value) {
-  return value !== null && typeof value === "object" && !Array.isArray(value);
+function isPlainRecord(value) {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+
+  try {
+    return Object.getPrototypeOf(value) === Object.prototype;
+  } catch {
+    return false;
+  }
+}
+
+function hasOwnFields(value, fields) {
+  try {
+    return fields.every((field) => Object.hasOwn(value, field));
+  } catch {
+    return false;
+  }
 }
 
 function isIntegerInRange(value, minimum, maximum) {
@@ -34,7 +65,12 @@ function isNotes(value) {
 }
 
 function isSnapshot(value) {
-  return isRecord(value) && isBoard(value.board) && isNotes(value.notes);
+  return (
+    isPlainRecord(value) &&
+    hasOwnFields(value, SNAPSHOT_FIELDS) &&
+    isBoard(value.board) &&
+    isNotes(value.notes)
+  );
 }
 
 function isCounter(value) {
@@ -50,7 +86,8 @@ function isStartedAt(value) {
 
 function isProgress(value) {
   return (
-    isRecord(value) &&
+    isPlainRecord(value) &&
+    hasOwnFields(value, PROGRESS_FIELDS) &&
     typeof value.puzzleId === "string" &&
     value.puzzleId.length > 0 &&
     DIFFICULTIES.has(value.difficulty) &&
@@ -76,7 +113,8 @@ function isCompletedPuzzleIds(value) {
 
 function isStorageDocument(value) {
   return (
-    isRecord(value) &&
+    isPlainRecord(value) &&
+    hasOwnFields(value, DOCUMENT_FIELDS) &&
     value.version === STORAGE_VERSION &&
     (value.progress === null || isProgress(value.progress)) &&
     isCompletedPuzzleIds(value.completedPuzzleIds)

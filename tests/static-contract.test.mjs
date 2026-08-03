@@ -76,12 +76,33 @@ test("产品脚本以模块加载并动态建立 81 个可聚焦网格按钮", (
 });
 
 test("样式满足触控、安全区、窄屏与减少动态效果约束", () => {
-  assert.match(css, /min-(?:height|block-size)\s*:\s*(?:4[4-9]|[5-9]\d)px/i);
-  assert.match(css, /min-(?:width|inline-size)\s*:\s*(?:4[4-9]|[5-9]\d)px/i);
+  const cellRule = css.match(/\.sudoku-cell\s*\{(?<body>[^}]*)\}/i)?.groups?.body ?? "";
+  const boardRule = css.match(/#sudoku-grid\s*\{(?<body>[^}]*)\}/i)?.groups?.body ?? "";
+  const viewportRule = css.match(/\.board-frame\s*\{(?<body>[^}]*)\}/i)?.groups?.body ?? "";
+
+  assert.match(cellRule, /min-(?:width|inline-size)\s*:\s*44px/i);
+  assert.match(cellRule, /min-(?:height|block-size)\s*:\s*44px/i);
+  assert.match(boardRule, /min-width\s*:\s*396px/i);
+  assert.match(viewportRule, /overflow-x\s*:\s*auto/i);
   assert.match(css, /env\(safe-area-inset-(?:top|bottom|left|right)\)/i);
   assert.match(css, /overflow-x\s*:\s*hidden/i);
   assert.match(css, /@media\s*\([^)]*min-width\s*:/i);
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/i);
+});
+
+test("完成面板使用原生模态对话框并覆盖完整开关生命周期", () => {
+  assert.match(html, /<dialog\b[^>]*id=["']completion-panel["'][^>]*>/i);
+  assert.doesNotMatch(html, /<dialog\b[^>]*id=["']completion-panel["'][^>]*\bhidden\b/i);
+  assert.match(app, /completionPanel\.showModal\(\)/);
+  assert.match(app, /completionPanel\.close\(\)/);
+  assert.doesNotMatch(app, /completionPanel\.hidden\s*=/);
+  assert.match(
+    app,
+    /completionPanel\.addEventListener\(["']cancel["'],[\s\S]*?preventDefault\(\)/,
+  );
+
+  const closeLifecycleCalls = app.match(/closeCompletionPanel\(\)/g) ?? [];
+  assert.ok(closeLifecycleCalls.length >= 4, "新局、恢复、重开与同难度流程都应关闭模态框");
 });
 
 test("核心页面不引用外部资源，也不包含运行时网络请求", () => {

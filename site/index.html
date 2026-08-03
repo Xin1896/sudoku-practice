@@ -65,7 +65,8 @@
             <span id="status-text">选一格，慢慢来。</span>
           </p>
           <p class="visually-hidden" id="board-help">
-            使用方向键移动，数字键填写；按 N 切换候选，按 U 撤销。
+            窄屏时可左右滑动查看完整棋盘。使用方向键移动，数字键填写；按 N
+            切换候选，按 U 撤销。
           </p>
         </section>
 
@@ -144,13 +145,10 @@
       </footer>
     </div>
 
-    <section
+    <dialog
       class="completion-panel"
       id="completion-panel"
-      role="dialog"
-      aria-modal="true"
       aria-labelledby="completion-title"
-      hidden
     >
       <div class="completion-panel__paper">
         <span class="completion-panel__seal" aria-hidden="true">已解</span>
@@ -166,7 +164,7 @@
           同难度再来一局
         </button>
       </div>
-    </section>
+    </dialog>
 
     <noscript>需要启用浏览器中的 JavaScript 才能开始数独练习。</noscript>
     <script type="module" src="./js/app.js"></script>

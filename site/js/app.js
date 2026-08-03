@@ -101,6 +101,14 @@ function announce(message, kind = "neutral") {
   statusMark.textContent = kind === "error" ? "×" : kind === "success" ? "✓" : "·";
 }
 
+function closeCompletionPanel() {
+  if (!completionPanel.open) {
+    return;
+  }
+
+  completionPanel.close();
+}
+
 function makeProgress() {
   return {
     puzzleId: game.puzzle.id,
@@ -147,6 +155,7 @@ function createFreshGame(puzzle) {
 }
 
 function restoreSavedGame(progress) {
+  closeCompletionPanel();
   const puzzle = PUZZLES.find(
     (entry) => entry.id === progress.puzzleId && entry.difficulty === progress.difficulty,
   );
@@ -184,12 +193,12 @@ function restoreSavedGame(progress) {
   elapsedBase = progress.elapsedSeconds;
   activeSince = Date.now();
   completed = false;
-  completionPanel.hidden = true;
   renderAll();
   return true;
 }
 
 function startNewGame(difficulty = selectedDifficulty, focusBoard = false) {
+  closeCompletionPanel();
   const puzzle = choosePuzzle(difficulty, loadCompletedPuzzleIds());
   if (puzzle === null) {
     announce("暂时没有这一档题目。", "error");
@@ -201,7 +210,6 @@ function startNewGame(difficulty = selectedDifficulty, focusBoard = false) {
   elapsedBase = 0;
   activeSince = Date.now();
   completed = false;
-  completionPanel.hidden = true;
   renderAll();
   saveCurrentGame();
   announce(`已铺开一局${DIFFICULTY_LABELS[difficulty]}题。`);
@@ -493,6 +501,7 @@ function restartGame() {
     return;
   }
 
+  closeCompletionPanel();
   const puzzle = game.puzzle;
   game = createFreshGame(puzzle);
   selectedDifficulty = puzzle.difficulty;
@@ -502,6 +511,7 @@ function restartGame() {
   renderAll();
   saveCurrentGame();
   announce("已把这一局恢复到最初。", "neutral");
+  cellButtons[game.selected].focus({ preventScroll: true });
 }
 
 function finishGame() {
@@ -523,7 +533,7 @@ function finishGame() {
   document.querySelector("#final-hints").textContent = `${game.hints} 次`;
   document.querySelector("#completion-summary").textContent =
     `你完成了一局${DIFFICULTY_LABELS[game.puzzle.difficulty]}题，进度已在本机收好。`;
-  completionPanel.hidden = false;
+  completionPanel.showModal();
   announce("整盘完成，恭喜收笔。", "success");
 
   requestAnimationFrame(() => {
@@ -598,6 +608,10 @@ undoButton.addEventListener("click", undoMove);
 hintButton.addEventListener("click", useHint);
 document.querySelector('[data-action="same-difficulty"]').addEventListener("click", () => {
   startNewGame(game.puzzle.difficulty, true);
+});
+completionPanel.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  announce("本局已经完成，请选择同难度再来一局。", "neutral");
 });
 
 window.addEventListener("beforeunload", saveCurrentGame);

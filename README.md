@@ -21,18 +21,18 @@ npm run build
 
 网站源码位于 `site/`，构建产物输出到 `dist/`。项目运行时不依赖服务器、第三方 CDN 或外部 API。
 
-## Cloudflare Pages
+## Vercel
 
 连接这个 GitHub 仓库时使用以下设置：
 
-- Framework preset：`None`
+- Framework preset：`Other`
 - Production branch：`main`
 - Build command：`npm run build`
-- Build output directory：`dist`
-- Node.js：`22.16.0`
+- Output directory：`dist`
+- Node.js：`22.x`
 
-项目已包含 Web App Manifest、版本化 Service Worker、Cloudflare Pages 安全响应头和自定义 404 页面。
+`vercel.json` 已包含构建目录、PWA 更新策略和安全响应头。项目同时保留 Cloudflare Pages 配置，便于以后做备用静态部署。
 
 ## 中国大陆可达性
 
-站点不引用 Google Fonts、境外 CDN 或第三方 API，可尽量减少首屏的跨境依赖。但普通 Cloudflare Pages 不提供中国大陆可用性 SLA；正式发布后仍需使用自定义域名进行移动、联通、电信三网实测。
+站点不引用 Google Fonts、境外 CDN 或第三方 API，可尽量减少首屏的跨境依赖。但 Vercel 在中国大陆没有服务器或 CDN 节点，也不提供中国大陆可用性 SLA；正式发布后应绑定自定义域名，并进行移动、联通、电信三网实测。

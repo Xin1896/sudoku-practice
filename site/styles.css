@@ -160,10 +160,6 @@ button:disabled {
   font-size: 13px;
 }
 
-.site-nav {
-  flex: 0 0 auto;
-}
-
 .home-link {
   display: inline-flex;
   align-items: center;
@@ -203,17 +199,8 @@ button:disabled {
   padding: clamp(22px, 5vw, 54px) clamp(12px, 4vw, 42px) clamp(30px, 5vw, 56px);
 }
 
-.game-sheet,
-.control-sheet {
+.game-sheet {
   min-width: 0;
-}
-
-.game-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 19px;
 }
 
 .section-mark {
@@ -224,18 +211,11 @@ button:disabled {
   letter-spacing: 0.15em;
 }
 
-.game-heading h1,
 .completion-panel h2 {
   margin: 0;
   font-family: var(--font-song);
   font-weight: 700;
   letter-spacing: 0.03em;
-}
-
-.game-heading h1 {
-  max-width: 13em;
-  font-size: clamp(23px, 5.8vw, 34px);
-  line-height: 1.25;
 }
 
 .difficulty-stamp {
@@ -456,41 +436,6 @@ button:disabled {
   line-height: 0;
 }
 
-.control-sheet {
-  align-self: start;
-  padding: 0;
-}
-
-.control-section {
-  padding: 17px 0;
-  border-top: 1px solid var(--line);
-}
-
-.control-section:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-.control-section__heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 11px;
-}
-
-.control-section__heading h2 {
-  margin: 0;
-  font-family: var(--font-song);
-  font-size: 16px;
-  letter-spacing: 0.09em;
-}
-
-.control-section__heading > span {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-}
-
 .difficulty-picker {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -633,14 +578,6 @@ button:disabled {
   margin-top: 3px;
   color: var(--muted);
   font-size: 8px;
-}
-
-.keyboard-note {
-  margin: 16px 0 0;
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.6;
-  text-align: center;
 }
 
 footer {
@@ -814,14 +751,6 @@ noscript {
     margin-block: 14px;
   }
 
-  .number-pad {
-    grid-template-columns: repeat(9, 1fr);
-  }
-
-  .number-pad button {
-    min-height: 48px;
-  }
-
   .masthead__note {
     display: block;
   }
@@ -836,19 +765,6 @@ noscript {
   .practice-layout {
     grid-template-columns: minmax(0, 610px) minmax(280px, 340px);
     align-items: start;
-  }
-
-  .control-sheet {
-    position: sticky;
-    top: 24px;
-    padding: 23px;
-    border: 1px solid rgba(91, 82, 68, 0.24);
-    background: rgba(250, 247, 239, 0.43);
-    box-shadow: 5px 7px 0 rgba(93, 77, 55, 0.06);
-  }
-
-  .number-pad {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
 

@@ -297,7 +297,10 @@ function renderScore() {
 
 function renderControls() {
   const game = current();
-  const opponent = settings.opponent === "ai" ? `人机 · ${LEVEL_NAMES[settings.level]}` : "两人同屏";
+  const opponent =
+    settings.opponent === "ai"
+      ? `人机 · ${LEVEL_NAMES[settings.level]} · 执${STONE_NAMES[settings.side]}`
+      : "两人同屏";
   modeLabel.textContent = `${opponent} · ${game.size} 路`;
   undoButton.disabled = moves.length === 0 && result?.state !== "resign";
   hintButton.disabled = !canHumanPlay();

@@ -266,7 +266,9 @@ const choiceGroups = new Map(
 
 function renderControls() {
   modeLabel.textContent =
-    settings.opponent === "ai" ? `人机 · ${LEVEL_NAMES[settings.level]}` : "两人同屏";
+    settings.opponent === "ai"
+      ? `人机 · ${LEVEL_NAMES[settings.level]} · 执${settings.side === "w" ? "白" : "黑"}`
+      : "两人同屏";
   undoButton.disabled = moves.length === 0 && result?.state !== "resign";
   hintButton.disabled = result !== null || thinking || isAiTurn();
   resignButton.disabled = result !== null || moves.length === 0;

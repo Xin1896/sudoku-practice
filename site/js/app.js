@@ -6,6 +6,7 @@ import {
   toggleNote,
 } from "./sudoku.js";
 import { PUZZLES, choosePuzzle } from "./puzzles.js";
+import { bindSheets } from "./game-kit.js";
 import { registerServiceWorker } from "./pwa.js";
 import {
   clearProgress,
@@ -688,4 +689,5 @@ setInterval(() => {
   }
 }, 1000);
 
+bindSheets();
 registerServiceWorker();

@@ -17,28 +17,26 @@
   </head>
   <body class="game-page game-page--go">
     <div class="page-shell game-shell">
-      <header class="game-bar">
-        <a class="home-link" href="/">
-          <span class="home-link__arrow" aria-hidden="true">←</span>
-          <span>返回首页</span>
-        </a>
-        <a class="brand game-bar__brand" href="/go/">
-          <span class="brand__seal" aria-hidden="true">围棋</span>
-          <span>
-            <span class="brand__eyebrow">一刻游艺 · 第四开</span>
-            <span class="brand__name">围棋</span>
-          </span>
-        </a>
-        <div class="game-bar__tools">
-          <button class="bar-button" type="button" data-open="rules-panel" aria-haspopup="dialog">规则</button>
-          <button class="bar-button bar-button--mode" type="button" data-open="settings-panel" aria-haspopup="dialog">
-            <span class="bar-button__mode" id="mode-label">人机 · 启蒙 · 9 路</span>
-            <span>设置</span>
-          </button>
-        </div>
-      </header>
-
       <main class="game-room">
+        <header class="game-bar">
+          <a class="home-link" href="/">
+            <span class="home-link__arrow" aria-hidden="true">←</span>
+            <span>返回首页</span>
+          </a>
+          <a class="brand" href="/go/">
+            <span class="brand__seal" aria-hidden="true">围棋</span>
+            <span>
+              <span class="brand__eyebrow">一刻游艺 · 第四开</span>
+              <span class="brand__name">围棋</span>
+            </span>
+          </a>
+          <p class="game-bar__meta" id="mode-label">人机 · 启蒙 · 执黑 · 9 路</p>
+          <div class="game-bar__tools">
+            <button class="bar-button" type="button" data-open="rules-panel" aria-haspopup="dialog">规则</button>
+            <button class="bar-button" type="button" data-open="settings-panel" aria-haspopup="dialog">设置</button>
+          </div>
+        </header>
+
         <section class="stage" aria-labelledby="game-title">
           <h1 class="stage__inscription" id="game-title">黑白之间　围地为胜</h1>
           <div class="board-frame board-frame--game">

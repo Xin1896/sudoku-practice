@@ -1,21 +1,62 @@
-/* 对弈室：棋盘是舞台，信息与操作收进侧栏，设置和规则放进浮层 */
+/* 对弈室：棋盘是舞台。竖屏从上到下排；横屏时棋盘占满左侧整高，导航、对局信息与操作收进右侧细栏 */
+
+.game-page {
+  --rail: clamp(224px, 21vw, 288px);
+  --rail-gap: clamp(16px, 2.4vw, 32px);
+  --rail-line: rgba(74, 67, 57, 0.18);
+  --room-pad: clamp(10px, 3vw, 22px);
+}
 
 .game-shell {
   width: min(100%, 1480px);
 }
 
-/* 顶栏 */
+.game-room {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "head"
+    "top"
+    "stage"
+    "bottom"
+    "status"
+    "actions"
+    "record";
+  align-items: stretch;
+  gap: 8px;
+  padding: 0 var(--room-pad) 22px;
+}
+
+.game-page--sudoku .game-room {
+  grid-template-areas:
+    "head"
+    "top"
+    "stage"
+    "pad"
+    "status"
+    "actions";
+}
+
+/* 题头：竖屏是一条顶栏，横屏变成侧栏的刊头 */
 
 .game-bar {
   display: grid;
+  grid-area: head;
   grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "home brand tools";
   align-items: center;
   gap: 10px;
-  padding: 8px clamp(10px, 2.4vw, 24px);
+  margin-inline: calc(var(--room-pad) * -1);
+  padding: 8px var(--room-pad);
   border-bottom: 1px solid rgba(74, 67, 57, 0.2);
 }
 
-.game-bar__brand {
+.game-bar > .home-link {
+  grid-area: home;
+}
+
+.game-bar > .brand {
+  grid-area: brand;
   justify-self: center;
   min-width: 0;
   gap: 9px;
@@ -40,8 +81,18 @@
   white-space: nowrap;
 }
 
+.game-bar__meta {
+  display: none;
+  grid-area: meta;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
 .game-bar__tools {
   display: flex;
+  grid-area: tools;
   gap: 6px;
 }
 
@@ -62,29 +113,7 @@
   cursor: pointer;
 }
 
-.bar-button__mode {
-  padding-right: 9px;
-  border-right: 1px solid var(--line);
-  color: var(--cinnabar-dark);
-  font-family: var(--font-song);
-  letter-spacing: 0.04em;
-}
-
-/* 房间：竖屏时从上到下排，横屏时棋盘居左、侧栏居右 */
-
-.game-room {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "top"
-    "stage"
-    "bottom"
-    "status"
-    "actions"
-    "record";
-  gap: 8px;
-  padding: 10px clamp(10px, 3vw, 22px) 22px;
-}
+/* 舞台 */
 
 .stage {
   position: relative;
@@ -95,41 +124,25 @@
   container: stage / inline-size;
 }
 
-.player-strip--top {
-  grid-area: top;
-}
-
-.player-strip--bottom {
-  grid-area: bottom;
-}
-
-.room-status {
-  grid-area: status;
-  min-width: 0;
-}
-
-.action-bar {
-  grid-area: actions;
-}
-
-.record {
-  grid-area: record;
-}
-
 .board-frame--game {
   width: min(100%, max(280px, var(--frame-limit)));
-  padding: 8px;
+  padding: 6px;
 }
 
 .game-page--xiangqi {
-  --frame-limit: calc((100vh - 344px) * 0.9 + 18px);
-  --frame-limit: calc((100dvh - 344px) * 0.9 + 18px);
+  --frame-limit: calc((100vh - 384px) * 0.9 + 14px);
+  --frame-limit: calc((100dvh - 384px) * 0.9 + 14px);
 }
 
 .game-page--chess,
 .game-page--go {
-  --frame-limit: calc(100vh - 290px);
-  --frame-limit: calc(100dvh - 290px);
+  --frame-limit: calc(100vh - 280px);
+  --frame-limit: calc(100dvh - 280px);
+}
+
+.game-page--sudoku {
+  --frame-limit: calc(100vh - 340px);
+  --frame-limit: calc(100dvh - 340px);
 }
 
 .stage__inscription {
@@ -148,29 +161,29 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 9px;
+  gap: 4px 10px;
   min-width: 0;
-  min-height: 44px;
-  padding: 6px 10px;
-  border: 1px solid rgba(74, 67, 57, 0.18);
+  min-height: 40px;
+  padding: 6px 2px;
   color: var(--muted);
-  background: rgba(251, 248, 241, 0.55);
   font-size: 12px;
-  transition:
-    border-color 200ms ease,
-    box-shadow 200ms ease;
 }
 
-.player-strip.is-active {
-  border-color: rgba(162, 58, 42, 0.5);
-  box-shadow: inset 3px 0 0 var(--cinnabar);
+.player-strip--top {
+  grid-area: top;
+  border-bottom: 1px solid var(--rail-line);
+}
+
+.player-strip--bottom {
+  grid-area: bottom;
+  border-top: 1px solid var(--rail-line);
 }
 
 .player-strip strong {
   color: var(--ink);
   font-family: var(--font-song);
   font-size: 15px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 
 .player-strip.is-active strong {
@@ -180,10 +193,15 @@
 .player-strip__mark {
   display: inline-block;
   flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border: 1.5px solid currentColor;
   border-radius: 50%;
+  transition: box-shadow 200ms ease;
+}
+
+.player-strip.is-active .player-strip__mark {
+  box-shadow: 0 0 0 4px rgba(162, 58, 42, 0.18);
 }
 
 .player-strip__mark[data-side="red"] {
@@ -203,14 +221,11 @@
 }
 
 .player-strip__who {
-  padding: 1px 6px;
-  border: 1px solid var(--line);
   font-size: 11px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .player-strip.is-active .player-strip__who {
-  border-color: var(--cinnabar);
   color: var(--cinnabar-dark);
 }
 
@@ -248,33 +263,112 @@
   display: none;
 }
 
-.capture-chip {
-  display: inline-grid;
-  width: 21px;
-  height: 21px;
-  place-items: center;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  background: #f7ecd2;
-  font-weight: 700;
+/* 数独：题签、落子区与选题 */
+
+.puzzle-card {
+  display: grid;
+  grid-area: top;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 8px 2px;
+  border-bottom: 1px solid var(--rail-line);
 }
 
-.capture-chip--red {
-  color: #b0352a;
+.puzzle-card .section-mark {
+  margin: 0;
 }
 
-.capture-chip--black {
-  color: #1f2422;
+.puzzle-card .difficulty-stamp {
+  grid-row: span 2;
+  grid-column: 2;
 }
 
-.capture-count {
-  color: var(--ink-blue);
-  font-family: ui-monospace, "SFMono-Regular", monospace;
+.puzzle-card .game-stats {
+  margin: 0;
+  border-block: 0;
+}
+
+.puzzle-card .game-stats div {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 2px 0;
+}
+
+.puzzle-card .game-stats div + div {
+  padding-left: 12px;
+}
+
+.input-section {
+  display: grid;
+  grid-area: pad;
+  gap: 8px;
+}
+
+.game-page--sudoku .number-pad {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.game-page--sudoku .number-pad button {
+  min-height: 46px;
+  font-size: 23px;
+}
+
+.game-page--sudoku .tool-row {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.game-page--sudoku .tool-row button {
+  min-height: 62px;
+}
+
+.sudoku-controls {
+  display: grid;
+  grid-area: actions;
+  gap: 8px;
+}
+
+.sudoku-controls .difficulty-picker button {
+  min-height: 48px;
+  padding: 5px 4px;
+}
+
+.sudoku-controls .game-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.sudoku-controls .paper-button {
+  padding-inline: 6px;
   font-size: 13px;
-  font-weight: 700;
+}
+
+.sudoku-controls .paper-button--quiet {
+  grid-column: auto;
+  border-color: var(--line);
+  text-decoration: none;
+}
+
+.rail-label {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
 }
 
 /* 状态、操作与棋谱 */
+
+.room-status {
+  grid-area: status;
+  min-width: 0;
+}
 
 .room-status .status-line {
   min-height: 0;
@@ -286,6 +380,7 @@
 
 .action-bar {
   display: grid;
+  grid-area: actions;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 4px;
 }
@@ -296,7 +391,7 @@
   justify-items: center;
   gap: 5px;
   min-width: 44px;
-  min-height: 62px;
+  min-height: 60px;
   padding: 6px 2px;
   border: 1px solid transparent;
   color: var(--ink);
@@ -334,10 +429,11 @@
 
 .record {
   display: flex;
+  grid-area: record;
   flex-direction: column;
   min-height: 0;
   padding-top: 10px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--rail-line);
 }
 
 .record__heading {
@@ -350,8 +446,8 @@
 .record__heading h2 {
   margin: 0;
   font-family: var(--font-song);
-  font-size: 14px;
-  letter-spacing: 0.16em;
+  font-size: 13px;
+  letter-spacing: 0.2em;
 }
 
 .record__heading span {
@@ -409,11 +505,39 @@
   white-space: nowrap;
 }
 
-.move-record__empty {
+.move-record li.move-record__empty {
+  display: block;
   grid-column: 1 / -1;
   color: var(--muted);
   font-family: var(--font-sans);
   font-size: 12px;
+  line-height: 1.7;
+}
+
+.capture-chip {
+  display: inline-grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: #f7ecd2;
+  font-weight: 700;
+}
+
+.capture-chip--red {
+  color: #b0352a;
+}
+
+.capture-chip--black {
+  color: #1f2422;
+}
+
+.capture-count {
+  color: var(--ink-blue);
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 /* 设置与规则浮层：窄屏从底部升起，宽屏居中 */
@@ -659,7 +783,6 @@
     box-shadow: 0 -10px 30px rgba(27, 23, 18, 0.18);
   }
 
-  .bar-button__mode,
   .game-bar .brand__eyebrow {
     display: none;
   }
@@ -680,18 +803,24 @@
   }
 }
 
-/* 横屏：整页即一间对弈室，棋盘按可用高度放到最大 */
+@media (min-width: 560px) {
+  .game-page--sudoku .number-pad {
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+  }
+}
+
+/* 横屏：整页即一间对弈室。棋盘按舞台高度放到最大，侧栏像一张展签 */
 
 @media (min-width: 700px) and (min-aspect-ratio: 1/1) and (min-height: 430px) {
   body.game-page {
-    padding: 10px max(10px, env(safe-area-inset-right)) 10px max(10px, env(safe-area-inset-left));
+    padding: 8px max(8px, env(safe-area-inset-right)) 8px max(8px, env(safe-area-inset-left));
   }
 
   .game-page .game-shell {
     display: grid;
-    grid-template-rows: auto minmax(0, 1fr);
-    height: calc(100vh - 20px);
-    height: calc(100dvh - 20px);
+    grid-template-rows: minmax(0, 1fr);
+    height: calc(100vh - 16px);
+    height: calc(100dvh - 16px);
     margin-block: 0;
   }
 
@@ -701,25 +830,45 @@
 
   .game-room {
     position: relative;
-    grid-template-columns: minmax(0, 1fr) clamp(250px, 26vw, 330px);
-    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1fr) var(--rail);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
     grid-template-areas:
+      "stage head"
       "stage top"
       "stage status"
       "stage record"
       "stage actions"
       "stage bottom";
-    column-gap: clamp(18px, 2.6vw, 36px);
-    row-gap: 10px;
+    column-gap: var(--rail-gap);
+    row-gap: 0;
     min-height: 0;
-    padding: clamp(12px, 2.2vh, 22px) clamp(14px, 2.4vw, 30px);
+    padding: clamp(10px, 1.8vh, 18px) clamp(16px, 2vw, 26px) clamp(10px, 1.8vh, 18px)
+      clamp(10px, 1.8vh, 18px);
+  }
+
+  .game-page--sudoku .game-room {
+    grid-template-rows: auto auto auto auto minmax(0, 1fr);
+    grid-template-areas:
+      "stage head"
+      "stage top"
+      "stage status"
+      "stage pad"
+      "stage actions";
+  }
+
+  .game-page--sudoku .game-bar__meta {
+    display: none;
+  }
+
+  .game-page--sudoku .sudoku-controls {
+    align-self: end;
   }
 
   .game-room::before {
     grid-row: 1 / -1;
     grid-column: 2;
-    margin-left: calc(clamp(18px, 2.6vw, 36px) / -2);
-    border-left: 1px solid rgba(74, 67, 57, 0.16);
+    margin-left: calc(var(--rail-gap) / -2);
+    border-left: 1px solid var(--rail-line);
     content: "";
     pointer-events: none;
   }
@@ -731,11 +880,12 @@
   }
 
   .game-page--xiangqi .stage {
-    --frame-fit: calc((100cqh - 54px) * 0.9 + 18px);
+    --frame-fit: calc((100cqh - 54px) * 0.9 + 14px);
   }
 
   .game-page--chess .stage,
-  .game-page--go .stage {
+  .game-page--go .stage,
+  .game-page--sudoku .stage {
     --frame-fit: 100cqh;
   }
 
@@ -743,13 +893,83 @@
     width: min(100cqw, var(--frame-fit));
   }
 
-  .player-strip {
-    padding: 9px 12px;
+  .game-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "home tools"
+      "brand brand"
+      "meta meta";
+    gap: 12px 6px;
+    margin: 0;
+    padding: 0 0 16px;
+  }
+
+  .game-bar > .brand {
+    justify-self: start;
+    gap: 12px;
+  }
+
+  .game-bar .brand__seal {
+    width: 42px;
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .game-bar .brand__eyebrow {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px;
+  }
+
+  .game-bar .brand__name {
+    font-size: clamp(22px, 2.2vw, 28px);
+    letter-spacing: 0.14em;
+  }
+
+  .game-bar__meta {
+    display: block;
+    margin-top: -4px;
+  }
+
+  .game-bar > .home-link,
+  .game-bar .bar-button {
+    min-height: 40px;
+    padding-inline: 0 8px;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    font-size: 12px;
+  }
+
+  .game-bar .bar-button {
+    padding-inline: 8px 0;
+    color: var(--muted);
+  }
+
+  .player-strip,
+  .room-status,
+  .record,
+  .action-bar,
+  .puzzle-card,
+  .input-section,
+  .sudoku-controls {
+    padding: 12px 0;
+    border-top: 1px solid var(--rail-line);
+    border-bottom: 0;
+  }
+
+  .player-strip--top,
+  .puzzle-card {
+    border-top: 0;
+  }
+
+  .player-strip--bottom {
+    padding-bottom: 0;
   }
 
   .player-strip__captures {
     flex: 1 0 100%;
-    margin-left: 0;
+    margin-left: 22px;
   }
 
   .room-status .status-line {
@@ -759,6 +979,39 @@
   .move-record {
     flex: 1;
     max-height: none;
+  }
+
+  .game-page--sudoku .number-pad {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .game-page--sudoku .number-pad button {
+    min-height: clamp(44px, 5.8vh, 54px);
+  }
+
+  .game-page--sudoku .tool-row button {
+    min-height: 52px;
+    padding-block: 4px;
+  }
+
+  .game-page--sudoku .tool-row small,
+  .sudoku-controls .difficulty-picker small {
+    display: none;
+  }
+
+  .sudoku-controls .difficulty-picker button {
+    min-height: 44px;
+  }
+
+  .sudoku-controls .game-actions {
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 5px;
+  }
+
+  .sudoku-controls .paper-button {
+    padding-inline: 2px;
+    font-size: 12px;
+    letter-spacing: 0.02em;
   }
 
   @container stage (min-aspect-ratio: 5 / 4) {
@@ -795,6 +1048,19 @@
       transform: translateY(-50%);
       writing-mode: vertical-rl;
     }
+  }
+}
+
+@media (min-width: 700px) and (min-aspect-ratio: 1/1) and (max-height: 700px) {
+  .game-page--sudoku .tool-row span {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 3px;
+    line-height: 22px;
+  }
+
+  .game-page--sudoku .game-bar > .brand .brand__eyebrow {
+    display: none;
   }
 }
 
@@ -1121,11 +1387,12 @@
 .xq-files {
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
+  height: 20px;
   color: rgba(92, 64, 31, 0.85);
   font-family: var(--font-song);
   font-size: clamp(10px, 2.8vw, 13px);
   font-weight: 700;
-  line-height: 1.6;
+  line-height: 20px;
   text-align: center;
 }
 

@@ -88,7 +88,7 @@ test("每个子页面都能一步回到首页", () => {
   }
 });
 
-test("棋类页面以棋盘为舞台：设置与规则收进浮层，操作集中在工具条", () => {
+test("棋类与数独页面以棋盘为舞台：设置与规则收进浮层，操作集中在侧栏", () => {
   for (const { path } of GAME_PAGES.slice(1)) {
     const page = sources.get(path);
     assert.match(page, /<header class="game-bar">/, `${path} 需要精简顶栏`);
@@ -100,6 +100,12 @@ test("棋类页面以棋盘为舞台：设置与规则收进浮层，操作集�
     assert.match(page, /<div class="action-bar" role="toolbar"/);
     assert.equal((page.match(/<h1\b/g) ?? []).length, 1, `${path} 只能有一个 h1`);
   }
+
+  const sudoku = sources.get("sudoku/index.html");
+  assert.match(sudoku, /<main class="game-room practice-layout">\s*<header class="game-bar">/);
+  assert.match(sudoku, /<section class="stage"[^>]*>[\s\S]*?id="sudoku-grid"/);
+  assert.match(sudoku, /<link rel="stylesheet" href="\/games\.css" \/>/);
+  assert.match(sources.get("js/app.js"), /bindSheets\(\)/);
 
   const styles = sources.get("games.css");
   assert.match(styles, /container:\s*stage\s*\/\s*size/, "横屏时舞台按可用高度计算棋盘");

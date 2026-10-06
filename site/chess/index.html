@@ -70,28 +70,26 @@
     </svg>
 
     <div class="page-shell game-shell">
-      <header class="game-bar">
-        <a class="home-link" href="/">
-          <span class="home-link__arrow" aria-hidden="true">←</span>
-          <span>返回首页</span>
-        </a>
-        <a class="brand game-bar__brand" href="/chess/">
-          <span class="brand__seal" aria-hidden="true">国象</span>
-          <span>
-            <span class="brand__eyebrow">一刻游艺 · 第三开</span>
-            <span class="brand__name">国际象棋</span>
-          </span>
-        </a>
-        <div class="game-bar__tools">
-          <button class="bar-button" type="button" data-open="rules-panel" aria-haspopup="dialog">规则</button>
-          <button class="bar-button bar-button--mode" type="button" data-open="settings-panel" aria-haspopup="dialog">
-            <span class="bar-button__mode" id="mode-label">人机 · 启蒙</span>
-            <span>设置</span>
-          </button>
-        </div>
-      </header>
-
       <main class="game-room">
+        <header class="game-bar">
+          <a class="home-link" href="/">
+            <span class="home-link__arrow" aria-hidden="true">←</span>
+            <span>返回首页</span>
+          </a>
+          <a class="brand" href="/chess/">
+            <span class="brand__seal" aria-hidden="true">国象</span>
+            <span>
+              <span class="brand__eyebrow">一刻游艺 · 第三开</span>
+              <span class="brand__name">国际象棋</span>
+            </span>
+          </a>
+          <p class="game-bar__meta" id="mode-label">人机 · 启蒙 · 执白</p>
+          <div class="game-bar__tools">
+            <button class="bar-button" type="button" data-open="rules-panel" aria-haspopup="dialog">规则</button>
+            <button class="bar-button" type="button" data-open="settings-panel" aria-haspopup="dialog">设置</button>
+          </div>
+        </header>
+
         <section class="stage" aria-labelledby="game-title">
           <h1 class="stage__inscription" id="game-title">六十四格　步步为营</h1>
           <div class="board-frame board-frame--game">

@@ -7,6 +7,7 @@ const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
 const GAME_PAGES = Object.freeze([
   { path: "sudoku/index.html", title: "数独", script: "/js/app.js" },
+  { path: "tuili/index.html", title: "推理", script: "/js/tuili-app.js" },
   { path: "xiangqi/index.html", title: "象棋", script: "/js/xiangqi-app.js" },
   { path: "chess/index.html", title: "国际象棋", script: "/js/chess-app.js" },
   { path: "go/index.html", title: "围棋", script: "/js/go-app.js" },
@@ -40,13 +41,13 @@ const home = sources.get("index.html");
 const serviceWorker = sources.get("sw.js");
 const buildScript = await readFile(new URL("../scripts/build.mjs", import.meta.url), "utf8");
 
-test("首页提供数独与三种棋类入口，并沿用纸本册页品牌", () => {
+test("首页提供数独、推理与三种棋类入口，并沿用纸本册页品牌", () => {
   assert.match(home, /<title>一刻游艺｜[^<]+<\/title>/);
   assert.match(home, /<h1[^>]*id=["']hero-title["']/);
-  for (const href of ["/sudoku/", "/xiangqi/", "/chess/", "/go/"]) {
+  for (const href of ["/sudoku/", "/tuili/", "/xiangqi/", "/chess/", "/go/"]) {
     assert.match(home, new RegExp(`<a[^>]+class=["']leaf[^"']*["'][^>]+href=["']${href}["']`));
   }
-  for (const name of ["数独", "象棋", "国际象棋", "围棋"]) {
+  for (const name of ["数独", "推理", "象棋", "国际象棋", "围棋"]) {
     assert.match(home, new RegExp(`class=["']leaf__title["']>${name}<`));
   }
   assert.match(home, /<link[^>]+href=["']\.\/styles\.css["']/);
@@ -89,7 +90,7 @@ test("每个子页面都能一步回到首页", () => {
 });
 
 test("棋类与数独页面以棋盘为舞台：设置与规则收进浮层，操作集中在侧栏", () => {
-  for (const { path } of GAME_PAGES.slice(1)) {
+  for (const { path } of GAME_PAGES.slice(2)) {
     const page = sources.get(path);
     assert.match(page, /<header class="game-bar">/, `${path} 需要精简顶栏`);
     assert.match(page, /<section class="stage"[^>]*>[\s\S]*?class="board-frame board-frame--game"/);
@@ -100,6 +101,14 @@ test("棋类与数独页面以棋盘为舞台：设置与规则收进浮层，�
     assert.match(page, /<div class="action-bar" role="toolbar"/);
     assert.equal((page.match(/<h1\b/g) ?? []).length, 1, `${path} 只能有一个 h1`);
   }
+
+  const tuili = sources.get("tuili/index.html");
+  assert.match(tuili, /<main class="game-room">\s*<header class="game-bar">/);
+  assert.match(tuili, /<section class="stage"[^>]*>[\s\S]*?id="board"/);
+  assert.match(tuili, /<dialog class="sheet" id="settings-panel"[\s\S]*?data-setting="level"[\s\S]*?<\/dialog>/);
+  assert.match(tuili, /<dialog class="sheet" id="reason-panel"/);
+  assert.match(tuili, /data-action="hint"[\s\S]*?data-action="reason"/);
+  assert.equal((tuili.match(/<h1\b/g) ?? []).length, 1);
 
   const sudoku = sources.get("sudoku/index.html");
   assert.match(sudoku, /<main class="game-room practice-layout">\s*<header class="game-bar">/);
@@ -181,6 +190,7 @@ test("离线应用壳覆盖全部页面、样式与脚本，构建清单同步",
 test("首页的“未完”印章读取各游戏真实的存档键", () => {
   const homeScript = sources.get("js/home.js");
   for (const [game, file] of [
+    ["tuili", "js/tuili-app.js"],
     ["xiangqi", "js/xiangqi-app.js"],
     ["chess", "js/chess-app.js"],
     ["go", "js/go-app.js"],

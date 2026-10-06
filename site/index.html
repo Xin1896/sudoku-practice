@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#f2ecdf" />
     <meta
       name="description"
-      content="一刻游艺：数独、象棋、国际象棋与围棋。免登录、可离线、进度留在本机的中文益智小站，适合孩子安静地练习思考。"
+      content="一刻游艺：数独、推理、象棋、国际象棋与围棋。免登录、可离线、进度留在本机的中文益智小站，适合孩子安静地练习思考。"
     />
     <meta name="application-name" content="一刻游艺" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,22 +17,22 @@
     <meta property="og:title" content="一刻游艺" />
     <meta
       property="og:description"
-      content="方寸之间，自有天地。数独、象棋、国际象棋与围棋，免登录、可离线。"
+      content="方寸之间，自有天地。数独、推理、象棋、国际象棋与围棋，免登录、可离线。"
     />
     <meta property="og:image" content="./og-home.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:alt" content="一刻游艺——方寸之间，自有天地。数独、象棋、国际象棋、围棋" />
+    <meta property="og:image:alt" content="一刻游艺——方寸之间，自有天地。数独、推理、象棋、国际象棋、围棋" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="一刻游艺" />
     <meta
       name="twitter:description"
-      content="方寸之间，自有天地。数独、象棋、国际象棋与围棋，免登录、可离线。"
+      content="方寸之间，自有天地。数独、推理、象棋、国际象棋与围棋，免登录、可离线。"
     />
     <meta name="twitter:image" content="./og-home.png" />
-    <meta name="twitter:image:alt" content="一刻游艺——方寸之间，自有天地。数独、象棋、国际象棋、围棋" />
-    <title>一刻游艺｜数独 · 象棋 · 国际象棋 · 围棋</title>
+    <meta name="twitter:image:alt" content="一刻游艺——方寸之间，自有天地。数独、推理、象棋、国际象棋、围棋" />
+    <title>一刻游艺｜数独 · 推理 · 象棋 · 国际象棋 · 围棋</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
@@ -161,7 +161,7 @@
 
         <section class="album" id="album" aria-labelledby="album-title">
           <header class="album__heading">
-            <p class="section-mark">册页 · 四开</p>
+            <p class="section-mark">册页 · 五开</p>
             <h2 id="album-title">今天，想玩哪一局？</h2>
             <p class="album__note">点开任意一开就能开始。棋局和进度只留在这台设备上，下次回来可以接着下。</p>
           </header>
@@ -169,11 +169,11 @@
           <section class="album__part" aria-labelledby="part-reason">
             <div class="album__part-heading">
               <h3 id="part-reason"><span class="album__part-glyph" aria-hidden="true">数</span>推理</h3>
-              <p>一个人，一支笔，把每一格想明白。</p>
+              <p>一个人，一支笔，把每一格、每条线索想明白。</p>
             </div>
 
             <div class="leaf-row leaf-row--reason">
-              <a class="leaf leaf--wide leaf--sudoku" href="/sudoku/" data-game="sudoku">
+              <a class="leaf leaf--sudoku" href="/sudoku/" data-game="sudoku">
                 <span class="leaf__art" aria-hidden="true">
                   <svg viewBox="0 0 240 160" focusable="false">
                     <path class="art-sudoku__faint" d="M20 20H220M20 60H220M20 100H220M20 140H220M20 20V140M60 20V140M180 20V140M220 20V140" />
@@ -207,12 +207,65 @@
                 <span class="leaf__resume" data-resume hidden>未完</span>
               </a>
 
-              <div class="leaf leaf--blank" aria-label="待续：更多推理题">
-                <span class="leaf__index">第五开 · 待续</span>
-                <span class="leaf__title">空白一开</span>
-                <span class="leaf__desc">留给下一种推理题：数织、华容道、一笔画……</span>
-                <span class="leaf__blank-seal" aria-hidden="true">待续</span>
-              </div>
+              <a class="leaf leaf--tuili" href="/tuili/" data-game="tuili">
+                <span class="leaf__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" focusable="false">
+                    <rect class="art-tl__board" x="0" y="0" width="240" height="160" />
+                    <g class="art-tl__cells">
+                      <rect x="16" y="16" width="38" height="38" rx="6" />
+                      <rect x="60" y="16" width="38" height="38" rx="6" />
+                      <rect x="104" y="16" width="38" height="38" rx="6" />
+                      <rect x="16" y="60" width="38" height="38" rx="6" />
+                      <rect x="60" y="60" width="38" height="38" rx="6" />
+                      <rect x="104" y="60" width="38" height="38" rx="6" />
+                      <rect x="16" y="104" width="38" height="38" rx="6" />
+                      <rect x="60" y="104" width="38" height="38" rx="6" />
+                      <rect x="104" y="104" width="38" height="38" rx="6" />
+                    </g>
+                    <rect class="art-tl__tile" x="20" y="20" width="30" height="30" rx="6" />
+                    <circle class="art-tl__zhu" cx="35" cy="35" r="9" />
+                    <rect class="art-tl__tile" x="64" y="20" width="30" height="30" rx="6" />
+                    <rect class="art-tl__mo" x="71" y="27" width="16" height="16" rx="2" />
+                    <rect class="art-tl__tile" x="20" y="108" width="30" height="30" rx="6" />
+                    <path class="art-tl__zhu" d="M35 113L45 131H25Z" />
+                    <g class="art-tl__drop">
+                      <rect class="art-tl__tile" x="108" y="20" width="30" height="30" rx="6" />
+                      <path class="art-tl__qing" d="M123 25L133 43H113Z" />
+                    </g>
+                    <rect class="art-tl__card" x="152" y="16" width="76" height="58" rx="4" />
+                    <rect class="art-tl__tile art-tl__tile--mini" x="162" y="34" width="22" height="22" rx="4" />
+                    <circle class="art-tl__zhu" cx="173" cy="45" r="6" />
+                    <rect class="art-tl__tile art-tl__tile--mini" x="188" y="34" width="22" height="22" rx="4" />
+                    <rect class="art-tl__mo" x="193.5" y="39.5" width="11" height="11" rx="1.5" />
+                    <path class="art-tl__check" d="M214 30l4 4l7-9" />
+                    <rect class="art-tl__card" x="152" y="84" width="76" height="58" rx="4" />
+                    <g class="art-tl__mini">
+                      <rect x="164" y="96" width="9" height="9" />
+                      <rect x="176" y="96" width="9" height="9" />
+                      <rect x="188" y="96" width="9" height="9" />
+                      <rect x="164" y="108" width="9" height="9" />
+                      <rect x="176" y="108" width="9" height="9" />
+                      <rect x="188" y="108" width="9" height="9" />
+                      <rect class="is-on" x="164" y="120" width="9" height="9" />
+                      <rect class="is-on" x="176" y="120" width="9" height="9" />
+                      <rect class="is-on" x="188" y="120" width="9" height="9" />
+                    </g>
+                    <circle class="art-tl__mo" cx="214" cy="113" r="7" />
+                    <path class="art-tl__strike" d="M205 122L223 104" />
+                  </svg>
+                </span>
+                <span class="leaf__body">
+                  <span class="leaf__index">第二开</span>
+                  <span class="leaf__title">推理</span>
+                  <span class="leaf__latin">Clue Grid · 线索九宫格</span>
+                  <span class="leaf__desc">读懂几条线索，把九块棋子放到唯一正确的位置。会提示，也会问你“为什么”。</span>
+                  <span class="leaf__tags">
+                    <span>每日一题</span><span>四档难度</span><span>说理由</span>
+                  </span>
+                  <span class="leaf__cta">开始推理<span aria-hidden="true">→</span></span>
+                </span>
+                <span class="leaf__resume" data-resume hidden>未完</span>
+              </a>
             </div>
           </section>
 
@@ -243,7 +296,7 @@
                   </svg>
                 </span>
                 <span class="leaf__body">
-                  <span class="leaf__index">第二开</span>
+                  <span class="leaf__index">第三开</span>
                   <span class="leaf__title">象棋</span>
                   <span class="leaf__latin">Xiangqi · 楚河汉界</span>
                   <span class="leaf__desc">马走日，象走田，炮要隔子打。点一下棋子，能走的位置会亮出来。</span>
@@ -276,7 +329,7 @@
                   </svg>
                 </span>
                 <span class="leaf__body">
-                  <span class="leaf__index">第三开</span>
+                  <span class="leaf__index">第四开</span>
                   <span class="leaf__title">国际象棋</span>
                   <span class="leaf__latin">Chess · 王车易位</span>
                   <span class="leaf__desc">六种棋子，各走各的路。王车易位、吃过路兵、兵升变都按正式规则来。</span>
@@ -318,7 +371,7 @@
                   </svg>
                 </span>
                 <span class="leaf__body">
-                  <span class="leaf__index">第四开</span>
+                  <span class="leaf__index">第五开</span>
                   <span class="leaf__title">围棋</span>
                   <span class="leaf__latin">Go · 黑白之间</span>
                   <span class="leaf__desc">轮流落子，没有气的棋子会被提走。先从 9 路小棋盘开始，终局自动数子。</span>
@@ -331,6 +384,13 @@
               </a>
             </div>
           </section>
+
+          <div class="leaf leaf--blank leaf--strip" aria-label="待续：更多推理题">
+            <span class="leaf__index">第六开 · 待续</span>
+            <span class="leaf__title">空白一开</span>
+            <span class="leaf__desc">留给下一种游戏：数织、华容道、一笔画……</span>
+            <span class="leaf__blank-seal" aria-hidden="true">待续</span>
+          </div>
         </section>
 
         <section class="parents" aria-labelledby="parents-title">

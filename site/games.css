@@ -1700,3 +1700,609 @@
     box-shadow: inset 0 0 0 1px rgba(70, 50, 24, 0.35);
   }
 }
+
+/* 线索九宫格：盘面与全部线索并排，像桌游里摊在托盘旁的线索卡 */
+
+.game-page--tuili .game-room {
+  grid-template-areas:
+    "head"
+    "stage"
+    "pad"
+    "status"
+    "clues";
+}
+
+.game-page--tuili .board-frame--game {
+  width: min(88%, 340px);
+}
+
+.clue-panel {
+  display: flex;
+  grid-area: clues;
+  flex-direction: column;
+  min-height: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--rail-line);
+}
+
+.tl-board {
+  display: grid;
+  gap: clamp(5px, 1.2vw, 12px);
+  aspect-ratio: 1;
+  padding: 4.5%;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255, 252, 240, 0.7), transparent 60%),
+    linear-gradient(150deg, #efe4cc, #e2d3b2);
+}
+
+.tl-board[data-size="3"] {
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.tl-board[data-size="4"] {
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+}
+
+.tl-board .board-row {
+  gap: clamp(5px, 1.2vw, 12px);
+}
+
+.tl-board[data-size="3"] .board-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tl-board[data-size="4"] .board-row {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tl-cell {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(92, 70, 40, 0.35);
+  border-radius: 8px;
+  background: rgba(250, 245, 233, 0.6);
+  box-shadow: inset 0 2px 6px rgba(92, 70, 40, 0.16);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.tl-cell.is-focus {
+  border-color: rgba(11, 101, 117, 0.55);
+  background: rgba(11, 101, 117, 0.1);
+}
+
+.tl-cell.is-bad {
+  box-shadow: inset 0 0 0 3px rgba(162, 58, 42, 0.7);
+}
+
+.tl-cell.is-wrong {
+  background: rgba(162, 58, 42, 0.12);
+  box-shadow: inset 0 0 0 3px var(--cinnabar);
+}
+
+.tl-cell.is-selected {
+  z-index: 1;
+  outline: 3px solid var(--cinnabar);
+  outline-offset: 2px;
+}
+
+.tl-cell.is-hint {
+  z-index: 1;
+  outline: 3px dashed var(--focus);
+  outline-offset: 2px;
+}
+
+.tl-cell:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.tl-tile {
+  display: grid;
+  width: 80%;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(80, 60, 30, 0.35);
+  border-radius: 18%;
+  background: radial-gradient(circle at 32% 26%, #fffdf6 0%, #f6efdf 55%, #e6dac0 100%);
+  box-shadow:
+    0 3px 0 #cdbb94,
+    0 6px 12px rgba(52, 33, 12, 0.22);
+}
+
+.tl-tile .tl-shape {
+  width: 60%;
+  height: 60%;
+}
+
+.tl-tile--mini {
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 #cdbb94;
+}
+
+.tl-color-0 {
+  fill: #b0352a;
+}
+
+.tl-color-1 {
+  fill: #1f2422;
+}
+
+.tl-color-2 {
+  fill: #2f6f68;
+}
+
+.tl-color-3 {
+  fill: #b8862b;
+}
+
+.tl-bg-0 {
+  background: #b0352a;
+}
+
+.tl-bg-1 {
+  background: #1f2422;
+}
+
+.tl-bg-2 {
+  background: #2f6f68;
+}
+
+.tl-bg-3 {
+  background: #b8862b;
+}
+
+.tl-outline {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 9;
+}
+
+.tl-notes {
+  position: absolute;
+  inset: 9%;
+  display: grid;
+  gap: 6%;
+}
+
+.tl-notes--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.tl-notes--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+}
+
+.tl-notes span {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+}
+
+.tl-notes .tl-shape {
+  width: 74%;
+  height: 74%;
+}
+
+.clue.is-ok {
+  border-color: rgba(47, 111, 104, 0.55);
+  background: rgba(47, 111, 104, 0.06);
+}
+
+.clue.is-bad {
+  border-color: rgba(162, 58, 42, 0.6);
+  background: rgba(162, 58, 42, 0.07);
+}
+
+.clue.is-hint {
+  border-style: dashed;
+  border-color: var(--focus);
+}
+
+.clue.is-focus {
+  box-shadow: 0 0 0 2px rgba(11, 101, 117, 0.35);
+}
+
+.clue__text {
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.clue__badge {
+  color: var(--line);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.clue.is-ok .clue__badge {
+  color: #2f6f68;
+}
+
+.clue.is-bad .clue__badge {
+  color: var(--cinnabar);
+}
+
+.tl-mini-grid i.on {
+  border-color: var(--cinnabar);
+  background: rgba(176, 53, 42, 0.18);
+}
+
+.tl-swatch {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tl-attr.is-crossed::after {
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(45deg, transparent 44%, var(--cinnabar) 44%, var(--cinnabar) 56%, transparent 56%);
+  content: "";
+}
+
+.tl-art-label {
+  color: var(--muted);
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.tl-tray__tile {
+  display: grid;
+  min-width: 0;
+  min-height: 44px;
+  padding: 3px;
+  place-items: center;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tl-tray__tile.is-used {
+  opacity: 0.28;
+}
+
+.tl-tray__tile.is-current {
+  border-color: var(--cinnabar);
+}
+
+.tl-tray__tile.is-noted {
+  border-color: var(--focus);
+  background: rgba(11, 101, 117, 0.08);
+}
+
+.tl-tray__tile.is-focus .tl-tile {
+  box-shadow:
+    0 0 0 3px rgba(11, 101, 117, 0.35),
+    0 3px 0 #cdbb94;
+}
+
+.hint-steps {
+  display: flex;
+  gap: 4px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hint-steps[hidden] {
+  display: none;
+}
+
+.hint-steps li {
+  flex: 1;
+  padding: 3px 0;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+.hint-steps li.done {
+  border-color: var(--focus);
+  color: var(--focus);
+  background: rgba(11, 101, 117, 0.06);
+}
+
+.reason-question {
+  margin: 14px 0 10px;
+  font-family: var(--font-song);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.reason-chips {
+  display: grid;
+  gap: 6px;
+}
+
+.reason-chip {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.reason-chip[aria-pressed="true"] {
+  border-color: var(--cinnabar);
+  color: #fffaf0;
+  background: var(--cinnabar);
+}
+
+.reason-result {
+  min-height: 1.7em;
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.reason-result.is-good {
+  color: #2f6f68;
+  font-weight: 700;
+}
+
+.sheet__actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.clue-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  align-content: start;
+  gap: 8px;
+  min-height: 0;
+  margin: 0;
+  padding: 2px 4px 2px 0;
+  overflow-y: auto;
+  list-style: none;
+  overscroll-behavior: contain;
+}
+
+.clue-list li {
+  display: flex;
+}
+
+.clue {
+  display: grid;
+  grid-template-areas:
+    "num art badge"
+    "text text text";
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 8px;
+  width: 100%;
+  padding: 10px 10px 9px;
+  border: 1px solid var(--rail-line);
+  color: var(--ink);
+  background: rgba(251, 248, 241, 0.75);
+  text-align: left;
+  cursor: pointer;
+}
+
+.clue__num {
+  grid-area: num;
+  align-self: start;
+  color: var(--cinnabar);
+  font-family: var(--font-song);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.clue__art {
+  display: flex;
+  grid-area: art;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 66px;
+}
+
+.clue__text {
+  grid-area: text;
+}
+
+.clue__badge {
+  grid-area: badge;
+  align-self: start;
+}
+
+.tl-mini-grid {
+  display: grid;
+  gap: 2px;
+}
+
+.tl-mini-grid--3 {
+  grid-template-columns: repeat(3, 20px);
+  grid-template-rows: repeat(3, 20px);
+}
+
+.tl-mini-grid--4 {
+  grid-template-columns: repeat(4, 15px);
+  grid-template-rows: repeat(4, 15px);
+}
+
+.tl-mini-grid i {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(92, 70, 40, 0.3);
+  border-radius: 3px;
+  background: #f6efdf;
+}
+
+.tl-mini-grid .tl-attr {
+  width: 72%;
+  height: 72%;
+}
+
+.tl-attr {
+  position: relative;
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+}
+
+.tl-attr .tl-shape {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tl-mini-pair {
+  display: grid;
+  align-items: center;
+  gap: 3px;
+}
+
+.tl-mini-pair--h {
+  grid-auto-columns: 30px;
+  grid-auto-flow: column;
+}
+
+.tl-mini-pair--v {
+  grid-template-rows: 28px 28px;
+  width: 28px;
+}
+
+.tl-mini-pair--loose {
+  grid-auto-columns: auto;
+  gap: 6px;
+}
+
+.tl-mini-pair--loose .tl-tile--mini {
+  width: 26px;
+}
+
+.tl-tray {
+  display: grid;
+  gap: 4px;
+}
+
+.tl-tray[data-size="3"] {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+
+.tl-tray[data-size="4"] {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.tl-tray__tile .tl-tile {
+  width: 100%;
+  max-width: 48px;
+}
+
+.game-page--tuili .tool-row {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 6px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.game-page--tuili .tool-row button {
+  min-height: 56px;
+  padding-block: 4px;
+}
+
+@media (min-width: 700px) and (min-aspect-ratio: 1/1) and (min-height: 430px) {
+  .game-page--tuili .game-room {
+    grid-template-columns: minmax(300px, 0.95fr) minmax(0, 1.05fr);
+    grid-template-rows: auto auto auto auto minmax(0, 1fr);
+    grid-template-areas:
+      "head head"
+      "stage clues"
+      "pad clues"
+      "status clues"
+      ". clues";
+    column-gap: clamp(20px, 3vw, 44px);
+    row-gap: 12px;
+  }
+
+  .game-page--tuili .game-room::before {
+    grid-row: 2 / -1;
+  }
+
+  .game-page--tuili .game-bar {
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "home brand meta tools";
+    gap: 18px;
+    margin: 0;
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--rail-line);
+  }
+
+  .game-page--tuili .game-bar > .brand {
+    gap: 10px;
+  }
+
+  .game-page--tuili .game-bar .brand__seal {
+    width: 36px;
+    height: 36px;
+    font-size: 11px;
+  }
+
+  .game-page--tuili .game-bar .brand__name {
+    font-size: 22px;
+  }
+
+  .game-page--tuili .game-bar__meta {
+    margin: 0;
+  }
+
+  .game-page--tuili .stage {
+    height: auto;
+    container: stage / inline-size;
+  }
+
+  .game-page--tuili .board-frame--game {
+    width: min(100%, 440px, calc(100vh - 350px));
+    width: min(100%, 440px, calc(100dvh - 350px));
+  }
+
+  .game-page--tuili[data-size="4"] .board-frame--game {
+    width: min(100%, 440px, calc(100vh - 410px));
+    width: min(100%, 440px, calc(100dvh - 410px));
+  }
+
+  .game-page--tuili .room-status,
+  .game-page--tuili .input-section {
+    padding: 0;
+    border-top: 0;
+  }
+
+  .game-page--tuili .input-section {
+    width: min(100%, 440px);
+    justify-self: center;
+  }
+
+  .game-page--tuili .room-status {
+    width: min(100%, 440px);
+    justify-self: center;
+  }
+
+  .game-page--tuili .clue-panel {
+    padding: 0;
+    border-top: 0;
+  }
+
+  .game-page--tuili .clue-list {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}

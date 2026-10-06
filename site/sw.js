@@ -1,12 +1,13 @@
 const CACHE_PREFIX = "sudoku-practice-";
-const CACHE_VERSION = "2026-10-06-1";
+const CACHE_VERSION = "2026-10-06-2";
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const APP_ROOT_URL = new URL(self.registration.scope).href;
 const NOT_FOUND_URL = new URL("./404.html", APP_ROOT_URL).href;
-const PAGE_PATHS = Object.freeze(["./", "./sudoku/", "./xiangqi/", "./chess/", "./go/"]);
+const PAGE_PATHS = Object.freeze(["./", "./sudoku/", "./tuili/", "./xiangqi/", "./chess/", "./go/"]);
 const SHELL_PATHS = Object.freeze([
   "./index.html",
   "./sudoku/index.html",
+  "./tuili/index.html",
   "./xiangqi/index.html",
   "./chess/index.html",
   "./go/index.html",
@@ -21,6 +22,9 @@ const SHELL_PATHS = Object.freeze([
   "./js/storage.js",
   "./js/sudoku.js",
   "./js/game-kit.js",
+  "./js/tuili.js",
+  "./js/tuili-puzzles.js",
+  "./js/tuili-app.js",
   "./js/ai-worker.js",
   "./js/xiangqi.js",
   "./js/xiangqi-app.js",

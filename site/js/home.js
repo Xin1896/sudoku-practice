@@ -2,6 +2,7 @@ import { registerServiceWorker } from "./pwa.js";
 
 const SAVE_KEYS = Object.freeze({
   sudoku: "sudoku-practice:v1",
+  tuili: "yike-tuili:v1",
   xiangqi: "yike-xiangqi:v1",
   chess: "yike-chess:v1",
   go: "yike-go:v1",

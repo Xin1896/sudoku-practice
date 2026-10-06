@@ -428,7 +428,7 @@ test("每个页面入口和版本耦合资源只读当前应用壳，避免跨�
   assert.match(serviceWorker, /const APP_ROOT_URL\s*=/);
   assert.match(serviceWorker, /const NOT_FOUND_URL\s*=/);
   assert.match(serviceWorker, /const PAGE_PATHS\s*=\s*Object\.freeze\(/);
-  for (const page of ["./", "./sudoku/", "./xiangqi/", "./chess/", "./go/"]) {
+  for (const page of ["./", "./sudoku/", "./tuili/", "./xiangqi/", "./chess/", "./go/"]) {
     assert.match(serviceWorker, new RegExp(`["']${page.replaceAll(".", "\\.")}["']`));
   }
   assert.match(serviceWorker, /function entryDocumentFor\(/);

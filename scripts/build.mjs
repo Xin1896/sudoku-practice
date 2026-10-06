@@ -25,6 +25,9 @@ const requiredFiles = [
   "js/pwa.js",
   "js/storage.js",
   "js/sudoku.js",
+  "js/tuili-app.js",
+  "js/tuili-puzzles.js",
+  "js/tuili.js",
   "js/xiangqi-app.js",
   "js/xiangqi.js",
   "manifest.webmanifest",
@@ -33,6 +36,7 @@ const requiredFiles = [
   "styles.css",
   "sudoku/index.html",
   "sw.js",
+  "tuili/index.html",
   "xiangqi/index.html",
 ];
 

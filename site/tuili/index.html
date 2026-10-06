@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f2ecdf" />
+    <meta
+      name="description"
+      content="一刻游艺·推理（线索九宫格）：读懂几条图文线索，把九块棋子放到唯一正确的位置。分级提示、说理由，适合孩子练习有条理地推理。"
+    />
+    <title>推理｜一刻游艺</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/games.css" />
+  </head>
+  <body class="game-page game-page--tuili">
+    <svg class="visually-hidden" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="shape-0" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" /></symbol>
+        <symbol id="shape-1" viewBox="0 0 100 100"><rect x="14" y="14" width="72" height="72" rx="7" /></symbol>
+        <symbol id="shape-2" viewBox="0 0 100 100"><path d="M50 9L93 87H7Z" /></symbol>
+        <symbol id="shape-3" viewBox="0 0 100 100"><path d="M50 6L94 50L50 94L6 50Z" /></symbol>
+      </defs>
+    </svg>
+
+    <div class="page-shell game-shell">
+      <main class="game-room">
+        <header class="game-bar">
+          <a class="home-link" href="/">
+            <span class="home-link__arrow" aria-hidden="true">←</span>
+            <span>返回首页</span>
+          </a>
+          <a class="brand" href="/tuili/">
+            <span class="brand__seal" aria-hidden="true">推理</span>
+            <span>
+              <span class="brand__eyebrow">一刻游艺 · 第二开</span>
+              <span class="brand__name">推理</span>
+            </span>
+          </a>
+          <p class="game-bar__meta" id="puzzle-meta">线索九宫格 · 启蒙</p>
+          <div class="game-bar__tools">
+            <button class="bar-button" type="button" data-open="rules-panel" aria-haspopup="dialog">玩法</button>
+            <button class="bar-button" type="button" data-open="settings-panel" aria-haspopup="dialog">新题</button>
+          </div>
+        </header>
+
+        <section class="stage" aria-labelledby="game-title">
+          <h1 class="stage__inscription" id="game-title">读懂线索　步步排除</h1>
+          <div class="board-frame board-frame--game">
+            <span class="board-frame__corner board-frame__corner--top" aria-hidden="true"></span>
+            <div
+              class="tl-board"
+              id="board"
+              role="grid"
+              aria-label="推理棋盘"
+              aria-describedby="board-help"
+            ></div>
+            <span class="board-frame__corner board-frame__corner--bottom" aria-hidden="true"></span>
+          </div>
+        </section>
+
+        <div class="room-status">
+          <p class="status-line" id="status-message" aria-live="polite" aria-atomic="true">
+            <span class="status-line__mark" aria-hidden="true">·</span>
+            <span id="status-text">正在摆题……</span>
+          </p>
+          <ol class="hint-steps" id="hint-steps" aria-label="提示进度" hidden>
+            <li>看哪里</li>
+            <li>想什么</li>
+            <li>哪一格</li>
+            <li>答案</li>
+          </ol>
+          <p class="visually-hidden" id="board-help">
+            方向键移动，数字键从托盘里按顺序选棋子；N 切换候选，Delete 擦除，U 撤销，H 提示。
+          </p>
+        </div>
+
+        <section class="clue-panel" aria-labelledby="clue-title">
+          <div class="record__heading">
+            <h2 id="clue-title">线索</h2>
+            <span id="clue-count">0 / 0 成立</span>
+          </div>
+          <ol class="clue-list" id="clue-list"></ol>
+        </section>
+
+        <section class="input-section" aria-labelledby="tray-title">
+          <h2 class="rail-label" id="tray-title">棋子 · 每块只用一次</h2>
+          <div class="tl-tray" id="tray" role="group" aria-labelledby="tray-title"></div>
+          <div class="tool-row tl-tools" role="group" aria-label="辅助工具">
+            <button type="button" data-action="note" aria-pressed="false">
+              <span aria-hidden="true">铅</span><strong>候选</strong>
+            </button>
+            <button type="button" data-action="erase">
+              <span aria-hidden="true">净</span><strong>擦除</strong>
+            </button>
+            <button type="button" data-action="undo">
+              <span aria-hidden="true">回</span><strong>撤销</strong>
+            </button>
+            <button type="button" data-action="hint">
+              <span aria-hidden="true">启</span><strong>提示</strong>
+            </button>
+            <button type="button" data-action="reason" aria-haspopup="dialog">
+              <span aria-hidden="true">理</span><strong>说理由</strong>
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>无账号 · 无广告 · 无外部资源</p>
+        <p><a class="footer-link" href="/">回到一刻游艺首页</a></p>
+        <p>每一步，都说得出道理。</p>
+      </footer>
+    </div>
+
+    <dialog class="sheet" id="settings-panel" aria-labelledby="settings-title">
+      <div class="sheet__paper">
+        <div class="sheet__heading">
+          <h2 id="settings-title">选一道题</h2>
+          <button class="sheet__close" type="button" data-close>完成</button>
+        </div>
+        <div class="setting-row">
+          <p class="setting-row__label" id="level-label">难度</p>
+          <div class="choice-row" role="radiogroup" aria-labelledby="level-label" data-setting="level">
+            <button type="button" role="radio" data-value="1" aria-checked="true" tabindex="0">
+              <strong>启蒙</strong><small>直接线索</small>
+            </button>
+            <button type="button" role="radio" data-value="2" aria-checked="false" tabindex="-1">
+              <strong>入门</strong><small>相邻关系</small>
+            </button>
+            <button type="button" role="radio" data-value="3" aria-checked="false" tabindex="-1">
+              <strong>进阶</strong><small>整行规则</small>
+            </button>
+            <button type="button" role="radio" data-value="4" aria-checked="false" tabindex="-1">
+              <strong>挑战</strong><small>四乘四</small>
+            </button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <p class="setting-row__label" id="mode-label">题目</p>
+          <div class="choice-row" role="radiogroup" aria-labelledby="mode-label" data-setting="mode">
+            <button type="button" role="radio" data-value="daily" aria-checked="true" tabindex="0">
+              <strong>今日推理</strong><small>每天一题</small>
+            </button>
+            <button type="button" role="radio" data-value="practice" aria-checked="false" tabindex="-1">
+              <strong>练习</strong><small>挑没做过的</small>
+            </button>
+          </div>
+        </div>
+        <p class="sheet__note">每天一题、不计时，做完就好。四档难度按“要同时想几条线索”来分：启蒙看一条就能放，挑战要把三四条线索放在一起想。</p>
+        <div class="sheet__actions">
+          <button class="paper-button paper-button--primary" type="button" data-action="new-puzzle" data-close>
+            开始这道题
+          </button>
+          <button class="paper-button" type="button" data-action="restart" data-close>重做本题</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="sheet sheet--rules" id="rules-panel" aria-labelledby="rules-title">
+      <div class="sheet__paper">
+        <div class="sheet__heading">
+          <h2 id="rules-title">玩法</h2>
+          <button class="sheet__close" type="button" data-close>知道了</button>
+        </div>
+        <dl class="rules-list">
+          <div><dt>目标</dt><dd>托盘里每块棋子颜色、形状都不一样。把它们全部放进棋盘，让每一条线索都成立。答案只有一种。</dd></div>
+          <div><dt>放子</dt><dd>先点棋盘上的一格，再点托盘里的棋子。放错了可以擦除、撤销，或者直接换一块。</dd></div>
+          <div><dt>线索</dt><dd>线索成立会打 ✓，被打破会打 ✕。点一条线索，棋盘上相关的格子会亮起来。</dd></div>
+          <div><dt>候选</dt><dd>打开“候选”后点棋子，是在格子里记笔记：这里可能是哪几块。</dd></div>
+          <div><dt>提示</dt><dd>提示分四步：看哪里、想什么、哪一格、答案。能自己想出来，就别急着点到最后一步。</dd></div>
+          <div><dt>说理由</dt><dd>放好一块后点“说理由”，选出你用了哪几条线索，看看这些线索够不够推出这一格。</dd></div>
+        </dl>
+        <p class="sheet__note">键盘：方向键移动，数字键按托盘顺序选棋子，N 候选，Delete 擦除，U 撤销，H 提示。</p>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="reason-panel" aria-labelledby="reason-title">
+      <div class="sheet__paper">
+        <div class="sheet__heading">
+          <h2 id="reason-title">说理由</h2>
+          <button class="sheet__close" type="button" data-close>关闭</button>
+        </div>
+        <p class="reason-question" id="reason-question">你是根据哪几条线索放的？</p>
+        <div class="reason-chips" id="reason-chips" role="group" aria-labelledby="reason-question"></div>
+        <p class="reason-result" id="reason-result" aria-live="polite"></p>
+        <button class="paper-button paper-button--primary sheet__action" type="button" data-action="check-reason">
+          就是这几条
+        </button>
+      </div>
+    </dialog>
+
+    <dialog class="completion-panel" id="result-panel" aria-labelledby="result-title">
+      <div class="completion-panel__paper">
+        <span class="completion-panel__seal" id="result-seal" aria-hidden="true">解开</span>
+        <p class="section-mark">本题收笔</p>
+        <h2 id="result-title">推理完成</h2>
+        <p id="result-summary">每一条线索都成立了。</p>
+        <div class="result-panel__actions">
+          <button class="paper-button paper-button--primary" type="button" data-action="next-puzzle">再来一题</button>
+          <button class="paper-button paper-button--quiet" type="button" data-action="review">看看棋盘</button>
+        </div>
+      </div>
+    </dialog>
+
+    <noscript>需要启用浏览器中的 JavaScript 才能开始推理。</noscript>
+    <script type="module" src="/js/tuili-app.js"></script>
+  </body>
+</html>

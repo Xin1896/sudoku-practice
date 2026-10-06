@@ -1,0 +1,1050 @@
+/* 棋类页面共用：布局、设置、棋谱、规则卡与结果面板 */
+
+.play-layout {
+  display: grid;
+  gap: clamp(24px, 5vw, 48px);
+  padding: clamp(20px, 5vw, 50px) clamp(12px, 4vw, 42px) clamp(28px, 5vw, 54px);
+}
+
+.play-sheet,
+.play-layout .control-sheet {
+  min-width: 0;
+}
+
+.play-sheet {
+  width: 100%;
+  max-width: max(300px, var(--sheet-limit));
+  margin-inline: auto;
+}
+
+.game-page--xiangqi {
+  --sheet-limit: calc((100vh - 360px) * 0.9 + 18px);
+  --sheet-limit: calc((100dvh - 360px) * 0.9 + 18px);
+}
+
+.game-page--chess,
+.game-page--go {
+  --sheet-limit: calc(100vh - 320px);
+  --sheet-limit: calc(100dvh - 320px);
+}
+
+.play-sheet .game-heading {
+  margin-bottom: 14px;
+}
+
+.play-sheet .game-heading h1 {
+  max-width: 14em;
+}
+
+.turn-stamp {
+  flex: 0 0 auto;
+  min-width: 34px;
+  padding: 7px 7px;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: center;
+  writing-mode: vertical-rl;
+}
+
+.turn-stamp[data-side="red"] {
+  border-color: var(--cinnabar);
+  color: var(--cinnabar);
+}
+
+.turn-stamp[data-side="light"] {
+  border-color: #8a8270;
+  color: #5f5847;
+  background: #fffdf6;
+}
+
+.turn-stamp[data-side="dark"] {
+  border-color: var(--ink);
+  color: #f6f1e6;
+  background: var(--ink);
+}
+
+.player-strip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 40px;
+  padding: 6px 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.player-strip strong {
+  color: var(--ink);
+  font-family: var(--font-song);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+}
+
+.player-strip__mark {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.player-strip__mark[data-side="red"] {
+  color: #b0352a;
+  background: #b0352a;
+}
+
+.player-strip__mark[data-side="black"],
+.player-strip__mark[data-side="dark"] {
+  color: #1f2422;
+  background: #1f2422;
+}
+
+.player-strip__mark[data-side="light"] {
+  color: #6f6858;
+  background: #fffdf6;
+}
+
+.player-strip__who {
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.player-strip.is-active strong {
+  color: var(--cinnabar-dark);
+}
+
+.player-strip.is-active .player-strip__who {
+  border-color: var(--cinnabar);
+  color: var(--cinnabar-dark);
+}
+
+.player-strip__thinking {
+  display: none;
+  color: var(--cinnabar-dark);
+  font-family: var(--font-song);
+  letter-spacing: 0.1em;
+}
+
+.player-strip.is-thinking .player-strip__thinking {
+  display: inline;
+}
+
+.player-strip__thinking::after {
+  display: inline-block;
+  width: 1.4em;
+  overflow: hidden;
+  content: "……";
+  vertical-align: bottom;
+  animation: thinking-dots 1.2s steps(3, end) infinite;
+}
+
+.player-strip__captures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-left: auto;
+  font-family: var(--font-kai);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.player-strip__captures:empty {
+  display: none;
+}
+
+.capture-chip {
+  display: inline-grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: #f7ecd2;
+  font-weight: 700;
+}
+
+.capture-chip--red {
+  color: #b0352a;
+}
+
+.capture-chip--black {
+  color: #1f2422;
+}
+
+.capture-count {
+  color: var(--ink-blue);
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.board-frame--game {
+  padding: 8px;
+}
+
+.play-layout .control-section .choice-row + .choice-row {
+  margin-top: 8px;
+}
+
+.choice-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.choice-row button {
+  min-width: 44px;
+  min-height: 52px;
+  padding: 7px 4px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+}
+
+.choice-row button[aria-checked="true"] {
+  border-color: var(--cinnabar);
+  color: var(--cinnabar-dark);
+  background: rgba(162, 58, 42, 0.07);
+  box-shadow: inset 0 -3px 0 var(--cinnabar);
+}
+
+.choice-row strong,
+.choice-row small {
+  display: block;
+}
+
+.choice-row strong {
+  font-family: var(--font-song);
+  font-size: 15px;
+}
+
+.choice-row small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.choice-label {
+  margin: 12px 0 7px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.choice-label:first-of-type {
+  margin-top: 0;
+}
+
+.play-layout .game-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.play-layout .game-actions .paper-button--primary {
+  grid-column: 1 / -1;
+}
+
+.paper-button[aria-pressed="true"] {
+  border-color: var(--cinnabar);
+  color: var(--cinnabar-dark);
+  background: rgba(162, 58, 42, 0.07);
+}
+
+.move-record {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 3px 10px;
+  max-height: 176px;
+  margin: 0;
+  padding: 2px 4px 2px 0;
+  overflow-y: auto;
+  font-family: var(--font-song);
+  font-size: 14px;
+  list-style: none;
+  overscroll-behavior: contain;
+}
+
+.move-record li {
+  display: contents;
+}
+
+.move-record__number {
+  color: var(--muted);
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  font-size: 11px;
+  line-height: 1.9;
+  text-align: right;
+}
+
+.move-record__move {
+  padding: 1px 4px;
+  line-height: 1.6;
+}
+
+.move-record__move.is-latest {
+  color: var(--cinnabar-dark);
+  background: rgba(162, 58, 42, 0.08);
+  font-weight: 700;
+}
+
+.move-record--go {
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 3px 8px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.move-record--go .move-record__move {
+  white-space: nowrap;
+}
+
+.move-record__empty {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.rules-card {
+  margin-top: 4px;
+  border-top: 1px solid var(--line);
+}
+
+.rules-card summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 10px 0;
+  font-family: var(--font-song);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  cursor: pointer;
+  list-style: none;
+}
+
+.rules-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.rules-card summary::after {
+  color: var(--cinnabar);
+  content: "展开";
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+
+.rules-card[open] summary::after {
+  content: "收起";
+}
+
+.rules-card dl {
+  display: grid;
+  gap: 9px;
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.rules-card dl div {
+  display: grid;
+  grid-template-columns: 3.4em minmax(0, 1fr);
+  gap: 8px;
+}
+
+.rules-card dt {
+  color: var(--cinnabar-dark);
+  font-family: var(--font-song);
+  font-weight: 700;
+}
+
+.rules-card dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+.rules-card p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.result-panel__actions {
+  display: grid;
+  gap: 8px;
+}
+
+.board-help {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* 棋盘格子按钮（三种棋共用） */
+
+.board-cell {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.board-cell:focus-visible {
+  z-index: 3;
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
+
+.board-cell:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.board-row {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 象棋 */
+
+.xq-board {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 10;
+  container-type: inline-size;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255, 249, 230, 0.55), transparent 55%),
+    linear-gradient(160deg, #efdcb2, #e4c992);
+}
+
+.xq-board__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.xq-board__lines .grid {
+  fill: none;
+  stroke: rgba(92, 64, 31, 0.9);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.xq-board__lines .frame {
+  fill: none;
+  stroke: rgba(92, 64, 31, 0.95);
+  stroke-width: 2.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.xq-board__lines .marks {
+  fill: none;
+  stroke: rgba(92, 64, 31, 0.8);
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+}
+
+.xq-board__lines .river {
+  fill: rgba(92, 64, 31, 0.78);
+  font-family: var(--font-kai);
+  font-size: 54px;
+  font-weight: 700;
+  letter-spacing: 34px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.xq-board__cells {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+}
+
+.xq-board__cells .board-row {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+
+.xq-piece {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 88%;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1.5px solid #8b6a3d;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #fffaf0 0%, #f4e4c3 52%, #dcc196 100%);
+  box-shadow:
+    inset 0 0 0 3px #f7ebd2,
+    inset 0 0 0 4.5px currentColor,
+    0 2px 0 #b2915f,
+    0 4px 7px rgba(52, 33, 12, 0.28);
+  font-family: var(--font-kai);
+  font-size: clamp(15px, 5.4vw, 30px);
+  font-size: 5.6cqi;
+  font-weight: 800;
+  line-height: 1;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.xq-piece--red {
+  color: #b0352a;
+}
+
+.xq-piece--black {
+  color: #1f2422;
+}
+
+.board-cell.is-selected .xq-piece {
+  box-shadow:
+    inset 0 0 0 3px #f7ebd2,
+    inset 0 0 0 4.5px currentColor,
+    0 0 0 3px rgba(162, 58, 42, 0.85),
+    0 9px 14px rgba(52, 33, 12, 0.32);
+  transform: translateY(-3px) scale(1.06);
+}
+
+.board-cell.is-last-to .xq-piece {
+  box-shadow:
+    inset 0 0 0 3px #f7ebd2,
+    inset 0 0 0 4.5px currentColor,
+    0 0 0 2.5px rgba(25, 54, 77, 0.65),
+    0 4px 7px rgba(52, 33, 12, 0.28);
+}
+
+.board-cell.is-capture .xq-piece {
+  box-shadow:
+    inset 0 0 0 3px #f7ebd2,
+    inset 0 0 0 4.5px currentColor,
+    0 0 0 3px rgba(162, 58, 42, 0.9),
+    0 4px 7px rgba(52, 33, 12, 0.28);
+}
+
+.board-cell.is-checked .xq-piece {
+  animation: check-pulse 1100ms ease-in-out infinite;
+}
+
+/* 落点、上一步与提示标记（象棋、国际象棋共用） */
+
+.board-cell.is-target::after {
+  position: absolute;
+  z-index: 2;
+  width: 28%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(162, 58, 42, 0.62);
+  box-shadow: 0 0 0 3px rgba(251, 248, 241, 0.65);
+  content: "";
+  pointer-events: none;
+}
+
+.board-cell.is-capture::after {
+  display: none;
+}
+
+.board-cell.is-last-from::before {
+  position: absolute;
+  width: 46%;
+  aspect-ratio: 1;
+  border: 2px dashed rgba(25, 54, 77, 0.55);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.board-cell.is-hint-from::before,
+.board-cell.is-hint-to::before {
+  position: absolute;
+  z-index: 2;
+  width: 92%;
+  aspect-ratio: 1;
+  border: 3px dashed var(--focus);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+  animation: hint-turn 4s linear infinite;
+}
+
+/* 国际象棋 */
+
+.chess-board {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  container-type: inline-size;
+  border: 1.5px solid var(--line-strong);
+}
+
+.chess-board .board-row {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.chess-board .board-cell {
+  background: #efe6d3;
+}
+
+.chess-board .board-cell.is-dark {
+  background: #9eab9d;
+}
+
+.chess-board .board-cell.is-last-from,
+.chess-board .board-cell.is-last-to {
+  background: #e3d29b;
+}
+
+.chess-board .board-cell.is-dark.is-last-from,
+.chess-board .board-cell.is-dark.is-last-to {
+  background: #b9b678;
+}
+
+.chess-board .board-cell.is-last-from::before {
+  display: none;
+}
+
+.chess-board .board-cell.is-selected {
+  box-shadow: inset 0 0 0 3px var(--cinnabar);
+}
+
+.chess-board .board-cell.is-capture {
+  background-image: radial-gradient(circle, transparent 62%, rgba(162, 58, 42, 0.58) 64%);
+}
+
+.chess-board .board-cell.is-checked {
+  background-image: radial-gradient(circle, rgba(196, 47, 30, 0.85) 0%, rgba(196, 47, 30, 0.45) 40%, transparent 72%);
+}
+
+.chess-board .board-cell.is-hint-from::before,
+.chess-board .board-cell.is-hint-to::before {
+  width: 84%;
+  border-radius: 6px;
+}
+
+.chess-piece {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 92%;
+  height: 92%;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 1.5px rgba(30, 24, 16, 0.28));
+  transition: transform 160ms ease;
+}
+
+.chess-piece--w {
+  --piece-fill: #fbf7ee;
+  --piece-line: #1d211f;
+  --piece-detail: #1d211f;
+}
+
+.chess-piece--b {
+  --piece-fill: #1d211f;
+  --piece-line: #1d211f;
+  --piece-detail: #f1e9d8;
+}
+
+.piece-body {
+  fill: var(--piece-fill);
+  stroke: var(--piece-line);
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.piece-detail {
+  fill: none;
+  stroke: var(--piece-detail);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3.5;
+}
+
+.piece-dot {
+  fill: var(--piece-detail);
+}
+
+.board-cell.is-selected .chess-piece {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.coord {
+  position: absolute;
+  z-index: 1;
+  color: rgba(32, 39, 37, 0.55);
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  font-size: clamp(8px, 2.3vw, 11px);
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.coord--file {
+  right: 3px;
+  bottom: 2px;
+}
+
+.coord--rank {
+  top: 3px;
+  left: 3px;
+}
+
+.xq-files {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  color: rgba(92, 64, 31, 0.85);
+  font-family: var(--font-song);
+  font-size: clamp(10px, 2.8vw, 13px);
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.promotion-panel .completion-panel__paper {
+  width: min(100%, 380px);
+}
+
+.promotion-choices {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.promotion-choices button {
+  display: grid;
+  min-width: 44px;
+  min-height: 84px;
+  padding: 6px 2px;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: #efe6d3;
+  cursor: pointer;
+}
+
+.promotion-choices button svg {
+  width: 48px;
+  height: 48px;
+}
+
+.promotion-choices small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* 围棋 */
+
+.go-board {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  container-type: inline-size;
+  background:
+    radial-gradient(ellipse at 25% 20%, rgba(255, 244, 214, 0.5), transparent 60%),
+    linear-gradient(150deg, #e6c88f, #d8b371);
+}
+
+.go-board__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.go-board__lines .grid {
+  fill: none;
+  stroke: rgba(70, 50, 24, 0.85);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.go-board__lines .frame {
+  fill: none;
+  stroke: rgba(70, 50, 24, 0.95);
+  stroke-width: 1.8;
+  vector-effect: non-scaling-stroke;
+}
+
+.go-board__lines .star {
+  fill: rgba(70, 50, 24, 0.95);
+}
+
+.go-board__cells {
+  position: absolute;
+  inset: 0;
+  display: grid;
+}
+
+.go-stone {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 94%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.go-stone--black {
+  background: radial-gradient(circle at 35% 30%, #6e6f6b 0%, #2a2c2a 36%, #0b0c0b 100%);
+  box-shadow: 1px 2px 3px rgba(30, 20, 8, 0.45);
+}
+
+.go-stone--white {
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #f2ede2 52%, #c9c0ad 100%);
+  box-shadow: 1px 2px 3px rgba(30, 20, 8, 0.38);
+}
+
+.go-stone--ghost {
+  opacity: 0.45;
+}
+
+.board-cell.is-preview .go-stone--ghost {
+  opacity: 0.72;
+  outline: 2px dashed var(--cinnabar);
+  outline-offset: 2px;
+}
+
+.board-cell.is-last-to .go-stone::after {
+  position: absolute;
+  inset: 32%;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  content: "";
+}
+
+.go-stone--black {
+  color: rgba(255, 250, 238, 0.9);
+}
+
+.go-stone--white {
+  color: rgba(162, 58, 42, 0.9);
+}
+
+.board-cell.is-dead .go-stone {
+  opacity: 0.38;
+}
+
+.board-cell.is-dead .go-stone::before {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--cinnabar-dark);
+  content: "×";
+  font-family: var(--font-sans);
+  font-size: 70%;
+  font-weight: 800;
+}
+
+.territory {
+  position: absolute;
+  z-index: 2;
+  width: 30%;
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+.territory--black {
+  background: #1a1b1a;
+}
+
+.territory--white {
+  border: 1px solid #5c554a;
+  background: #fbf8f0;
+}
+
+.board-cell.is-hint-to::before {
+  width: 96%;
+}
+
+.go-score {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: rgba(251, 248, 241, 0.7);
+  font-size: 12px;
+}
+
+.go-score[hidden] {
+  display: none;
+}
+
+.go-score__totals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.go-score dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.go-score dd {
+  margin: 3px 0 0;
+  color: var(--ink-blue);
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.go-score__note {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.go-score__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* 动效 */
+
+@keyframes check-pulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 3px #f7ebd2,
+      inset 0 0 0 4.5px currentColor,
+      0 0 0 2px rgba(196, 47, 30, 0.35),
+      0 4px 7px rgba(52, 33, 12, 0.28);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 0 0 3px #f7ebd2,
+      inset 0 0 0 4.5px currentColor,
+      0 0 0 6px rgba(196, 47, 30, 0.6),
+      0 4px 7px rgba(52, 33, 12, 0.28);
+  }
+}
+
+@keyframes hint-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes thinking-dots {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 1.4em;
+  }
+}
+
+@media (hover: hover) {
+  .choice-row button:hover {
+    border-color: var(--cinnabar);
+  }
+
+  .board-cell:not(:disabled):hover .xq-piece {
+    transform: translateY(-1px);
+  }
+
+  .chess-board .board-cell:not(:disabled):hover {
+    box-shadow: inset 0 0 0 2px rgba(162, 58, 42, 0.45);
+  }
+
+  .chess-board .board-cell.is-selected:hover {
+    box-shadow: inset 0 0 0 3px var(--cinnabar);
+  }
+}
+
+@media (min-width: 560px) {
+  .play-layout .game-actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .play-layout {
+    grid-template-columns: minmax(0, 620px) minmax(280px, 350px);
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .play-layout .game-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.go-board__cells[data-size="9"] {
+  grid-template-rows: repeat(9, minmax(0, 1fr));
+}
+
+.go-board__cells[data-size="9"] .board-row {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+
+.go-board__cells[data-size="13"] {
+  grid-template-rows: repeat(13, minmax(0, 1fr));
+}
+
+.go-board__cells[data-size="13"] .board-row {
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+}
+
+.go-board__cells[data-size="19"] {
+  grid-template-rows: repeat(19, minmax(0, 1fr));
+}
+
+.go-board__cells[data-size="19"] .board-row {
+  grid-template-columns: repeat(19, minmax(0, 1fr));
+}
+
+.capture-piece {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+@media (hover: hover) {
+  .go-board[data-interactive="true"] .board-cell.is-empty:not(.is-preview):hover::before {
+    position: absolute;
+    width: 88%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+  }
+
+  .go-board[data-interactive="true"][data-turn="black"] .board-cell.is-empty:not(.is-preview):hover::before {
+    background: rgba(17, 18, 17, 0.32);
+  }
+
+  .go-board[data-interactive="true"][data-turn="white"] .board-cell.is-empty:not(.is-preview):hover::before {
+    background: rgba(255, 253, 246, 0.7);
+    box-shadow: inset 0 0 0 1px rgba(70, 50, 24, 0.35);
+  }
+}

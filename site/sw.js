@@ -1,23 +1,43 @@
 const CACHE_PREFIX = "sudoku-practice-";
-const CACHE_VERSION = "2026-08-03-2";
+const CACHE_VERSION = "2026-10-06-1";
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const APP_ROOT_URL = new URL(self.registration.scope).href;
-const INDEX_URL = new URL("./index.html", APP_ROOT_URL).href;
 const NOT_FOUND_URL = new URL("./404.html", APP_ROOT_URL).href;
-const INDEX_PATHNAME = new URL(INDEX_URL).pathname;
-const APP_ROOT_PATHNAME = new URL(APP_ROOT_URL).pathname;
+const PAGE_PATHS = Object.freeze(["./", "./sudoku/", "./xiangqi/", "./chess/", "./go/"]);
 const SHELL_PATHS = Object.freeze([
   "./index.html",
+  "./sudoku/index.html",
+  "./xiangqi/index.html",
+  "./chess/index.html",
+  "./go/index.html",
   "./404.html",
   "./styles.css",
+  "./home.css",
+  "./games.css",
+  "./js/pwa.js",
+  "./js/home.js",
   "./js/app.js",
   "./js/puzzles.js",
   "./js/storage.js",
   "./js/sudoku.js",
+  "./js/game-kit.js",
+  "./js/ai-worker.js",
+  "./js/xiangqi.js",
+  "./js/xiangqi-app.js",
+  "./js/chess.js",
+  "./js/chess-app.js",
+  "./js/go.js",
+  "./js/go-app.js",
   "./manifest.webmanifest",
   "./icon-192.png",
 ]);
 const SHELL_URLS = new Set(SHELL_PATHS.map((path) => new URL(path, APP_ROOT_URL).href));
+const PAGE_DOCUMENTS = new Map(
+  PAGE_PATHS.map((path) => {
+    const pageUrl = new URL(path, APP_ROOT_URL);
+    return [pageUrl.pathname, new URL("./index.html", pageUrl).href];
+  }),
+);
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -44,8 +64,14 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-function isEntryNavigation(url) {
-  return url.pathname === APP_ROOT_PATHNAME || url.pathname === INDEX_PATHNAME;
+function entryDocumentFor(url) {
+  let { pathname } = url;
+  if (pathname.endsWith("/index.html")) {
+    pathname = pathname.slice(0, -"index.html".length);
+  } else if (!pathname.endsWith("/")) {
+    pathname = `${pathname}/`;
+  }
+  return PAGE_DOCUMENTS.get(pathname) ?? null;
 }
 
 async function serveCachedShell(url) {
@@ -70,8 +96,9 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
-    if (isEntryNavigation(url)) {
-      event.respondWith(serveCachedShell(INDEX_URL));
+    const entryDocument = entryDocumentFor(url);
+    if (entryDocument !== null) {
+      event.respondWith(serveCachedShell(entryDocument));
     } else {
       event.respondWith(networkFirstNonEntryNavigation(request));
     }

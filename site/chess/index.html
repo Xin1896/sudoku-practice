@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f2ecdf" />
+    <meta
+      name="description"
+      content="一刻游艺·国际象棋：按正式规则下棋（王车易位、吃过路兵、兵升变），可以和电脑下三档难度，也可以两人同屏。"
+    />
+    <title>国际象棋｜一刻游艺</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/games.css" />
+  </head>
+  <body class="game-page game-page--chess">
+    <svg class="visually-hidden" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="piece-base" viewBox="0 0 100 100">
+          <path class="piece-body" d="M20 94H80Q84 94 84 90V88Q84 84 80 84H20Q16 84 16 88V90Q16 94 20 94Z" />
+          <path class="piece-body" d="M27 84H73Q76 84 76 81Q76 78 73 78H27Q24 78 24 81Q24 84 27 84Z" />
+        </symbol>
+        <symbol id="piece-k" viewBox="0 0 100 100">
+          <path class="piece-body" d="M47 31V23H41V17H47V9H53V17H59V23H53V31Z" />
+          <path class="piece-body" d="M37 51C31 43 33 32 43 30Q50 29 57 30C67 32 69 43 63 51Z" />
+          <path class="piece-body" d="M32 78Q41 66 42 58H58Q59 66 68 78Z" />
+          <path class="piece-body" d="M36 55Q36 51 41 51H59Q64 51 64 55Q64 58 59 58H41Q36 58 36 55Z" />
+          <use href="#piece-base" />
+          <path class="piece-detail" d="M41 44Q50 40 59 44" />
+        </symbol>
+        <symbol id="piece-q" viewBox="0 0 100 100">
+          <path class="piece-body" d="M37 51L24 27L34 38L37 20L45 35L50 16L55 35L63 20L66 38L76 27L63 51Z" />
+          <path class="piece-body" d="M20 24A4 4 0 1 1 28 24A4 4 0 1 1 20 24ZM33 17A4 4 0 1 1 41 17A4 4 0 1 1 33 17ZM46 13A4 4 0 1 1 54 13A4 4 0 1 1 46 13ZM59 17A4 4 0 1 1 67 17A4 4 0 1 1 59 17ZM72 24A4 4 0 1 1 80 24A4 4 0 1 1 72 24Z" />
+          <path class="piece-body" d="M32 78Q41 66 42 58H58Q59 66 68 78Z" />
+          <path class="piece-body" d="M36 55Q36 51 41 51H59Q64 51 64 55Q64 58 59 58H41Q36 58 36 55Z" />
+          <use href="#piece-base" />
+          <path class="piece-detail" d="M39 45H61" />
+        </symbol>
+        <symbol id="piece-r" viewBox="0 0 100 100">
+          <path class="piece-body" d="M30 42V22H39V29H46V22H54V29H61V22H70V42Z" />
+          <path class="piece-body" d="M33 78L36 48H64L67 78Z" />
+          <path class="piece-body" d="M29 48V42H71V48Z" />
+          <use href="#piece-base" />
+          <path class="piece-detail" d="M37 56H63" />
+        </symbol>
+        <symbol id="piece-b" viewBox="0 0 100 100">
+          <path class="piece-body" d="M45 12A5 5 0 1 1 55 12A5 5 0 1 1 45 12Z" />
+          <path class="piece-body" d="M50 17C41 24 34 33 36 42Q38 51 50 52Q62 51 64 42C66 33 59 24 50 17Z" />
+          <path class="piece-body" d="M34 78Q42 68 43 59H57Q58 68 66 78Z" />
+          <path class="piece-body" d="M37 56Q37 53 41 53H59Q63 53 63 56Q63 59 59 59H41Q37 59 37 56Z" />
+          <use href="#piece-base" />
+          <path class="piece-detail" d="M44 41L57 28" />
+        </symbol>
+        <symbol id="piece-n" viewBox="0 0 100 100">
+          <path class="piece-body" d="M68 78C70 64 74 54 72 42C70 28 60 18 50 15L48 7L42 15C33 18 25 26 21 36L14 48Q12 56 20 58L30 56Q36 54 41 50C38 60 33 69 30 78Z" />
+          <use href="#piece-base" />
+          <path class="piece-detail" d="M61 23Q70 34 69 50" />
+          <circle class="piece-dot" cx="35" cy="31" r="3" />
+          <circle class="piece-dot" cx="19" cy="52" r="1.8" />
+        </symbol>
+        <symbol id="piece-p" viewBox="0 0 100 100">
+          <path class="piece-body" d="M37 38A13 13 0 1 1 63 38A13 13 0 1 1 37 38Z" />
+          <path class="piece-body" d="M42 59Q40 70 30 78H70Q60 70 58 59Z" />
+          <path class="piece-body" d="M38 55.5Q38 52 42 52H58Q62 52 62 55.5Q62 59 58 59H42Q38 59 38 55.5Z" />
+          <use href="#piece-base" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <div class="page-shell">
+      <header class="masthead">
+        <a class="brand" href="/chess/">
+          <span class="brand__seal" aria-hidden="true">国象</span>
+          <span>
+            <span class="brand__eyebrow">一刻游艺 · 第三开</span>
+            <span class="brand__name">国际象棋</span>
+          </span>
+        </a>
+        <p class="masthead__note">六种棋子，各走各的路。</p>
+        <nav class="site-nav" aria-label="站点导航">
+          <a class="home-link" href="/">
+            <span class="home-link__arrow" aria-hidden="true">←</span>
+            <span>返回首页</span>
+          </a>
+        </nav>
+      </header>
+
+      <main class="play-layout">
+        <section class="play-sheet" aria-labelledby="game-title">
+          <div class="game-heading">
+            <div>
+              <p class="section-mark">对局 · <span id="mode-label">人机 · 启蒙</span></p>
+              <h1 id="game-title">六十四格，步步为营</h1>
+            </div>
+            <span class="turn-stamp" id="turn-stamp" data-side="light">白方走</span>
+          </div>
+
+          <div class="player-strip" id="player-top">
+            <span class="player-strip__mark" data-side="dark" aria-hidden="true"></span>
+            <strong>黑方</strong>
+            <span class="player-strip__who">电脑</span>
+            <span class="player-strip__thinking">思考中</span>
+            <span class="player-strip__captures" aria-label="吃掉的白子"></span>
+          </div>
+
+          <div class="board-frame board-frame--game">
+            <span class="board-frame__corner board-frame__corner--top" aria-hidden="true"></span>
+            <div
+              class="chess-board"
+              id="board"
+              role="grid"
+              aria-label="国际象棋棋盘，八行八列"
+              aria-describedby="board-help"
+            ></div>
+            <span class="board-frame__corner board-frame__corner--bottom" aria-hidden="true"></span>
+          </div>
+
+          <div class="player-strip" id="player-bottom">
+            <span class="player-strip__mark" data-side="light" aria-hidden="true"></span>
+            <strong>白方</strong>
+            <span class="player-strip__who">你</span>
+            <span class="player-strip__thinking">思考中</span>
+            <span class="player-strip__captures" aria-label="吃掉的黑子"></span>
+          </div>
+
+          <p class="status-line" id="status-message" aria-live="polite" aria-atomic="true">
+            <span class="status-line__mark" aria-hidden="true">·</span>
+            <span id="status-text">白方先走。点一下棋子，看看它能走到哪里。</span>
+          </p>
+          <p class="visually-hidden" id="board-help">
+            用方向键在棋盘上移动，回车或空格选中棋子，再选落点；Esc 取消选择。
+          </p>
+        </section>
+
+        <aside class="control-sheet" aria-label="对局工具">
+          <section class="control-section" aria-labelledby="settings-title">
+            <div class="control-section__heading">
+              <h2 id="settings-title">对局设置</h2>
+              <span>随时可改</span>
+            </div>
+            <p class="choice-label" id="opponent-label">对手</p>
+            <div class="choice-row" role="radiogroup" aria-labelledby="opponent-label" data-setting="opponent">
+              <button type="button" role="radio" data-value="ai" aria-checked="true" tabindex="0">
+                <strong>电脑</strong><small>人机对弈</small>
+              </button>
+              <button type="button" role="radio" data-value="human" aria-checked="false" tabindex="-1">
+                <strong>家人</strong><small>两人同屏</small>
+              </button>
+            </div>
+            <p class="choice-label" id="level-label">电脑难度</p>
+            <div class="choice-row" role="radiogroup" aria-labelledby="level-label" data-setting="level">
+              <button type="button" role="radio" data-value="1" aria-checked="true" tabindex="0">
+                <strong>启蒙</strong><small>会犯错</small>
+              </button>
+              <button type="button" role="radio" data-value="2" aria-checked="false" tabindex="-1">
+                <strong>入门</strong><small>算三步</small>
+              </button>
+              <button type="button" role="radio" data-value="3" aria-checked="false" tabindex="-1">
+                <strong>进阶</strong><small>想得深</small>
+              </button>
+            </div>
+            <p class="choice-label" id="side-label">我执</p>
+            <div class="choice-row" role="radiogroup" aria-labelledby="side-label" data-setting="side">
+              <button type="button" role="radio" data-value="w" aria-checked="true" tabindex="0">
+                <strong>白方</strong><small>先走</small>
+              </button>
+              <button type="button" role="radio" data-value="b" aria-checked="false" tabindex="-1">
+                <strong>黑方</strong><small>后走</small>
+              </button>
+            </div>
+          </section>
+
+          <section class="control-section game-actions" aria-label="对局操作">
+            <button class="paper-button paper-button--primary" type="button" data-action="new-game">新开一局</button>
+            <button class="paper-button" type="button" data-action="undo">悔棋</button>
+            <button class="paper-button" type="button" data-action="hint">提示一步</button>
+            <button class="paper-button" type="button" data-action="flip" aria-pressed="false">翻转棋盘</button>
+            <button class="paper-button" type="button" data-action="resign">认输</button>
+          </section>
+
+          <section class="control-section" aria-labelledby="record-title">
+            <div class="control-section__heading">
+              <h2 id="record-title">棋谱</h2>
+              <span id="move-count">还没走</span>
+            </div>
+            <ol class="move-record" id="move-record" aria-labelledby="record-title"></ol>
+          </section>
+
+          <details class="rules-card">
+            <summary>简明规则</summary>
+            <dl>
+              <div><dt>目标</dt><dd>将死对方的王：王被攻击（将军）而且无论怎么走都躲不开。</dd></div>
+              <div><dt>王</dt><dd>任意方向走一格，不能走到被攻击的格子。</dd></div>
+              <div><dt>后</dt><dd>横、竖、斜，格数不限。</dd></div>
+              <div><dt>车</dt><dd>横竖直走，格数不限。</dd></div>
+              <div><dt>象</dt><dd>斜线走，格数不限，一辈子只走一种颜色的格子。</dd></div>
+              <div><dt>马</dt><dd>走“日”字，可以跳过其他棋子。</dd></div>
+              <div><dt>兵</dt><dd>向前一格，第一步可以走两格；斜前方吃子；走到底线升变成后、车、象或马。</dd></div>
+              <div><dt>易位</dt><dd>王和车都没动过、中间没子、王没被将军也不经过被攻击的格子时，王向车走两格，车跳到王的另一边。</dd></div>
+              <div><dt>过路兵</dt><dd>对方的兵一步走两格、正好停在你的兵旁边时，下一步可以斜着吃掉它。</dd></div>
+            </dl>
+            <p>和棋：轮到一方走却无子可动又没被将军（逼和）、同一局面出现三次、50 回合没有吃子也没有动兵，或双方子力都不足以将死。</p>
+          </details>
+        </aside>
+      </main>
+
+      <footer>
+        <p>无账号 · 无广告 · 无外部资源</p>
+        <p><a class="footer-link" href="/">回到一刻游艺首页</a></p>
+        <p>先想三步，再动一子。</p>
+      </footer>
+    </div>
+
+    <dialog class="completion-panel promotion-panel" id="promotion-panel" aria-labelledby="promotion-title">
+      <div class="completion-panel__paper">
+        <p class="section-mark">兵走到底线了</p>
+        <h2 id="promotion-title">升变成什么？</h2>
+        <div class="promotion-choices">
+          <button type="button" data-promotion="q">
+            <svg class="chess-piece chess-piece--w" viewBox="0 0 100 100" aria-hidden="true"><use href="#piece-q" /></svg>
+            <small>后</small>
+          </button>
+          <button type="button" data-promotion="r">
+            <svg class="chess-piece chess-piece--w" viewBox="0 0 100 100" aria-hidden="true"><use href="#piece-r" /></svg>
+            <small>车</small>
+          </button>
+          <button type="button" data-promotion="b">
+            <svg class="chess-piece chess-piece--w" viewBox="0 0 100 100" aria-hidden="true"><use href="#piece-b" /></svg>
+            <small>象</small>
+          </button>
+          <button type="button" data-promotion="n">
+            <svg class="chess-piece chess-piece--w" viewBox="0 0 100 100" aria-hidden="true"><use href="#piece-n" /></svg>
+            <small>马</small>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="completion-panel" id="result-panel" aria-labelledby="result-title">
+      <div class="completion-panel__paper">
+        <span class="completion-panel__seal" id="result-seal" aria-hidden="true">终局</span>
+        <p class="section-mark">本局收官</p>
+        <h2 id="result-title">胜负已分</h2>
+        <p id="result-summary">这一局下完了。</p>
+        <div class="result-panel__actions">
+          <button class="paper-button paper-button--primary" type="button" data-action="again">再来一局</button>
+          <button class="paper-button paper-button--quiet" type="button" data-action="review">看看棋盘</button>
+        </div>
+      </div>
+    </dialog>
+
+    <noscript>需要启用浏览器中的 JavaScript 才能下棋。</noscript>
+    <script type="module" src="/js/chess-app.js"></script>
+  </body>
+</html>

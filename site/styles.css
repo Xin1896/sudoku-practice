@@ -14,6 +14,7 @@
   --focus: #0b6575;
   --shadow: 0 22px 50px rgba(48, 38, 25, 0.11);
   --font-song: "Songti SC", "STSong", "SimSun", serif;
+  --font-kai: "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", "Songti SC", "STSong", serif;
   --font-sans: "Hiragino Sans GB", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
@@ -157,6 +158,43 @@ button:disabled {
   color: var(--muted);
   font-family: var(--font-song);
   font-size: 13px;
+}
+
+.site-nav {
+  flex: 0 0 auto;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 13px 8px 11px;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  background: rgba(251, 248, 241, 0.6);
+  box-shadow: 3px 3px 0 rgba(93, 77, 55, 0.1);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.home-link__arrow {
+  color: var(--cinnabar);
+  font-family: var(--font-song);
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 180ms ease;
+}
+
+.footer-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
 }
 
 .practice-layout {
@@ -755,6 +793,20 @@ noscript {
   .sudoku-cell:hover:not(.is-selected) {
     background: rgba(162, 58, 42, 0.075);
   }
+
+  .home-link:hover {
+    border-color: var(--cinnabar);
+    color: var(--cinnabar-dark);
+  }
+
+  .home-link:hover .home-link__arrow {
+    transform: translateX(-3px);
+  }
+
+  .footer-link:hover {
+    color: var(--cinnabar-dark);
+    text-decoration-color: currentColor;
+  }
 }
 
 @media (min-width: 560px) {
@@ -772,6 +824,11 @@ noscript {
 
   .masthead__note {
     display: block;
+  }
+
+  .masthead > .masthead__note {
+    margin-left: auto;
+    text-align: right;
   }
 }
 

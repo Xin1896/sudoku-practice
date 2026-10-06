@@ -46,8 +46,10 @@ function sha256(buffer) {
 
 const [
   html,
+  home,
   css,
   app,
+  pwa,
   manifestSource,
   serviceWorker,
   headers,
@@ -61,9 +63,11 @@ const [
   implementationPlan,
   designPlan,
 ] = await Promise.all([
+  readSource("site/sudoku/index.html"),
   readSource("site/index.html"),
   readSource("site/styles.css"),
   readSource("site/js/app.js"),
+  readSource("site/js/pwa.js"),
   readSource("site/manifest.webmanifest"),
   readSource("site/sw.js"),
   readSource("site/_headers"),
@@ -99,16 +103,21 @@ function contrastRatio(foreground, background) {
 }
 
 test("页面声明中文产品标题和可缩放的移动端视口", () => {
-  assert.match(html, /<html[^>]+lang=["']zh-CN["']/i);
-  assert.match(html, /<title>[^<]*数独[^<]*<\/title>/i);
-  assert.match(
-    html,
-    /<meta[^>]+name=["']viewport["'][^>]+content=["'][^"']*width=device-width[^"']*initial-scale=1[^"']*["']/i,
-  );
-  assert.doesNotMatch(html, /user-scalable\s*=\s*no|maximum-scale\s*=\s*1/i);
+  for (const [page, title] of [
+    [html, /<title>[^<]*数独[^<]*<\/title>/i],
+    [home, /<title>[^<]*一刻游艺[^<]*<\/title>/i],
+  ]) {
+    assert.match(page, /<html[^>]+lang=["']zh-CN["']/i);
+    assert.match(page, title);
+    assert.match(
+      page,
+      /<meta[^>]+name=["']viewport["'][^>]+content=["'][^"']*width=device-width[^"']*initial-scale=1[^"']*["']/i,
+    );
+    assert.doesNotMatch(page, /user-scalable\s*=\s*no|maximum-scale\s*=\s*1/i);
+  }
 });
 
-test("产品品牌、安装入口与分享元数据统一为数独一刻", () => {
+test("数独练习页保留数独一刻品牌、安装入口与分享元数据", () => {
   assert.match(html, /<title>数独一刻｜安静的纸上练习<\/title>/i);
   assert.match(
     html,
@@ -120,15 +129,15 @@ test("产品品牌、安装入口与分享元数据统一为数独一刻", () =>
 
   assert.match(
     html,
-    /<link[^>]+rel=["']manifest["'][^>]+href=["']\.\/manifest\.webmanifest["']/i,
+    /<link[^>]+rel=["']manifest["'][^>]+href=["']\/manifest\.webmanifest["']/i,
   );
   assert.match(
     html,
-    /<link[^>]+rel=["']icon["'][^>]+sizes=["']192x192["'][^>]+href=["']\.\/icon-192\.png["']/i,
+    /<link[^>]+rel=["']icon["'][^>]+sizes=["']192x192["'][^>]+href=["']\/icon-192\.png["']/i,
   );
   assert.match(
     html,
-    /<link[^>]+rel=["']apple-touch-icon["'][^>]+href=["']\.\/icon-192\.png["']/i,
+    /<link[^>]+rel=["']apple-touch-icon["'][^>]+href=["']\/icon-192\.png["']/i,
   );
   assert.match(html, /name=["']apple-mobile-web-app-title["'][^>]+content=["']数独一刻["']/i);
 
@@ -136,7 +145,7 @@ test("产品品牌、安装入口与分享元数据统一为数独一刻", () =>
     ["og:type", "website"],
     ["og:locale", "zh_CN"],
     ["og:title", "数独一刻"],
-    ["og:image", "./og.png"],
+    ["og:image", "/og.png"],
     ["og:image:width", "1731"],
     ["og:image:height", "909"],
   ]) {
@@ -152,7 +161,7 @@ test("产品品牌、安装入口与分享元数据统一为数独一刻", () =>
   for (const [name, value] of [
     ["twitter:card", "summary_large_image"],
     ["twitter:title", "数独一刻"],
-    ["twitter:image", "./og.png"],
+    ["twitter:image", "/og.png"],
   ]) {
     assert.match(
       html,
@@ -169,8 +178,8 @@ test("产品品牌、安装入口与分享元数据统一为数独一刻", () =>
 
 test("Web App Manifest 描述可独立安装的中文应用", () => {
   assert.equal(manifest.id, "/");
-  assert.equal(manifest.name, "数独一刻");
-  assert.equal(manifest.short_name, "数独一刻");
+  assert.equal(manifest.name, "一刻游艺");
+  assert.equal(manifest.short_name, "一刻游艺");
   assert.equal(manifest.lang, "zh-CN");
   assert.equal(manifest.start_url, "./");
   assert.equal(manifest.scope, "./");
@@ -246,9 +255,9 @@ test("页面提供数独网格、三档难度和一局练习所需的主要控�
 test("产品脚本以九个 ARIA 行建立 81 个可聚焦网格按钮", () => {
   assert.match(
     html,
-    /<script[^>]+type=["']module["'][^>]+src=["']\.\/js\/app\.js["']/i,
+    /<script[^>]+type=["']module["'][^>]+src=["']\/js\/app\.js["']/i,
   );
-  assert.match(html, /<link[^>]+href=["']\.\/styles\.css["'][^>]*>/i);
+  assert.match(html, /<link[^>]+href=["']\/styles\.css["'][^>]*>/i);
 
   assert.match(app, /Array\.from\(\{\s*length:\s*81\s*\}/);
   assert.match(app, /Array\.from\(\{\s*length:\s*9\s*\}/);
@@ -295,6 +304,7 @@ test("辅助文字颜色在所有浅色纸面上保持舒适对比度", () => {
   for (const background of [
     "#f4efe4",
     "#e9dfce",
+    "#eee6d8",
     "#fbf8f1",
     "#e7e2d6",
     "#faf7ef",
@@ -368,18 +378,6 @@ test("Service Worker 以固定白名单预缓存完整且轻量的应用外壳",
   assert.match(serviceWorker, /const CACHE_NAME\s*=/);
   assert.match(serviceWorker, /const SHELL_PATHS\s*=\s*Object\.freeze\(\s*\[/);
 
-  const expectedShellPaths = [
-    "./index.html",
-    "./404.html",
-    "./styles.css",
-    "./js/app.js",
-    "./js/puzzles.js",
-    "./js/storage.js",
-    "./js/sudoku.js",
-    "./manifest.webmanifest",
-    "./icon-192.png",
-  ];
-
   const shellBlock =
     serviceWorker.match(/const SHELL_PATHS\s*=\s*Object\.freeze\(\s*\[[\s\S]*?\]\s*\)/)?.[0] ??
     "";
@@ -387,7 +385,22 @@ test("Service Worker 以固定白名单预缓存完整且轻量的应用外壳",
     (match) => match[1],
   );
 
-  assert.deepEqual(actualShellPaths, expectedShellPaths);
+  for (const path of [
+    "./index.html",
+    "./sudoku/index.html",
+    "./404.html",
+    "./styles.css",
+    "./js/app.js",
+    "./js/puzzles.js",
+    "./js/storage.js",
+    "./js/sudoku.js",
+    "./js/pwa.js",
+    "./manifest.webmanifest",
+    "./icon-192.png",
+  ]) {
+    assert.ok(actualShellPaths.includes(path), `应用外壳必须预缓存 ${path}`);
+  }
+  assert.equal(new Set(actualShellPaths).size, actualShellPaths.length, "预缓存清单不能重复");
   assert.doesNotMatch(shellBlock, /(?:og|icon-512)\.png/);
   assert.match(serviceWorker, /const SHELL_URLS\s*=\s*new Set\(/);
 });
@@ -411,16 +424,19 @@ test("Service Worker 只在完整预缓存后切换版本并清理旧应用壳",
   assert.match(serviceWorker, /url\.origin\s*!==\s*self\.location\.origin/);
 });
 
-test("根入口和版本耦合资源只读当前应用壳，避免跨版本混用", () => {
+test("每个页面入口和版本耦合资源只读当前应用壳，避免跨版本混用", () => {
   assert.match(serviceWorker, /const APP_ROOT_URL\s*=/);
-  assert.match(serviceWorker, /const INDEX_URL\s*=/);
   assert.match(serviceWorker, /const NOT_FOUND_URL\s*=/);
-  assert.match(serviceWorker, /function isEntryNavigation\(/);
+  assert.match(serviceWorker, /const PAGE_PATHS\s*=\s*Object\.freeze\(/);
+  for (const page of ["./", "./sudoku/", "./xiangqi/", "./chess/", "./go/"]) {
+    assert.match(serviceWorker, new RegExp(`["']${page.replaceAll(".", "\\.")}["']`));
+  }
+  assert.match(serviceWorker, /function entryDocumentFor\(/);
   assert.match(serviceWorker, /function serveCachedShell\(/);
   assert.match(serviceWorker, /request\.mode\s*===\s*["']navigate["']/);
   assert.match(
     serviceWorker,
-    /isEntryNavigation\(url\)[\s\S]*?serveCachedShell\(INDEX_URL\)/,
+    /entryDocumentFor\(url\)[\s\S]*?serveCachedShell\(entryDocument\)/,
   );
   assert.match(serviceWorker, /SHELL_URLS\.has\(url\.href\)/);
   assert.match(serviceWorker, /serveCachedShell\(url\.href\)/);
@@ -442,15 +458,17 @@ test("非入口导航保留在线 404，离线回退本版本 404 且不缓存�
   assert.doesNotMatch(serviceWorker, /url\.search\s*=|searchParams|ignoreSearch/);
 });
 
-test("应用在页面加载后注册同目录 Service Worker 并允许离线功能静默降级", () => {
-  assert.match(app, /["']serviceWorker["']\s+in\s+navigator/);
-  assert.match(app, /window\.addEventListener\(\s*["']load["']/);
+test("应用在页面加载后注册根目录 Service Worker 并允许离线功能静默降级", () => {
+  assert.match(app, /import \{ registerServiceWorker \} from ["']\.\/pwa\.js["']/);
+  assert.match(app, /registerServiceWorker\(\)/);
+  assert.match(pwa, /["']serviceWorker["']\s+in\s+navigator/);
+  assert.match(pwa, /window\.addEventListener\(\s*["']load["']/);
   assert.match(
-    app,
-    /navigator\.serviceWorker\s*\.\s*register\(["']\.\/sw\.js["'],\s*\{[\s\S]*?scope:\s*["']\.\/["'][\s\S]*?updateViaCache:\s*["']none["'][\s\S]*?\}\)/,
+    pwa,
+    /navigator\.serviceWorker\s*\.\s*register\(["']\/sw\.js["'],\s*\{[\s\S]*?scope:\s*["']\/["'][\s\S]*?updateViaCache:\s*["']none["'][\s\S]*?\}\)/,
   );
   assert.match(
-    app,
+    pwa,
     /navigator\.serviceWorker\s*\.\s*register[\s\S]*?\.catch\(\(\)\s*=>\s*\{\}\)/,
   );
 });

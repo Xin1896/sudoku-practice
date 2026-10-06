@@ -1,0 +1,986 @@
+.brand__seal--stacked {
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  writing-mode: vertical-rl;
+}
+
+.home main {
+  position: relative;
+}
+
+/* 卷首：山水为枰 */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(74, 67, 57, 0.2);
+}
+
+.hero__painting {
+  position: relative;
+  height: clamp(232px, 64vw, 360px);
+}
+
+.painting {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.painting__grid path {
+  fill: none;
+  stroke: rgba(47, 45, 39, 0.3);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.painting__ridge {
+  fill: none;
+  stroke: rgba(36, 40, 37, 0.42);
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.painting__ridge--near {
+  stroke: rgba(14, 16, 15, 0.72);
+  stroke-width: 2.4;
+}
+
+.painting__cun {
+  fill: none;
+  stroke: rgba(18, 20, 19, 0.36);
+  stroke-linecap: round;
+  stroke-width: 2.6;
+}
+
+.painting__cun--mid {
+  stroke: rgba(48, 53, 49, 0.26);
+  stroke-width: 1.8;
+}
+
+.painting__moss {
+  fill: rgba(14, 16, 15, 0.82);
+}
+
+.painting__moss--mid {
+  fill: rgba(44, 49, 45, 0.55);
+}
+
+.painting__birds path,
+.painting__water path,
+.painting__boatman {
+  fill: none;
+  stroke: rgba(32, 39, 37, 0.7);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.painting__water path {
+  stroke: rgba(32, 39, 37, 0.28);
+  stroke-width: 1.6;
+}
+
+.painting__boat > path:first-child {
+  fill: rgba(28, 31, 29, 0.86);
+}
+
+.stone-shadow {
+  fill: rgba(30, 24, 16, 0.18);
+}
+
+.stone {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.stone--ghost {
+  fill: rgba(17, 18, 17, 0.32);
+  stroke: rgba(17, 18, 17, 0.55);
+  stroke-dasharray: 4 4;
+  stroke-width: 1.5;
+}
+
+.hero__inscription {
+  position: absolute;
+  top: clamp(16px, 4.5vw, 34px);
+  left: clamp(16px, 5vw, 40px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-kai);
+  font-size: clamp(42px, 12.5vw, 72px);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  writing-mode: vertical-rl;
+  text-shadow: 0 0 18px rgba(244, 239, 228, 0.9);
+}
+
+.hero__glyph {
+  display: inline-block;
+}
+
+.hero__seal {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 3px;
+  color: #fbf3e4;
+  background: var(--cinnabar);
+  box-shadow:
+    inset 0 0 0 2px var(--cinnabar),
+    inset 0 0 0 3.5px rgba(251, 243, 228, 0.85);
+  font-family: var(--font-song);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  writing-mode: vertical-rl;
+  transform: rotate(3deg);
+}
+
+.hero__copy {
+  position: relative;
+  z-index: 2;
+  padding: 24px clamp(16px, 5vw, 40px) clamp(30px, 6vw, 44px);
+}
+
+.hero__kicker {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-family: var(--font-kai);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+}
+
+.hero__kicker span {
+  white-space: nowrap;
+}
+
+.hero__lede {
+  margin: 0 0 14px;
+  font-family: var(--font-song);
+  font-size: clamp(32px, 9.4vw, 54px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.16;
+}
+
+.hero__sub {
+  max-width: 25em;
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hero__actions .paper-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 18px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.hero__actions .paper-button--primary {
+  color: #fffaf0;
+}
+
+/* 册页 */
+
+.album {
+  padding: clamp(32px, 6vw, 64px) clamp(16px, 4vw, 42px) clamp(26px, 5vw, 48px);
+}
+
+.album__heading {
+  display: grid;
+  gap: 4px;
+  margin-bottom: clamp(24px, 5vw, 38px);
+}
+
+.album__heading .section-mark {
+  margin: 0;
+}
+
+.album__heading h2 {
+  margin: 0;
+  font-family: var(--font-song);
+  font-size: clamp(25px, 6.4vw, 36px);
+  letter-spacing: 0.06em;
+}
+
+.album__note {
+  max-width: 34em;
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.album__part + .album__part {
+  margin-top: clamp(34px, 6vw, 56px);
+}
+
+.album__part-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-bottom: 18px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--line);
+}
+
+.album__part-heading h3 {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0;
+  font-family: var(--font-song);
+  font-size: 19px;
+  letter-spacing: 0.22em;
+}
+
+.album__part-glyph {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1.5px solid var(--cinnabar);
+  color: var(--cinnabar);
+  font-size: 16px;
+  letter-spacing: 0;
+  transform: rotate(-3deg);
+}
+
+.album__part-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-kai);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+
+.leaf-row {
+  display: grid;
+  gap: 18px;
+}
+
+.leaf {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(74, 67, 57, 0.3);
+  color: inherit;
+  background: var(--paper-light);
+  box-shadow: 5px 7px 0 rgba(93, 77, 55, 0.08);
+  text-decoration: none;
+  transition:
+    transform 260ms ease,
+    box-shadow 260ms ease,
+    border-color 260ms ease;
+}
+
+a.leaf:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.leaf__art {
+  display: block;
+  padding: 7px;
+  border: 1px solid rgba(74, 67, 57, 0.2);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 60%),
+    #e9e0cd;
+}
+
+.leaf__art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(51, 50, 44, 0.42);
+  background: #faf7ef;
+}
+
+.leaf__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: 15px 6px 6px;
+}
+
+.leaf__index {
+  color: var(--cinnabar);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.leaf__title {
+  font-family: var(--font-song);
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+}
+
+.leaf__latin {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.leaf__desc {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.leaf__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.leaf__tags span {
+  padding: 3px 7px;
+  border: 1px solid var(--line);
+  color: var(--ink-blue);
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.leaf__cta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 12px;
+  color: var(--cinnabar-dark);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.leaf__cta span {
+  transition: transform 200ms ease;
+}
+
+.leaf__resume {
+  position: absolute;
+  top: 17px;
+  right: 17px;
+  z-index: 1;
+  padding: 7px 4px;
+  color: #fbf3e4;
+  background: var(--cinnabar);
+  box-shadow: inset 0 0 0 1.5px rgba(251, 243, 228, 0.75);
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  writing-mode: vertical-rl;
+  transform: rotate(4deg);
+}
+
+.leaf--blank {
+  justify-content: center;
+  gap: 8px;
+  min-height: 168px;
+  padding: 24px 76px 24px 22px;
+  border-style: dashed;
+  border-color: rgba(74, 67, 57, 0.38);
+  background: rgba(251, 248, 241, 0.35);
+  box-shadow: none;
+}
+
+.leaf--blank .leaf__title {
+  color: var(--muted);
+  font-size: 22px;
+}
+
+.leaf__blank-seal {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1.5px dashed rgba(162, 58, 42, 0.55);
+  color: rgba(126, 45, 34, 0.75);
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 700;
+  writing-mode: vertical-rl;
+  transform: rotate(-4deg);
+}
+
+/* 册页插图 */
+
+.art-sudoku__faint {
+  fill: none;
+  stroke: rgba(83, 82, 74, 0.16);
+}
+
+.art-sudoku__box {
+  fill: #fffdf7;
+  stroke: var(--line-strong);
+  stroke-width: 2.5;
+}
+
+.art-sudoku__lines {
+  fill: none;
+  stroke: rgba(83, 82, 74, 0.42);
+}
+
+.art-sudoku__given,
+.art-sudoku__answer {
+  font-family: var(--font-song);
+  font-size: 26px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.art-sudoku__given {
+  fill: var(--ink);
+}
+
+.art-sudoku__answer {
+  fill: var(--ink-blue);
+  opacity: 0;
+  transition: opacity 320ms ease 120ms;
+}
+
+.art-sudoku__select {
+  fill: rgba(162, 58, 42, 0.07);
+  stroke: var(--cinnabar);
+  stroke-width: 3;
+}
+
+.art-sudoku__notes {
+  fill: var(--ink-blue);
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  font-size: 10px;
+  text-anchor: middle;
+  transition: opacity 220ms ease;
+}
+
+.art-xq__board {
+  fill: #ecd8ad;
+}
+
+.art-xq__lines {
+  fill: none;
+  stroke: rgba(98, 70, 36, 0.85);
+  stroke-width: 1.2;
+}
+
+.art-xq__river {
+  fill: rgba(98, 70, 36, 0.85);
+  font-family: var(--font-kai);
+  font-size: 19px;
+  letter-spacing: 6px;
+  text-anchor: middle;
+}
+
+.art-xq__piece > circle:first-child {
+  fill: #f6e9cb;
+  stroke: rgba(98, 70, 36, 0.9);
+  stroke-width: 1.4;
+}
+
+.art-xq__ring {
+  fill: none;
+  stroke-width: 1.1;
+}
+
+.art-xq__piece text {
+  font-family: var(--font-kai);
+  font-size: 17px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.art-xq__piece--red .art-xq__ring {
+  stroke: #b0352a;
+}
+
+.art-xq__piece--red text {
+  fill: #b0352a;
+}
+
+.art-xq__piece--black .art-xq__ring {
+  stroke: #1f2422;
+}
+
+.art-xq__piece--black text {
+  fill: #1f2422;
+}
+
+.art-xq__mover {
+  transition: transform 520ms cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.art-chess__light {
+  fill: #efe6d3;
+}
+
+.art-chess__dark {
+  fill: #9eab9d;
+}
+
+.art-chess__target {
+  fill: none;
+  stroke: var(--cinnabar);
+  stroke-dasharray: 5 4;
+  stroke-width: 2.5;
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.art-chess__piece,
+.art-chess__base {
+  fill: #1f2321;
+}
+
+.art-chess__piece--white {
+  fill: #faf6ec;
+  stroke: #1f2321;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.art-chess__eye {
+  fill: #efe6d3;
+}
+
+.art-chess__knight {
+  transition: transform 560ms cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.art-go__board {
+  fill: #e3c48e;
+}
+
+.art-go__lines {
+  fill: none;
+  stroke: rgba(83, 62, 32, 0.72);
+}
+
+.art-go__star {
+  fill: rgba(83, 62, 32, 0.9);
+}
+
+.art-go__drop,
+.art-go__captured {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.art-go__drop {
+  opacity: 0;
+  transform: scale(1.5);
+  transition:
+    opacity 220ms ease,
+    transform 360ms cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.art-go__captured {
+  transition:
+    opacity 260ms ease 280ms,
+    transform 260ms ease 280ms;
+}
+
+/* 写给家长 */
+
+.parents {
+  padding: clamp(32px, 6vw, 58px) clamp(16px, 4vw, 42px);
+  border-top: 1px solid rgba(74, 67, 57, 0.2);
+  background: linear-gradient(180deg, rgba(233, 223, 206, 0.55), transparent 70%);
+}
+
+.parents__heading .section-mark {
+  margin-bottom: 4px;
+}
+
+.parents__heading h2 {
+  margin: 0 0 22px;
+  font-family: var(--font-song);
+  font-size: clamp(23px, 5.6vw, 30px);
+  letter-spacing: 0.06em;
+}
+
+.parents__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.parents__list li {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  column-gap: 14px;
+  padding: 15px 0;
+  border-top: 1px solid var(--line);
+}
+
+.parents__glyph {
+  display: grid;
+  grid-row: span 2;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1.5px solid var(--cinnabar);
+  border-radius: 50%;
+  color: var(--cinnabar);
+  font-family: var(--font-kai);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.parents__list h3 {
+  margin: 3px 0 4px;
+  font-family: var(--font-song);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+}
+
+.parents__list p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* 落墨动效 */
+
+@keyframes ink-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ink-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sun-rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes stone-drop {
+  0% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+
+  65% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ghost-breathe {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes seal-stamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.7) rotate(-10deg);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(0.94) rotate(5deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(3deg);
+  }
+}
+
+.painting__layer,
+.painting__sun,
+.painting__grid,
+.painting__birds,
+.painting__boat,
+.painting__water {
+  transform-box: view-box;
+}
+
+.painting__layer--far {
+  animation: ink-rise 1400ms ease-out both;
+}
+
+.painting__layer--mid {
+  animation: ink-rise 1400ms ease-out 220ms both;
+}
+
+.painting__layer--near {
+  animation: ink-rise 1400ms ease-out 440ms both;
+}
+
+.painting__sun {
+  animation: sun-rise 1800ms ease-out 160ms both;
+}
+
+.painting__grid,
+.painting__birds,
+.painting__boat,
+.painting__water {
+  animation: ink-fade 1600ms ease-out 800ms both;
+}
+
+.stone--1 {
+  animation: stone-drop 520ms ease-out 1300ms both;
+}
+
+.stone--2 {
+  animation: stone-drop 520ms ease-out 1480ms both;
+}
+
+.stone--3 {
+  animation: stone-drop 520ms ease-out 1660ms both;
+}
+
+.stone--4 {
+  animation: stone-drop 520ms ease-out 1840ms both;
+}
+
+.stone--ghost {
+  animation: ghost-breathe 2600ms ease-in-out 2400ms infinite both;
+}
+
+.hero__glyph {
+  animation: ink-rise 900ms ease-out both;
+}
+
+.hero__glyph:nth-child(1) {
+  animation-delay: 300ms;
+}
+
+.hero__glyph:nth-child(2) {
+  animation-delay: 520ms;
+}
+
+.hero__glyph:nth-child(3) {
+  animation-delay: 740ms;
+}
+
+.hero__seal {
+  animation: seal-stamp 520ms ease-out 1200ms both;
+}
+
+.hero__copy {
+  animation: ink-rise 1000ms ease-out 500ms both;
+}
+
+.leaf-row > * {
+  animation: ink-rise 800ms ease-out both;
+}
+
+.leaf-row > *:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.leaf-row > *:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+@media (hover: hover) {
+  a.leaf:hover {
+    border-color: rgba(162, 58, 42, 0.55);
+    box-shadow: 9px 13px 0 rgba(93, 77, 55, 0.12);
+    transform: translateY(-4px);
+  }
+
+  a.leaf:hover .leaf__cta span {
+    transform: translateX(4px);
+  }
+}
+
+a.leaf:hover .art-sudoku__notes,
+a.leaf:focus-visible .art-sudoku__notes {
+  opacity: 0;
+}
+
+a.leaf:hover .art-sudoku__answer,
+a.leaf:focus-visible .art-sudoku__answer {
+  opacity: 1;
+}
+
+a.leaf:hover .art-xq__mover,
+a.leaf:focus-visible .art-xq__mover {
+  transform: translateY(-80px);
+}
+
+a.leaf:hover .art-chess__knight,
+a.leaf:focus-visible .art-chess__knight {
+  transform: translate(80px, -40px);
+}
+
+a.leaf:hover .art-chess__target,
+a.leaf:focus-visible .art-chess__target {
+  opacity: 1;
+}
+
+a.leaf:hover .art-go__drop,
+a.leaf:focus-visible .art-go__drop {
+  opacity: 1;
+  transform: scale(1);
+}
+
+a.leaf:hover .art-go__captured,
+a.leaf:focus-visible .art-go__captured {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+@media (min-width: 640px) {
+  .leaf-row--reason {
+    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+  }
+
+  .leaf-row--games {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .leaf--wide {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .leaf--wide .leaf__art {
+    flex: 0 0 52%;
+    align-self: start;
+  }
+
+  .leaf--wide .leaf__body {
+    padding: 6px 8px 6px 20px;
+  }
+
+  .leaf--wide .leaf__resume {
+    right: auto;
+    left: 17px;
+  }
+}
+
+@media (min-width: 760px) {
+  .parents__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 26px;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    min-height: 600px;
+  }
+
+  .hero__painting {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+
+  .hero__inscription {
+    top: 54px;
+    left: 46px;
+    gap: 16px;
+  }
+
+  .hero__title {
+    font-size: 90px;
+  }
+
+  .hero__seal {
+    width: 46px;
+    height: 46px;
+    font-size: 15px;
+  }
+
+  .hero__copy {
+    max-width: 440px;
+    margin-left: 168px;
+    padding: 70px 0 0;
+  }
+
+  .hero__lede {
+    font-size: 56px;
+  }
+
+  .leaf-row--games {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero *,
+  .leaf-row > *,
+  .painting * {
+    animation: none !important;
+  }
+}

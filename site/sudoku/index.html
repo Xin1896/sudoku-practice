@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f2ecdf" />
+    <meta
+      name="description"
+      content="数独一刻是一册安静、免登录、可离线使用并保存进度的中文数独练习。"
+    />
+    <meta name="application-name" content="数独一刻" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="数独一刻" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="数独一刻" />
+    <meta
+      property="og:description"
+      content="每天，安静地解一局。免登录、可离线使用的中文数独练习。"
+    />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="数独一刻——每天，安静地解一局" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="数独一刻" />
+    <meta
+      name="twitter:description"
+      content="每天，安静地解一局。免登录、可离线使用的中文数独练习。"
+    />
+    <meta name="twitter:image" content="/og.png" />
+    <meta name="twitter:image:alt" content="数独一刻——每天，安静地解一局" />
+    <title>数独一刻｜安静的纸上练习</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="masthead">
+        <a class="brand" href="/sudoku/">
+          <span class="brand__seal" aria-hidden="true">数独</span>
+          <span>
+            <span class="brand__eyebrow">每日一局 · 静心落子</span>
+            <span class="brand__name">数独一刻</span>
+          </span>
+        </a>
+        <p class="masthead__note">题目留在页面里，进度留在你的浏览器里。</p>
+        <nav class="site-nav" aria-label="站点导航">
+          <a class="home-link" href="/">
+            <span class="home-link__arrow" aria-hidden="true">←</span>
+            <span>返回首页</span>
+          </a>
+        </nav>
+      </header>
+
+      <main class="practice-layout">
+        <section class="game-sheet" aria-labelledby="game-title">
+          <div class="game-heading">
+            <div>
+              <p class="section-mark">练习笺 · <span id="puzzle-number">今日题</span></p>
+              <h1 id="game-title">把喧闹留在九宫格外</h1>
+            </div>
+            <span class="difficulty-stamp" id="current-difficulty">入门</span>
+          </div>
+
+          <dl class="game-stats" aria-label="本局状态">
+            <div>
+              <dt>用时</dt>
+              <dd id="timer" aria-label="用时 0 分 0 秒">00:00</dd>
+            </div>
+            <div>
+              <dt>错误</dt>
+              <dd><span id="mistake-count">0</span><small> 次</small></dd>
+            </div>
+            <div>
+              <dt>提示</dt>
+              <dd><span id="hint-count">0</span><small> / 3</small></dd>
+            </div>
+          </dl>
+
+          <div class="board-frame">
+            <span class="board-frame__corner board-frame__corner--top" aria-hidden="true"></span>
+            <div
+              id="sudoku-grid"
+              role="grid"
+              aria-label="九乘九数独棋盘"
+              aria-describedby="board-help"
+            ></div>
+            <span class="board-frame__corner board-frame__corner--bottom" aria-hidden="true"></span>
+          </div>
+
+          <p class="status-line" id="status-message" aria-live="polite" aria-atomic="true">
+            <span class="status-line__mark" aria-hidden="true">·</span>
+            <span id="status-text">选一格，慢慢来。</span>
+          </p>
+          <p class="visually-hidden" id="board-help">
+            使用方向键移动，数字键填写；按 N 切换候选，按 U 撤销。
+          </p>
+        </section>
+
+        <aside class="control-sheet" aria-label="练习工具">
+          <section class="control-section" aria-labelledby="difficulty-title">
+            <div class="control-section__heading">
+              <h2 id="difficulty-title">选择难度</h2>
+              <span>三阶</span>
+            </div>
+            <div class="difficulty-picker" role="radiogroup" aria-label="新游戏难度">
+              <button type="button" data-difficulty="easy" tabindex="0" role="radio" aria-checked="true">
+                <strong>入门</strong><small>舒展起笔</small>
+              </button>
+              <button type="button" data-difficulty="medium" tabindex="-1" role="radio" aria-checked="false">
+                <strong>进阶</strong><small>凝神推演</small>
+              </button>
+              <button type="button" data-difficulty="hard" tabindex="-1" role="radio" aria-checked="false">
+                <strong>挑战</strong><small>深水静思</small>
+              </button>
+            </div>
+          </section>
+
+          <section class="control-section game-actions" aria-label="游戏操作">
+            <button class="paper-button paper-button--primary" type="button" data-action="new-game">
+              新开一局
+            </button>
+            <button class="paper-button" type="button" data-action="continue">继续上次</button>
+            <button class="paper-button paper-button--quiet" type="button" data-action="restart">
+              重开本局
+            </button>
+          </section>
+
+          <section class="control-section input-section" aria-labelledby="input-title">
+            <div class="control-section__heading">
+              <h2 id="input-title">落子</h2>
+              <span>一至九</span>
+            </div>
+            <div class="number-pad" aria-label="数字键盘">
+              <button type="button" data-number="1" aria-label="填写数字 1">1</button>
+              <button type="button" data-number="2" aria-label="填写数字 2">2</button>
+              <button type="button" data-number="3" aria-label="填写数字 3">3</button>
+              <button type="button" data-number="4" aria-label="填写数字 4">4</button>
+              <button type="button" data-number="5" aria-label="填写数字 5">5</button>
+              <button type="button" data-number="6" aria-label="填写数字 6">6</button>
+              <button type="button" data-number="7" aria-label="填写数字 7">7</button>
+              <button type="button" data-number="8" aria-label="填写数字 8">8</button>
+              <button type="button" data-number="9" aria-label="填写数字 9">9</button>
+            </div>
+          </section>
+
+          <section class="tool-row" aria-label="辅助工具">
+            <button type="button" data-action="note" aria-pressed="false">
+              <span aria-hidden="true">铅</span><strong>候选</strong><small>N</small>
+            </button>
+            <button type="button" data-action="erase">
+              <span aria-hidden="true">净</span><strong>擦除</strong><small>⌫</small>
+            </button>
+            <button type="button" data-action="undo">
+              <span aria-hidden="true">回</span><strong>撤销</strong><small>U</small>
+            </button>
+            <button type="button" data-action="hint">
+              <span aria-hidden="true">启</span><strong>提示</strong><small id="hint-button-count">3 次</small>
+            </button>
+          </section>
+
+          <p class="keyboard-note">
+            <span aria-hidden="true">⌨</span>
+            键盘可用方向键、1–9、N、U 与 Delete。
+          </p>
+        </aside>
+      </main>
+
+      <footer>
+        <p>无账号 · 无广告 · 无外部资源</p>
+        <p><a class="footer-link" href="/">回到一刻游艺首页</a></p>
+        <p>愿每一格，都有自己的答案。</p>
+      </footer>
+    </div>
+
+    <dialog
+      class="completion-panel"
+      id="completion-panel"
+      aria-labelledby="completion-title"
+    >
+      <div class="completion-panel__paper">
+        <span class="completion-panel__seal" aria-hidden="true">已解</span>
+        <p class="section-mark">本局收笔</p>
+        <h2 id="completion-title">方寸之间，次第分明</h2>
+        <p id="completion-summary">你完成了这一局。</p>
+        <dl>
+          <div><dt>用时</dt><dd id="final-time">00:00</dd></div>
+          <div><dt>错误</dt><dd id="final-mistakes">0 次</dd></div>
+          <div><dt>提示</dt><dd id="final-hints">0 次</dd></div>
+        </dl>
+        <button class="paper-button paper-button--primary" type="button" data-action="same-difficulty">
+          同难度再来一局
+        </button>
+      </div>
+    </dialog>
+
+    <noscript>需要启用浏览器中的 JavaScript 才能开始数独练习。</noscript>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

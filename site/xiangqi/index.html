@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f2ecdf" />
+    <meta
+      name="description"
+      content="一刻游艺·象棋：可以和电脑下（启蒙、入门、进阶三档），也可以两人同屏对坐。点一下棋子就能看到它能走的位置。"
+    />
+    <title>象棋｜一刻游艺</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/games.css" />
+  </head>
+  <body class="game-page game-page--xiangqi">
+    <div class="page-shell">
+      <header class="masthead">
+        <a class="brand" href="/xiangqi/">
+          <span class="brand__seal" aria-hidden="true">象棋</span>
+          <span>
+            <span class="brand__eyebrow">一刻游艺 · 第二开</span>
+            <span class="brand__name">象棋</span>
+          </span>
+        </a>
+        <p class="masthead__note">马走日，象走田，炮要隔子打。</p>
+        <nav class="site-nav" aria-label="站点导航">
+          <a class="home-link" href="/">
+            <span class="home-link__arrow" aria-hidden="true">←</span>
+            <span>返回首页</span>
+          </a>
+        </nav>
+      </header>
+
+      <main class="play-layout">
+        <section class="play-sheet" aria-labelledby="game-title">
+          <div class="game-heading">
+            <div>
+              <p class="section-mark">对局 · <span id="mode-label">人机 · 启蒙</span></p>
+              <h1 id="game-title">楚河汉界，一步一想</h1>
+            </div>
+            <span class="turn-stamp" id="turn-stamp" data-side="red">红方走</span>
+          </div>
+
+          <div class="player-strip" id="player-top">
+            <span class="player-strip__mark" data-side="black" aria-hidden="true"></span>
+            <strong>黑方</strong>
+            <span class="player-strip__who">电脑</span>
+            <span class="player-strip__thinking">思考中</span>
+            <span class="player-strip__captures" aria-label="吃掉的红子"></span>
+          </div>
+
+          <div class="board-frame board-frame--game">
+            <span class="board-frame__corner board-frame__corner--top" aria-hidden="true"></span>
+            <div class="xq-files" id="files-top" aria-hidden="true"></div>
+            <div class="xq-board">
+              <svg class="xq-board__lines" viewBox="0 0 900 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <rect class="frame" x="50" y="50" width="800" height="900" />
+                <path class="grid" d="M50 150H850M50 250H850M50 350H850M50 450H850M50 550H850M50 650H850M50 750H850M50 850H850M150 50V450M150 550V950M250 50V450M250 550V950M350 50V450M350 550V950M450 50V450M450 550V950M550 50V450M550 550V950M650 50V450M650 550V950M750 50V450M750 550V950M350 50L550 250M550 50L350 250M350 750L550 950M550 750L350 950" />
+                <path class="marks" d="M141 219V241H119M141 281V259H119M159 219V241H181M159 281V259H181M741 219V241H719M741 281V259H719M759 219V241H781M759 281V259H781M59 319V341H81M59 381V359H81M241 319V341H219M241 381V359H219M259 319V341H281M259 381V359H281M441 319V341H419M441 381V359H419M459 319V341H481M459 381V359H481M641 319V341H619M641 381V359H619M659 319V341H681M659 381V359H681M841 319V341H819M841 381V359H819M141 719V741H119M141 781V759H119M159 719V741H181M159 781V759H181M741 719V741H719M741 781V759H719M759 719V741H781M759 781V759H781M59 619V641H81M59 681V659H81M241 619V641H219M241 681V659H219M259 619V641H281M259 681V659H281M441 619V641H419M441 681V659H419M459 619V641H481M459 681V659H481M641 619V641H619M641 681V659H619M659 619V641H681M659 681V659H681M841 619V641H819M841 681V659H819" />
+                <text class="river" x="250" y="500">楚河</text>
+                <text class="river" x="650" y="500">汉界</text>
+              </svg>
+              <div
+                class="xq-board__cells"
+                id="board"
+                role="grid"
+                aria-label="象棋棋盘，九列十行"
+                aria-describedby="board-help"
+              ></div>
+            </div>
+            <div class="xq-files" id="files-bottom" aria-hidden="true"></div>
+            <span class="board-frame__corner board-frame__corner--bottom" aria-hidden="true"></span>
+          </div>
+
+          <div class="player-strip" id="player-bottom">
+            <span class="player-strip__mark" data-side="red" aria-hidden="true"></span>
+            <strong>红方</strong>
+            <span class="player-strip__who">你</span>
+            <span class="player-strip__thinking">思考中</span>
+            <span class="player-strip__captures" aria-label="吃掉的黑子"></span>
+          </div>
+
+          <p class="status-line" id="status-message" aria-live="polite" aria-atomic="true">
+            <span class="status-line__mark" aria-hidden="true">·</span>
+            <span id="status-text">红方先走。点一下棋子，看看它能走到哪里。</span>
+          </p>
+          <p class="visually-hidden" id="board-help">
+            用方向键在棋盘上移动，回车或空格选中棋子，再选落点；Esc 取消选择。
+          </p>
+        </section>
+
+        <aside class="control-sheet" aria-label="对局工具">
+          <section class="control-section" aria-labelledby="settings-title">
+            <div class="control-section__heading">
+              <h2 id="settings-title">对局设置</h2>
+              <span>随时可改</span>
+            </div>
+            <p class="choice-label" id="opponent-label">对手</p>
+            <div class="choice-row" role="radiogroup" aria-labelledby="opponent-label" data-setting="opponent">
+              <button type="button" role="radio" data-value="ai" aria-checked="true" tabindex="0">
+                <strong>电脑</strong><small>人机对弈</small>
+              </button>
+              <button type="button" role="radio" data-value="human" aria-checked="false" tabindex="-1">
+                <strong>家人</strong><small>两人同屏</small>
+              </button>
+            </div>
+            <p class="choice-label" id="level-label">电脑难度</p>
+            <div class="choice-row" role="radiogroup" aria-labelledby="level-label" data-setting="level">
+              <button type="button" role="radio" data-value="1" aria-checked="true" tabindex="0">
+                <strong>启蒙</strong><small>会犯错</small>
+              </button>
+              <button type="button" role="radio" data-value="2" aria-checked="false" tabindex="-1">
+                <strong>入门</strong><small>算三步</small>
+              </button>
+              <button type="button" role="radio" data-value="3" aria-checked="false" tabindex="-1">
+                <strong>进阶</strong><small>想得深</small>
+              </button>
+            </div>
+            <p class="choice-label" id="side-label">我执</p>
+            <div class="choice-row" role="radiogroup" aria-labelledby="side-label" data-setting="side">
+              <button type="button" role="radio" data-value="r" aria-checked="true" tabindex="0">
+                <strong>红方</strong><small>先走</small>
+              </button>
+              <button type="button" role="radio" data-value="b" aria-checked="false" tabindex="-1">
+                <strong>黑方</strong><small>后走</small>
+              </button>
+            </div>
+          </section>
+
+          <section class="control-section game-actions" aria-label="对局操作">
+            <button class="paper-button paper-button--primary" type="button" data-action="new-game">新开一局</button>
+            <button class="paper-button" type="button" data-action="undo">悔棋</button>
+            <button class="paper-button" type="button" data-action="hint">提示一步</button>
+            <button class="paper-button" type="button" data-action="flip" aria-pressed="false">翻转棋盘</button>
+            <button class="paper-button" type="button" data-action="resign">认输</button>
+          </section>
+
+          <section class="control-section" aria-labelledby="record-title">
+            <div class="control-section__heading">
+              <h2 id="record-title">棋谱</h2>
+              <span id="move-count">还没走</span>
+            </div>
+            <ol class="move-record" id="move-record" aria-labelledby="record-title"></ol>
+          </section>
+
+          <details class="rules-card">
+            <summary>简明规则</summary>
+            <dl>
+              <div><dt>目标</dt><dd>把对方的将（帅）将死，或让对方无棋可走。</dd></div>
+              <div><dt>帅 · 将</dt><dd>只在九宫里横竖走一格；两个老将不能在同一直线上直接照面。</dd></div>
+              <div><dt>仕 · 士</dt><dd>只在九宫里斜走一格。</dd></div>
+              <div><dt>相 · 象</dt><dd>斜走两格（走“田”），不能过河；田字中心有子时走不了（塞象眼）。</dd></div>
+              <div><dt>马</dt><dd>直走一格再斜走一格（走“日”）；直走的那格有子就走不了（蹩马腿）。</dd></div>
+              <div><dt>车</dt><dd>横竖直走，格数不限，不能越过棋子。</dd></div>
+              <div><dt>炮</dt><dd>不吃子时像车一样走；吃子时必须隔一个棋子跳过去打。</dd></div>
+              <div><dt>兵 · 卒</dt><dd>只能向前一格；过河后还可以左右走一格，永远不能后退。</dd></div>
+            </dl>
+            <p>本站简化：同一局面出现三次判和；双方连续 60 回合没有吃子判和。棋谱用中式记法，例如“炮二平五”：红方从右往左数第二路的炮，横走到第五路。</p>
+          </details>
+        </aside>
+      </main>
+
+      <footer>
+        <p>无账号 · 无广告 · 无外部资源</p>
+        <p><a class="footer-link" href="/">回到一刻游艺首页</a></p>
+        <p>落子无悔，悔棋也无妨。</p>
+      </footer>
+    </div>
+
+    <dialog class="completion-panel" id="result-panel" aria-labelledby="result-title">
+      <div class="completion-panel__paper">
+        <span class="completion-panel__seal" id="result-seal" aria-hidden="true">终局</span>
+        <p class="section-mark">本局收官</p>
+        <h2 id="result-title">胜负已分</h2>
+        <p id="result-summary">这一局下完了。</p>
+        <div class="result-panel__actions">
+          <button class="paper-button paper-button--primary" type="button" data-action="again">再来一局</button>
+          <button class="paper-button paper-button--quiet" type="button" data-action="review">看看棋盘</button>
+        </div>
+      </div>
+    </dialog>
+
+    <noscript>需要启用浏览器中的 JavaScript 才能下棋。</noscript>
+    <script type="module" src="/js/xiangqi-app.js"></script>
+  </body>
+</html>

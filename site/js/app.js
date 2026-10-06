@@ -6,6 +6,7 @@ import {
   toggleNote,
 } from "./sudoku.js";
 import { PUZZLES, choosePuzzle } from "./puzzles.js";
+import { registerServiceWorker } from "./pwa.js";
 import {
   clearProgress,
   loadCompletedPuzzleIds,
@@ -687,17 +688,4 @@ setInterval(() => {
   }
 }, 1000);
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener(
-    "load",
-    () => {
-      navigator.serviceWorker
-        .register("./sw.js", {
-          scope: "./",
-          updateViaCache: "none",
-        })
-        .catch(() => {});
-    },
-    { once: true },
-  );
-}
+registerServiceWorker();

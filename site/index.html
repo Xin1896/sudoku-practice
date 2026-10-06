@@ -6,193 +6,365 @@
     <meta name="theme-color" content="#f2ecdf" />
     <meta
       name="description"
-      content="数独一刻是一册安静、免登录、可离线使用并保存进度的中文数独练习。"
+      content="一刻游艺：数独、象棋、国际象棋与围棋。免登录、可离线、进度留在本机的中文益智小站，适合孩子安静地练习思考。"
     />
-    <meta name="application-name" content="数独一刻" />
+    <meta name="application-name" content="一刻游艺" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="数独一刻" />
+    <meta name="apple-mobile-web-app-title" content="一刻游艺" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_CN" />
-    <meta property="og:title" content="数独一刻" />
+    <meta property="og:title" content="一刻游艺" />
     <meta
       property="og:description"
-      content="每天，安静地解一局。免登录、可离线使用的中文数独练习。"
+      content="方寸之间，自有天地。数独、象棋、国际象棋与围棋，免登录、可离线。"
     />
-    <meta property="og:image" content="./og.png" />
-    <meta property="og:image:width" content="1731" />
-    <meta property="og:image:height" content="909" />
+    <meta property="og:image" content="./og-home.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:alt" content="数独一刻——每天，安静地解一局" />
+    <meta property="og:image:alt" content="一刻游艺——方寸之间，自有天地。数独、象棋、国际象棋、围棋" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="数独一刻" />
+    <meta name="twitter:title" content="一刻游艺" />
     <meta
       name="twitter:description"
-      content="每天，安静地解一局。免登录、可离线使用的中文数独练习。"
+      content="方寸之间，自有天地。数独、象棋、国际象棋与围棋，免登录、可离线。"
     />
-    <meta name="twitter:image" content="./og.png" />
-    <meta name="twitter:image:alt" content="数独一刻——每天，安静地解一局" />
-    <title>数独一刻｜安静的纸上练习</title>
+    <meta name="twitter:image" content="./og-home.png" />
+    <meta name="twitter:image:alt" content="一刻游艺——方寸之间，自有天地。数独、象棋、国际象棋、围棋" />
+    <title>一刻游艺｜数独 · 象棋 · 国际象棋 · 围棋</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./home.css" />
   </head>
-  <body>
-    <div class="page-shell">
+  <body class="home">
+    <div class="page-shell home-shell">
       <header class="masthead">
         <a class="brand" href="./">
-          <span class="brand__seal" aria-hidden="true">数独</span>
+          <span class="brand__seal brand__seal--stacked" aria-hidden="true">游艺</span>
           <span>
-            <span class="brand__eyebrow">每日一局 · 静心落子</span>
-            <span class="brand__name">数独一刻</span>
+            <span class="brand__eyebrow">棋与数 · 静心一刻</span>
+            <span class="brand__name">一刻游艺</span>
           </span>
         </a>
-        <p class="masthead__note">题目留在页面里，进度留在你的浏览器里。</p>
+        <p class="masthead__note">一题数独，一盘棋，留给安静思考的一刻。</p>
       </header>
 
-      <main class="practice-layout">
-        <section class="game-sheet" aria-labelledby="game-title">
-          <div class="game-heading">
-            <div>
-              <p class="section-mark">练习笺 · <span id="puzzle-number">今日题</span></p>
-              <h1 id="game-title">把喧闹留在九宫格外</h1>
-            </div>
-            <span class="difficulty-stamp" id="current-difficulty">入门</span>
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero__painting" aria-hidden="true">
+          <svg class="painting" viewBox="0 0 1000 600" preserveAspectRatio="xMaxYMax slice" focusable="false">
+            <defs>
+              <linearGradient id="wash-far" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#7f857d" stop-opacity="0.46" />
+                <stop offset="0.55" stop-color="#9da196" stop-opacity="0.16" />
+                <stop offset="1" stop-color="#f4efe4" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="wash-mid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#4e554f" stop-opacity="0.82" />
+                <stop offset="0.5" stop-color="#6c716a" stop-opacity="0.34" />
+                <stop offset="1" stop-color="#f4efe4" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="wash-near" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#1d2120" stop-opacity="0.96" />
+                <stop offset="0.45" stop-color="#2f3431" stop-opacity="0.7" />
+                <stop offset="1" stop-color="#f4efe4" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="ground-fade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0.38" stop-color="#ffffff" stop-opacity="0" />
+                <stop offset="1" stop-color="#ffffff" stop-opacity="1" />
+              </linearGradient>
+              <mask id="ground-mask">
+                <rect width="1000" height="600" fill="url(#ground-fade)" />
+              </mask>
+              <radialGradient id="sun-wash" cx="0.42" cy="0.38" r="0.62">
+                <stop offset="0" stop-color="#c2533c" />
+                <stop offset="0.72" stop-color="#a83b2a" />
+                <stop offset="1" stop-color="#a83b2a" stop-opacity="0.82" />
+              </radialGradient>
+              <radialGradient id="stone-black" cx="0.36" cy="0.3" r="0.75">
+                <stop offset="0" stop-color="#6d6e6a" />
+                <stop offset="0.38" stop-color="#262826" />
+                <stop offset="1" stop-color="#0b0c0b" />
+              </radialGradient>
+              <radialGradient id="stone-white" cx="0.36" cy="0.3" r="0.78">
+                <stop offset="0" stop-color="#ffffff" />
+                <stop offset="0.55" stop-color="#f1ece1" />
+                <stop offset="1" stop-color="#c9c1b0" />
+              </radialGradient>
+            </defs>
+            <g class="painting__grid" mask="url(#ground-mask)">
+              <path d="M0 0V600M50 0V600M100 0V600M150 0V600M200 0V600M250 0V600M300 0V600M350 0V600M400 0V600M450 0V600M500 0V600M550 0V600M600 0V600M650 0V600M700 0V600M750 0V600M800 0V600M850 0V600M900 0V600M950 0V600M1000 0V600M0 0H1000M0 50H1000M0 100H1000M0 150H1000M0 200H1000M0 250H1000M0 300H1000M0 350H1000M0 400H1000M0 450H1000M0 500H1000M0 550H1000M0 600H1000" />
+            </g>
+            <circle class="painting__sun" cx="660" cy="168" r="50" fill="url(#sun-wash)" />
+            <g class="painting__birds">
+              <path d="M548 128q7-7 13-1q6-6 13 1" />
+              <path d="M580 106q5-5 10-1q5-4 10 1" />
+              <path d="M596 140q4-4 8 0q4-4 8 0" />
+            </g>
+            <g class="painting__layer painting__layer--far">
+              <path class="painting__mass" d="M0 600L0 421L2.2 420.5L4.8 419.8L7.8 418.3L11 415.8L14.5 412.8L18.3 411.7L22.3 412.1L26.5 412.5L30.9 413L35.4 412.4L40 410.9L44.7 411L49.4 410.5L54.2 408.8L59 407.7L63.7 406.5L68.4 404.9L73 403.9L77.5 403L81.9 402.3L86 402.5L90 402.2L94.2 402.3L98.4 403.2L102.4 404.5L106.5 405.3L110.5 405.6L114.4 405.9L118.3 406.6L122.2 406.8L126.1 406.8L130 408L133.9 410.2L137.8 411.4L141.7 411.9L145.6 413.2L149.5 414.9L153.5 416.3L157.6 416.8L161.6 417.2L165.8 417.9L170 417.5L173.9 416.4L177.8 415.5L181.8 415L185.9 414.4L190 413.8L194.1 413L198.2 411.9L202.4 410.2L206.6 407.9L210.8 406.1L215 404.9L219.2 403.5L223.4 402.6L227.6 402.2L231.8 401.4L235.9 399.3L240 396.3L244.1 394.5L248.2 393.1L252.2 391.7L256.1 391L260 390.7L264.2 390.4L268.4 388.9L272.4 387.4L276.5 387.3L280.5 386.6L284.4 384.2L288.3 382L292.2 379.8L296.1 377.8L300 376.4L303.9 375.2L307.8 373.6L311.7 372.7L315.6 373.1L319.5 374L323.5 373.4L327.6 372.1L331.6 370.8L335.8 369.3L340 368.5L343.9 368.2L347.8 367.3L351.8 366.5L355.8 365.9L359.8 365.8L363.8 367.2L367.9 369L372 369.5L376.1 369.7L380.2 371.3L384.4 372.2L388.5 371.5L392.7 371L396.9 370.8L401 371.5L405.2 373.6L409.3 375.4L413.5 376.7L417.6 376.7L421.8 375.2L425.9 374.5L430 374.4L434.1 373.7L438.2 372.5L442.4 371.5L446.5 370.8L450.7 369.6L454.8 368.2L459 365.6L463.1 362.3L467.3 360L471.5 358.1L475.6 357.1L479.8 356.4L483.9 355.1L488 353.4L492.1 352.4L496.2 351.2L500.2 348.6L504.2 346.6L508.2 346.7L512.2 346.9L516.1 345.4L520 343.8L524.2 343.7L528.4 343.4L532.4 342.4L536.5 341.3L540.5 339.9L544.4 338.1L548.3 336L552.2 333.9L556.1 332.2L560 330.8L563.9 328L567.8 324.9L571.7 322.7L575.6 321L579.5 320.8L583.5 321.8L587.6 321.5L591.6 320.7L595.8 320.2L600 319.6L603.9 319.4L607.8 319.9L611.8 320.5L615.9 321.3L620 322.6L624.1 323.9L628.2 325.9L632.4 328.3L636.6 330.4L640.8 332.7L645 335.7L649.2 337L653.4 336L657.6 335L661.8 335L665.9 334.7L670 334.1L674.1 334.5L678.2 334.8L682.2 335.5L686.1 336.2L690 336.4L694.2 336.3L698.4 335.8L702.5 334.7L706.6 333.7L710.7 332.8L714.7 330.9L718.7 328.9L722.7 326.3L726.7 323.5L730.6 321.3L734.6 319.4L738.5 316.6L742.4 312.6L746.3 309.4L750.2 306.1L754.2 303.8L758.1 303L762 302.2L766 301.5L770 301.5L774 301.2L778 301L782 301.2L786 301.1L790 301.8L794 302.8L798 304.1L802 306.4L806 309L810 310.6L814 311.5L818 311.1L822 309.5L826 309L830 309.7L834 310.5L838 311.4L842 311.9L846 311.4L850 310.3L854 308.8L858 306.5L862.1 303.8L866.2 301.7L870.2 300.3L874.3 298.5L878.4 296.8L882.5 294.6L886.6 292.1L890.6 289.3L894.7 286.2L898.7 284.1L902.7 282.6L906.7 280.8L910.7 279.3L914.6 277.9L918.5 276.6L922.4 275.4L926.2 274.3L930 274.3L934.5 275.8L939.1 277.3L943.8 279.1L948.6 282.9L953.5 285.7L958.3 286.9L963 287.6L967.7 288.9L972.3 289.7L976.7 291.1L980.9 293.3L984.8 295.1L988.6 295.6L992 296.1L995 297.2L997.7 298.4L1000 298.9L1000 600Z" fill="url(#wash-far)" />
+            </g>
+            <g class="painting__layer painting__layer--mid">
+              <path class="painting__mass" d="M300 600L300 593.5L302.3 591.8L305 590L308.2 587.8L311.7 584.7L315.6 581.2L319.7 579L324 575L328.5 569.5L333.1 566.2L337.8 562.2L342.4 556.8L347 550.5L351.5 546L355.9 544.6L360 542.5L364 539L368.1 535.8L372.2 531.3L376.3 528.2L380.4 525.7L384.5 524.1L388.6 523.9L392.7 522.5L396.7 520.8L400.7 517.8L404.7 514.5L408.6 512.3L412.5 509.9L416.3 506.1L420 501.9L424.5 497.1L428.9 492.4L433.2 487.5L437.4 482.5L441.5 477.6L445.6 472.9L449.7 467L453.7 459.3L457.7 452.1L461.8 445.5L465.9 438.4L470 431L474.2 423.8L478.4 417.1L482.7 410.6L487 403.7L491.3 395.7L495.6 386.9L499.9 379L504.1 372L508.2 363.3L512.2 356.1L516.2 351.8L520 347.3L524.4 342.4L528.6 339.7L532.7 336.4L536.7 330.5L540.6 325.3L544.5 320.9L548.3 316.4L552.2 312.6L556 308.3L560 303.3L564 297.3L568.2 292L572.3 288.2L576.5 283.5L580.6 277.2L584.7 272.9L588.7 270.4L592.6 269.2L596.4 269.6L600 270.2L604.8 268.1L609.3 264.2L613.6 260.1L617.7 258.3L621.7 259.5L625.8 259.8L630 259.8L634.2 259.1L638.3 258.8L642.3 259.8L646.4 263.1L650.7 267.1L655.2 272.4L660 277.6L663.6 282.2L667.4 286.7L671.3 290.1L675.3 295.7L679.4 301.1L683.5 302.9L687.7 305.1L691.8 306.6L696 308L700 309.3L704 311.2L707.8 313.3L711.7 313.7L715.5 313.6L719.4 313.8L723.3 314L727.3 313.7L731.4 312.4L735.6 309.8L740 305.8L743.8 303.1L747.9 300.4L752 296.4L756.3 291.6L760.6 287.9L765 282.5L769.4 276.7L773.7 271.5L778 266.7L782.1 261.8L786.2 258.1L790 255.7L794.4 252.7L798.6 248.6L802.7 244L806.7 238.4L810.6 232.9L814.5 228.2L818.3 224L822.2 220.1L826 217.1L830 217.9L834 220.5L838 221.6L842 222.4L846 222.5L850 224.1L854 226.9L858 228.5L862 230L866 231.8L870 233.7L874 235.9L877.8 237.8L881.7 240.4L885.5 244.8L889.4 250.6L893.3 255.4L897.3 259.5L901.4 262L905.6 265.4L910 270.5L913.8 275L917.9 279.3L922 281.3L926.3 284L930.6 287.6L935 289.8L939.4 291.4L943.7 293L948 293L952.1 293.2L956.2 295.9L960 298.6L964.6 300.6L969.3 303.6L974 307.2L978.6 308.7L983.1 310.3L987.4 311.7L991.3 312.2L994.7 313.7L997.7 316.7L1000 319.3L1000 600Z" fill="url(#wash-mid)" />
+              <path class="painting__ridge" d="M300 593.5 302.3 591.8 305 590 308.2 587.8 311.7 584.7 315.6 581.2 319.7 579 324 575 328.5 569.5 333.1 566.2 337.8 562.2 342.4 556.8 347 550.5 351.5 546 355.9 544.6 360 542.5 364 539 368.1 535.8 372.2 531.3 376.3 528.2 380.4 525.7 384.5 524.1 388.6 523.9 392.7 522.5 396.7 520.8 400.7 517.8 404.7 514.5 408.6 512.3 412.5 509.9 416.3 506.1 420 501.9 424.5 497.1 428.9 492.4 433.2 487.5 437.4 482.5 441.5 477.6 445.6 472.9 449.7 467 453.7 459.3 457.7 452.1 461.8 445.5 465.9 438.4 470 431 474.2 423.8 478.4 417.1 482.7 410.6 487 403.7 491.3 395.7 495.6 386.9 499.9 379 504.1 372 508.2 363.3 512.2 356.1 516.2 351.8 520 347.3 524.4 342.4 528.6 339.7 532.7 336.4 536.7 330.5 540.6 325.3 544.5 320.9 548.3 316.4 552.2 312.6 556 308.3 560 303.3 564 297.3 568.2 292 572.3 288.2 576.5 283.5 580.6 277.2 584.7 272.9 588.7 270.4 592.6 269.2 596.4 269.6 600 270.2 604.8 268.1 609.3 264.2 613.6 260.1 617.7 258.3 621.7 259.5 625.8 259.8 630 259.8 634.2 259.1 638.3 258.8 642.3 259.8 646.4 263.1 650.7 267.1 655.2 272.4 660 277.6 663.6 282.2 667.4 286.7 671.3 290.1 675.3 295.7 679.4 301.1 683.5 302.9 687.7 305.1 691.8 306.6 696 308 700 309.3 704 311.2 707.8 313.3 711.7 313.7 715.5 313.6 719.4 313.8 723.3 314 727.3 313.7 731.4 312.4 735.6 309.8 740 305.8 743.8 303.1 747.9 300.4 752 296.4 756.3 291.6 760.6 287.9 765 282.5 769.4 276.7 773.7 271.5 778 266.7 782.1 261.8 786.2 258.1 790 255.7 794.4 252.7 798.6 248.6 802.7 244 806.7 238.4 810.6 232.9 814.5 228.2 818.3 224 822.2 220.1 826 217.1 830 217.9 834 220.5 838 221.6 842 222.4 846 222.5 850 224.1 854 226.9 858 228.5 862 230 866 231.8 870 233.7 874 235.9 877.8 237.8 881.7 240.4 885.5 244.8 889.4 250.6 893.3 255.4 897.3 259.5 901.4 262 905.6 265.4 910 270.5 913.8 275 917.9 279.3 922 281.3 926.3 284 930.6 287.6 935 289.8 939.4 291.4 943.7 293 948 293 952.1 293.2 956.2 295.9 960 298.6 964.6 300.6 969.3 303.6 974 307.2 978.6 308.7 983.1 310.3 987.4 311.7 991.3 312.2 994.7 313.7 997.7 316.7 1000 319.3" />
+              <path class="painting__cun painting__cun--mid" d="M687.2 338.1Q692.4 342.6 675.7 356M769.4 315.9Q780.8 319.6 760.1 330.7M685.1 309.8Q688.3 312.9 672.7 322.2M553.5 340.1Q560.2 343.7 541.1 354.4M783.6 301.6Q788.4 306.7 766.8 321.9M818.4 244.7Q826 248.3 810.8 259.3M538.4 364.6Q546.2 367.3 528.3 375.2M590.3 307.5Q601.1 309.8 580.3 316.7M603.2 298.5Q606.6 300.7 593.4 307.2M861.1 237.6Q864.5 241.5 847.4 253.5M780.1 298.4Q792.7 301.2 774.6 309.5M601.9 280.3Q611.2 283.9 592.2 294.7M741.5 326.7Q741.7 332 724.6 348M686.7 336.9Q695.4 340.1 675.8 349.5" />
+              <g class="painting__moss painting__moss--mid"><ellipse cx="676.4" cy="304.1" rx="2.5" ry="1.6" transform="rotate(-5.6 676.4 304.1)"/><ellipse cx="880.8" cy="246.1" rx="2.6" ry="1.6" transform="rotate(14.8 880.8 246.1)"/><ellipse cx="979.6" cy="313.3" rx="3.4" ry="1.7" transform="rotate(-11.1 979.6 313.3)"/><ellipse cx="668.7" cy="292.6" rx="4" ry="2.2" transform="rotate(-10.1 668.7 292.6)"/><ellipse cx="525.3" cy="347.4" rx="4.4" ry="2.2" transform="rotate(16.8 525.3 347.4)"/><ellipse cx="527.4" cy="346" rx="2.5" ry="1.7" transform="rotate(-13.8 527.4 346)"/><ellipse cx="884.9" cy="249.1" rx="4.1" ry="2.3" transform="rotate(17.5 884.9 249.1)"/><ellipse cx="943.3" cy="296.4" rx="2.7" ry="1.5" transform="rotate(23.3 943.3 296.4)"/><ellipse cx="727.7" cy="319.6" rx="2.8" ry="1.7" transform="rotate(3.7 727.7 319.6)"/><ellipse cx="601.8" cy="273.3" rx="3.1" ry="1.6" transform="rotate(-13.2 601.8 273.3)"/><ellipse cx="594.8" cy="272.8" rx="2.8" ry="1.9" transform="rotate(6.5 594.8 272.8)"/><ellipse cx="960.7" cy="302.1" rx="3.8" ry="2.5" transform="rotate(15.4 960.7 302.1)"/><ellipse cx="558.2" cy="311.5" rx="3.8" ry="2.2" transform="rotate(24.8 558.2 311.5)"/><ellipse cx="906.5" cy="272.7" rx="3.6" ry="1.8" transform="rotate(7.7 906.5 272.7)"/><ellipse cx="957.3" cy="299" rx="2.8" ry="1.4" transform="rotate(-9 957.3 299)"/><ellipse cx="665.7" cy="290.7" rx="4" ry="2.3" transform="rotate(0.1 665.7 290.7)"/><ellipse cx="772.8" cy="275.7" rx="4.3" ry="2.8" transform="rotate(-16.5 772.8 275.7)"/><ellipse cx="853.4" cy="228.5" rx="2.8" ry="1.7" transform="rotate(-1.7 853.4 228.5)"/><ellipse cx="836.8" cy="224.8" rx="3.3" ry="1.9" transform="rotate(4.7 836.8 224.8)"/><ellipse cx="623.9" cy="265.5" rx="4.5" ry="2.2" transform="rotate(-21.7 623.9 265.5)"/><ellipse cx="519.7" cy="351.7" rx="3.7" ry="2" transform="rotate(-21.6 519.7 351.7)"/><ellipse cx="800.1" cy="249.4" rx="4.4" ry="2.1" transform="rotate(-1.4 800.1 249.4)"/><ellipse cx="887.8" cy="251.3" rx="4.4" ry="2" transform="rotate(23.8 887.8 251.3)"/><ellipse cx="915.6" cy="278.9" rx="2.8" ry="1.6" transform="rotate(-3.7 915.6 278.9)"/><ellipse cx="817" cy="231.3" rx="2.6" ry="1.6" transform="rotate(-8.9 817 231.3)"/><ellipse cx="963.6" cy="305" rx="3.6" ry="2.4" transform="rotate(-3.8 963.6 305)"/></g>
+            </g>
+            <g class="painting__layer painting__layer--near">
+              <path class="painting__mass" d="M560 600L560 596.7L562.4 593.5L565.4 590.5L569 588.8L573 587.4L577.3 585.6L581.9 584L586.6 581.3L591.5 579.5L596.3 577.1L601.1 573.9L605.7 569.4L610 563.3L614.2 559.1L618.3 556.5L622.5 554.2L626.7 551.1L630.8 547.6L635 545.9L639.2 544.5L643.3 543.1L647.5 540.9L651.7 539L655.8 537.2L660 533.4L664.2 528.3L668.4 522.8L672.7 516.8L677 510.3L681.3 503.7L685.6 497L689.9 490.3L694.1 483.6L698.2 476.6L702.2 468.8L706.2 463.2L710 458.4L714.4 452.4L718.6 449.6L722.7 445.4L726.7 441.3L730.6 434.9L734.5 430.4L738.3 427.3L742.2 423.1L746 418.2L750 411.8L754 406.7L758.1 402.2L762.2 397.7L766.2 393.4L770.3 388.3L774.4 382.5L778.4 380.6L782.3 375.5L786.2 369.3L790 365.7L794.7 358L799.3 348.4L803.9 338.4L808.4 334.1L812.8 329.7L817.1 324.9L821.1 317.7L825 313.7L829.7 308.7L834.1 303.2L838.1 301.9L842 300.8L845.9 299.7L850 299.7L854.2 301.6L858.3 304.7L862.5 308.1L866.7 310.6L870.8 312.8L875 310.8L879.1 306.6L883 300.5L886.9 294.3L890.9 290L895.3 286.9L900 283.9L903.9 282.5L908.2 279.5L912.6 274.9L917.2 268.8L921.8 260.9L926.4 256.7L930.8 256.3L935 255.7L939.5 255.9L943.8 258.1L947.9 262.2L952.1 266.4L956.2 269.3L960.5 270.6L965 274.2L969.4 272.2L974.2 268.9L979.3 266.1L984.4 260.5L989.2 255.9L993.6 250.7L997.3 247.7L1000 246.1L1000 600Z" fill="url(#wash-near)" />
+              <path class="painting__ridge painting__ridge--near" d="M560 596.7 562.4 593.5 565.4 590.5 569 588.8 573 587.4 577.3 585.6 581.9 584 586.6 581.3 591.5 579.5 596.3 577.1 601.1 573.9 605.7 569.4 610 563.3 614.2 559.1 618.3 556.5 622.5 554.2 626.7 551.1 630.8 547.6 635 545.9 639.2 544.5 643.3 543.1 647.5 540.9 651.7 539 655.8 537.2 660 533.4 664.2 528.3 668.4 522.8 672.7 516.8 677 510.3 681.3 503.7 685.6 497 689.9 490.3 694.1 483.6 698.2 476.6 702.2 468.8 706.2 463.2 710 458.4 714.4 452.4 718.6 449.6 722.7 445.4 726.7 441.3 730.6 434.9 734.5 430.4 738.3 427.3 742.2 423.1 746 418.2 750 411.8 754 406.7 758.1 402.2 762.2 397.7 766.2 393.4 770.3 388.3 774.4 382.5 778.4 380.6 782.3 375.5 786.2 369.3 790 365.7 794.7 358 799.3 348.4 803.9 338.4 808.4 334.1 812.8 329.7 817.1 324.9 821.1 317.7 825 313.7 829.7 308.7 834.1 303.2 838.1 301.9 842 300.8 845.9 299.7 850 299.7 854.2 301.6 858.3 304.7 862.5 308.1 866.7 310.6 870.8 312.8 875 310.8 879.1 306.6 883 300.5 886.9 294.3 890.9 290 895.3 286.9 900 283.9 903.9 282.5 908.2 279.5 912.6 274.9 917.2 268.8 921.8 260.9 926.4 256.7 930.8 256.3 935 255.7 939.5 255.9 943.8 258.1 947.9 262.2 952.1 266.4 956.2 269.3 960.5 270.6 965 274.2 969.4 272.2 974.2 268.9 979.3 266.1 984.4 260.5 989.2 255.9 993.6 250.7 997.3 247.7 1000 246.1" />
+              <path class="painting__cun" d="M812.8 393.6Q821 398.7 797.2 413.9M676.5 533.7Q685.4 537.4 664.3 548.4M849.4 362.6Q852 366.4 837 378M871.8 339Q878.2 343 858.3 355.2M946.4 305.9Q952.9 310.6 932.1 324.5M692.5 498.4Q696.8 505.5 670.9 526.8M781.2 401.9Q784.4 406.1 769.9 418.6M759.3 463.4Q767.5 466.9 747.7 477.5M904 311.5Q906.8 317.1 883.2 333.8M808.2 389.9Q813.4 393.7 792.9 405.2M751.9 478.9Q754.9 483.9 735.3 499.2M941.2 299.7Q942.9 303.3 922.4 314.2M934.4 268.2Q943.3 271.5 924.7 281.3M769.3 411.9Q775.4 416.8 754.7 431.7M666.2 559.5Q676.4 562.8 656.6 572.5M996.3 301.5Q997 307.7 980.4 326.2M896.9 332.9Q897.5 337 876.7 349.4M903.4 299.9Q911 303 895.2 312.2M661.6 596.9Q659.5 602.6 639.1 619.8M796.6 418.8Q801.6 422.3 781.4 432.6" />
+              <g class="painting__moss"><ellipse cx="799.7" cy="350.8" rx="4.7" ry="2.4" transform="rotate(19.4 799.7 350.8)"/><ellipse cx="827.2" cy="315.4" rx="5.4" ry="3.4" transform="rotate(11 827.2 315.4)"/><ellipse cx="988.2" cy="262.1" rx="6.5" ry="3.7" transform="rotate(17.7 988.2 262.1)"/><ellipse cx="895.6" cy="289.2" rx="6.4" ry="3.9" transform="rotate(-15.6 895.6 289.2)"/><ellipse cx="970.4" cy="274" rx="4.3" ry="2.9" transform="rotate(-6.8 970.4 274)"/><ellipse cx="771.2" cy="391.4" rx="5.8" ry="3.6" transform="rotate(16.3 771.2 391.4)"/><ellipse cx="747.4" cy="420.8" rx="4.3" ry="2" transform="rotate(4.8 747.4 420.8)"/><ellipse cx="899.9" cy="291" rx="4.3" ry="2.8" transform="rotate(17.9 899.9 291)"/><ellipse cx="941.1" cy="264.2" rx="3.9" ry="1.9" transform="rotate(13.3 941.1 264.2)"/><ellipse cx="977.1" cy="270.7" rx="3.8" ry="2.6" transform="rotate(19.4 977.1 270.7)"/><ellipse cx="924.2" cy="263.2" rx="5.9" ry="3.4" transform="rotate(21.4 924.2 263.2)"/><ellipse cx="937.1" cy="261.9" rx="4.9" ry="2.7" transform="rotate(-14.8 937.1 261.9)"/><ellipse cx="721.9" cy="448.3" rx="3.6" ry="2.4" transform="rotate(-4.3 721.9 448.3)"/><ellipse cx="844.5" cy="302.7" rx="4.6" ry="2.5" transform="rotate(-22.3 844.5 302.7)"/><ellipse cx="833.4" cy="307.8" rx="3.8" ry="2.7" transform="rotate(3.9 833.4 307.8)"/><ellipse cx="791.8" cy="367.9" rx="4.8" ry="2.4" transform="rotate(20.3 791.8 367.9)"/><ellipse cx="716.3" cy="457.6" rx="5.9" ry="3.2" transform="rotate(4.2 716.3 457.6)"/><ellipse cx="932.1" cy="258.4" rx="6" ry="4.1" transform="rotate(6.8 932.1 258.4)"/><ellipse cx="783.2" cy="380.4" rx="5" ry="2.5" transform="rotate(-20.9 783.2 380.4)"/><ellipse cx="764.8" cy="403.1" rx="3.6" ry="2.4" transform="rotate(6.3 764.8 403.1)"/><ellipse cx="969.9" cy="280.6" rx="5.6" ry="3" transform="rotate(10 969.9 280.6)"/><ellipse cx="738" cy="430.5" rx="6.2" ry="3" transform="rotate(16.7 738 430.5)"/><ellipse cx="917" cy="271.5" rx="4.6" ry="2.5" transform="rotate(16 917 271.5)"/><ellipse cx="934.2" cy="259.1" rx="3.8" ry="1.8" transform="rotate(-20.7 934.2 259.1)"/><ellipse cx="809.2" cy="340" rx="5.9" ry="3.6" transform="rotate(16.9 809.2 340)"/><ellipse cx="703.7" cy="473.4" rx="3.9" ry="2.4" transform="rotate(-21.1 703.7 473.4)"/><ellipse cx="746.3" cy="423.5" rx="4.1" ry="2.8" transform="rotate(-10.4 746.3 423.5)"/><ellipse cx="860" cy="308.6" rx="5.5" ry="3" transform="rotate(-2.2 860 308.6)"/><ellipse cx="927" cy="263.7" rx="5.4" ry="3.7" transform="rotate(-1.4 927 263.7)"/><ellipse cx="776.1" cy="388" rx="3.6" ry="2.2" transform="rotate(10.8 776.1 388)"/><ellipse cx="913" cy="281.5" rx="3.9" ry="2" transform="rotate(11.7 913 281.5)"/><ellipse cx="702.4" cy="477.1" rx="5.1" ry="2.4" transform="rotate(-19.7 702.4 477.1)"/><ellipse cx="985.3" cy="261.3" rx="4.5" ry="2.6" transform="rotate(11.8 985.3 261.3)"/><ellipse cx="759.9" cy="407.2" rx="6.2" ry="4.3" transform="rotate(-17.4 759.9 407.2)"/></g>
+              <path class="painting__mass painting__rock" d="M0 600L0 571.7L2.4 571L5.4 570.3L9.1 568.6L13.1 565.8L17.5 564.1L22.1 562.3L26.7 560.7L31.4 559.2L35.8 557.7L40 555.7L44 554.4L48 554.3L52 553.1L56 551.9L60 552.2L64 552.1L68 551.2L72 551.3L76 552L80 552.7L84 553.5L88 553.6L92 553.7L96 553.8L100 553.8L104 553.3L108 553.2L112 553.6L116 555.9L120 558.4L124 560.1L128.2 562.2L132.3 563.8L136.5 565.8L140.6 568L144.7 571L148.7 573.7L152.6 575.1L156.4 577.9L160 581.1L165.1 583.7L170.2 587.5L175.1 592.4L179.8 594.3L183.9 595.5L187.4 596.2L190 597.3L190 600Z" fill="url(#wash-near)" />
+            </g>
+            <g class="painting__water">
+              <path d="M408 520h46M436 532h28M476 514h22M380 540h34" />
+            </g>
+            <g class="painting__boat">
+              <path d="M470 497q26 9 52 0q-7 9-26 9q-19 0-26-9z" />
+              <path class="painting__boatman" d="M500 495v-17M492 478l8-6l8 6" />
+            </g>
+            <g class="painting__stones">
+              <ellipse class="stone-shadow" cx="304" cy="507" rx="19" ry="6" />
+              <ellipse class="stone-shadow" cx="354" cy="507" rx="19" ry="6" />
+              <ellipse class="stone-shadow" cx="354" cy="457" rx="19" ry="6" />
+              <ellipse class="stone-shadow" cx="404" cy="507" rx="19" ry="6" />
+              <circle class="stone stone--1" cx="300" cy="500" r="21" fill="url(#stone-black)" />
+              <circle class="stone stone--2" cx="350" cy="500" r="21" fill="url(#stone-white)" />
+              <circle class="stone stone--3" cx="350" cy="450" r="21" fill="url(#stone-black)" />
+              <circle class="stone stone--4" cx="400" cy="500" r="21" fill="url(#stone-black)" />
+              <circle class="stone stone--ghost" cx="350" cy="550" r="21" />
+            </g>
+          </svg>
           </div>
 
-          <dl class="game-stats" aria-label="本局状态">
-            <div>
-              <dt>用时</dt>
-              <dd id="timer" aria-label="用时 0 分 0 秒">00:00</dd>
-            </div>
-            <div>
-              <dt>错误</dt>
-              <dd><span id="mistake-count">0</span><small> 次</small></dd>
-            </div>
-            <div>
-              <dt>提示</dt>
-              <dd><span id="hint-count">0</span><small> / 3</small></dd>
-            </div>
-          </dl>
-
-          <div class="board-frame">
-            <span class="board-frame__corner board-frame__corner--top" aria-hidden="true"></span>
-            <div
-              id="sudoku-grid"
-              role="grid"
-              aria-label="九乘九数独棋盘"
-              aria-describedby="board-help"
-            ></div>
-            <span class="board-frame__corner board-frame__corner--bottom" aria-hidden="true"></span>
+          <div class="hero__inscription">
+            <h1 class="hero__title" id="hero-title">
+              <span class="hero__glyph">游</span><span class="hero__glyph">于</span><span class="hero__glyph">艺</span>
+            </h1>
+            <span class="hero__seal" aria-hidden="true">一刻</span>
           </div>
 
-          <p class="status-line" id="status-message" aria-live="polite" aria-atomic="true">
-            <span class="status-line__mark" aria-hidden="true">·</span>
-            <span id="status-text">选一格，慢慢来。</span>
-          </p>
-          <p class="visually-hidden" id="board-help">
-            使用方向键移动，数字键填写；按 N 切换候选，按 U 撤销。
-          </p>
+          <div class="hero__copy">
+            <p class="hero__kicker">志于道，据于德，依于仁，游于艺。<span>——《论语·述而》</span></p>
+            <p class="hero__lede">方寸之间，<br />自有天地。</p>
+            <p class="hero__sub">数独练推理，下棋练远见。每一局都不着急——想清楚，再落子。</p>
+            <div class="hero__actions">
+              <a class="paper-button paper-button--primary" href="#album">翻开册页</a>
+              <a class="paper-button" href="/sudoku/">先解一题数独</a>
+            </div>
+          </div>
         </section>
 
-        <aside class="control-sheet" aria-label="练习工具">
-          <section class="control-section" aria-labelledby="difficulty-title">
-            <div class="control-section__heading">
-              <h2 id="difficulty-title">选择难度</h2>
-              <span>三阶</span>
+        <section class="album" id="album" aria-labelledby="album-title">
+          <header class="album__heading">
+            <p class="section-mark">册页 · 四开</p>
+            <h2 id="album-title">今天，想玩哪一局？</h2>
+            <p class="album__note">点开任意一开就能开始。棋局和进度只留在这台设备上，下次回来可以接着下。</p>
+          </header>
+
+          <section class="album__part" aria-labelledby="part-reason">
+            <div class="album__part-heading">
+              <h3 id="part-reason"><span class="album__part-glyph" aria-hidden="true">数</span>推理</h3>
+              <p>一个人，一支笔，把每一格想明白。</p>
             </div>
-            <div class="difficulty-picker" role="radiogroup" aria-label="新游戏难度">
-              <button type="button" data-difficulty="easy" tabindex="0" role="radio" aria-checked="true">
-                <strong>入门</strong><small>舒展起笔</small>
-              </button>
-              <button type="button" data-difficulty="medium" tabindex="-1" role="radio" aria-checked="false">
-                <strong>进阶</strong><small>凝神推演</small>
-              </button>
-              <button type="button" data-difficulty="hard" tabindex="-1" role="radio" aria-checked="false">
-                <strong>挑战</strong><small>深水静思</small>
-              </button>
+
+            <div class="leaf-row leaf-row--reason">
+              <a class="leaf leaf--wide leaf--sudoku" href="/sudoku/" data-game="sudoku">
+                <span class="leaf__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" focusable="false">
+                    <path class="art-sudoku__faint" d="M20 20H220M20 60H220M20 100H220M20 140H220M20 20V140M60 20V140M180 20V140M220 20V140" />
+                    <rect class="art-sudoku__box" x="60" y="20" width="120" height="120" />
+                    <path class="art-sudoku__lines" d="M100 20V140M140 20V140M60 60H180M60 100H180" />
+                    <text class="art-sudoku__given" x="80" y="51">5</text>
+                    <text class="art-sudoku__given" x="160" y="51">3</text>
+                    <text class="art-sudoku__given" x="120" y="91">7</text>
+                    <text class="art-sudoku__given" x="160" y="131">9</text>
+                    <text class="art-sudoku__given" x="40" y="131">2</text>
+                    <text class="art-sudoku__given" x="200" y="131">6</text>
+                    <rect class="art-sudoku__select" x="63" y="103" width="34" height="34" />
+                    <g class="art-sudoku__notes">
+                      <text x="72" y="116">1</text>
+                      <text x="88" y="116">4</text>
+                      <text x="80" y="132">8</text>
+                    </g>
+                    <text class="art-sudoku__answer" x="80" y="131">4</text>
+                  </svg>
+                </span>
+                <span class="leaf__body">
+                  <span class="leaf__index">第一开</span>
+                  <span class="leaf__title">数独</span>
+                  <span class="leaf__latin">Sudoku · 九宫推理</span>
+                  <span class="leaf__desc">每行、每列、每宫，一到九各出现一次。从“只差一个数”的格子入手，一格一格推出答案。</span>
+                  <span class="leaf__tags">
+                    <span>入门</span><span>进阶</span><span>挑战</span>
+                  </span>
+                  <span class="leaf__cta">开始练习<span aria-hidden="true">→</span></span>
+                </span>
+                <span class="leaf__resume" data-resume hidden>未完</span>
+              </a>
+
+              <div class="leaf leaf--blank" aria-label="待续：更多推理题">
+                <span class="leaf__index">第五开 · 待续</span>
+                <span class="leaf__title">空白一开</span>
+                <span class="leaf__desc">留给下一种推理题：数织、华容道、一笔画……</span>
+                <span class="leaf__blank-seal" aria-hidden="true">待续</span>
+              </div>
             </div>
           </section>
 
-          <section class="control-section game-actions" aria-label="游戏操作">
-            <button class="paper-button paper-button--primary" type="button" data-action="new-game">
-              新开一局
-            </button>
-            <button class="paper-button" type="button" data-action="continue">继续上次</button>
-            <button class="paper-button paper-button--quiet" type="button" data-action="restart">
-              重开本局
-            </button>
-          </section>
-
-          <section class="control-section input-section" aria-labelledby="input-title">
-            <div class="control-section__heading">
-              <h2 id="input-title">落子</h2>
-              <span>一至九</span>
+          <section class="album__part" aria-labelledby="part-play">
+            <div class="album__part-heading">
+              <h3 id="part-play"><span class="album__part-glyph" aria-hidden="true">弈</span>对弈</h3>
+              <p>和电脑下，也可以和家人同屏对坐。</p>
             </div>
-            <div class="number-pad" aria-label="数字键盘">
-              <button type="button" data-number="1" aria-label="填写数字 1">1</button>
-              <button type="button" data-number="2" aria-label="填写数字 2">2</button>
-              <button type="button" data-number="3" aria-label="填写数字 3">3</button>
-              <button type="button" data-number="4" aria-label="填写数字 4">4</button>
-              <button type="button" data-number="5" aria-label="填写数字 5">5</button>
-              <button type="button" data-number="6" aria-label="填写数字 6">6</button>
-              <button type="button" data-number="7" aria-label="填写数字 7">7</button>
-              <button type="button" data-number="8" aria-label="填写数字 8">8</button>
-              <button type="button" data-number="9" aria-label="填写数字 9">9</button>
+
+            <div class="leaf-row leaf-row--games">
+              <a class="leaf leaf--xiangqi" href="/xiangqi/" data-game="xiangqi">
+                <span class="leaf__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" focusable="false">
+                    <rect class="art-xq__board" x="0" y="0" width="240" height="160" />
+                    <path class="art-xq__lines" d="M0 20H240M0 60H240M0 100H240M0 140H240M20 0V60M60 0V60M100 0V60M140 0V60M180 0V60M220 0V60M20 100V160M60 100V160M100 100V160M140 100V160M180 100V160M220 100V160" />
+                    <text class="art-xq__river" x="60" y="88">楚 河</text>
+                    <text class="art-xq__river" x="180" y="88">汉 界</text>
+                    <g class="art-xq__piece art-xq__piece--black">
+                      <circle cx="180" cy="20" r="17" />
+                      <circle class="art-xq__ring" cx="180" cy="20" r="13" />
+                      <text x="180" y="26">车</text>
+                    </g>
+                    <g class="art-xq__piece art-xq__piece--red art-xq__mover">
+                      <circle cx="100" cy="140" r="17" />
+                      <circle class="art-xq__ring" cx="100" cy="140" r="13" />
+                      <text x="100" y="146">炮</text>
+                    </g>
+                  </svg>
+                </span>
+                <span class="leaf__body">
+                  <span class="leaf__index">第二开</span>
+                  <span class="leaf__title">象棋</span>
+                  <span class="leaf__latin">Xiangqi · 楚河汉界</span>
+                  <span class="leaf__desc">马走日，象走田，炮要隔子打。点一下棋子，能走的位置会亮出来。</span>
+                  <span class="leaf__tags">
+                    <span>人机三档</span><span>双人同屏</span><span>悔棋提示</span>
+                  </span>
+                  <span class="leaf__cta">摆开棋盘<span aria-hidden="true">→</span></span>
+                </span>
+                <span class="leaf__resume" data-resume hidden>未完</span>
+              </a>
+
+              <a class="leaf leaf--chess" href="/chess/" data-game="chess">
+                <span class="leaf__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" focusable="false">
+                    <rect class="art-chess__light" x="0" y="0" width="240" height="160" />
+                    <path class="art-chess__dark" d="M40 0h40v40h-40zM120 0h40v40h-40zM200 0h40v40h-40zM0 40h40v40h-40zM80 40h40v40h-40zM160 40h40v40h-40zM40 80h40v40h-40zM120 80h40v40h-40zM200 80h40v40h-40zM0 120h40v40h-40zM80 120h40v40h-40zM160 120h40v40h-40z" />
+                    <rect class="art-chess__target" x="124" y="44" width="32" height="32" />
+                    <g class="art-chess__knight">
+                      <svg x="42" y="82" width="36" height="36" viewBox="0 0 100 100">
+                        <path class="art-chess__piece" d="M71 82C73 67 76 54 74 42C72 30 64 20 54 16L51 7L45 15C36 17 28 25 24 35L17 47Q15 54 22 57L31 55Q37 53 41 49C39 60 34 70 31 82Z" />
+                        <path class="art-chess__base" d="M20 92H80Q82 92 82 89V86Q82 82 77 82H23Q18 82 18 86V89Q18 92 20 92Z" />
+                        <circle class="art-chess__eye" cx="37" cy="31" r="2.6" />
+                      </svg>
+                    </g>
+                    <g class="art-chess__pawn">
+                      <svg x="162" y="82" width="36" height="36" viewBox="0 0 100 100">
+                        <path class="art-chess__piece art-chess__piece--white" d="M50 26A12 12 0 1 1 49.9 26ZM38 52Q44 50 50 50Q56 50 62 52Q60 58 58 60Q64 68 70 82H30Q36 68 42 60Q40 58 38 52ZM20 92H80Q82 92 82 89V86Q82 82 77 82H23Q18 82 18 86V89Q18 92 20 92Z" />
+                      </svg>
+                    </g>
+                  </svg>
+                </span>
+                <span class="leaf__body">
+                  <span class="leaf__index">第三开</span>
+                  <span class="leaf__title">国际象棋</span>
+                  <span class="leaf__latin">Chess · 王车易位</span>
+                  <span class="leaf__desc">六种棋子，各走各的路。王车易位、吃过路兵、兵升变都按正式规则来。</span>
+                  <span class="leaf__tags">
+                    <span>人机三档</span><span>双人同屏</span><span>棋谱记录</span>
+                  </span>
+                  <span class="leaf__cta">摆开棋盘<span aria-hidden="true">→</span></span>
+                </span>
+                <span class="leaf__resume" data-resume hidden>未完</span>
+              </a>
+
+              <a class="leaf leaf--go" href="/go/" data-game="go">
+                <span class="leaf__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" focusable="false">
+                    <defs>
+                      <radialGradient id="leaf-stone-black" cx="0.36" cy="0.3" r="0.75">
+                        <stop offset="0" stop-color="#6d6e6a" />
+                        <stop offset="0.38" stop-color="#262826" />
+                        <stop offset="1" stop-color="#0b0c0b" />
+                      </radialGradient>
+                      <radialGradient id="leaf-stone-white" cx="0.36" cy="0.3" r="0.78">
+                        <stop offset="0" stop-color="#ffffff" />
+                        <stop offset="0.55" stop-color="#f1ece1" />
+                        <stop offset="1" stop-color="#c9c1b0" />
+                      </radialGradient>
+                    </defs>
+                    <rect class="art-go__board" x="0" y="0" width="240" height="160" />
+                    <path class="art-go__lines" d="M0 16H240M0 48H240M0 80H240M0 112H240M0 144H240M24 0V160M56 0V160M88 0V160M120 0V160M152 0V160M184 0V160M216 0V160" />
+                    <circle class="art-go__star" cx="120" cy="80" r="3.2" />
+                    <circle cx="120" cy="16" r="14" fill="url(#leaf-stone-black)" />
+                    <circle cx="88" cy="48" r="14" fill="url(#leaf-stone-black)" />
+                    <circle class="art-go__captured" cx="120" cy="48" r="14" fill="url(#leaf-stone-white)" />
+                    <circle cx="152" cy="48" r="14" fill="url(#leaf-stone-black)" />
+                    <circle cx="88" cy="80" r="14" fill="url(#leaf-stone-white)" />
+                    <circle cx="152" cy="80" r="14" fill="url(#leaf-stone-white)" />
+                    <circle cx="120" cy="112" r="14" fill="url(#leaf-stone-black)" />
+                    <circle cx="184" cy="112" r="14" fill="url(#leaf-stone-white)" />
+                    <circle class="art-go__drop" cx="120" cy="80" r="14" fill="url(#leaf-stone-black)" />
+                  </svg>
+                </span>
+                <span class="leaf__body">
+                  <span class="leaf__index">第四开</span>
+                  <span class="leaf__title">围棋</span>
+                  <span class="leaf__latin">Go · 黑白之间</span>
+                  <span class="leaf__desc">轮流落子，没有气的棋子会被提走。先从 9 路小棋盘开始，终局自动数子。</span>
+                  <span class="leaf__tags">
+                    <span>9 · 13 · 19 路</span><span>人机三档</span><span>终局数子</span>
+                  </span>
+                  <span class="leaf__cta">摆开棋盘<span aria-hidden="true">→</span></span>
+                </span>
+                <span class="leaf__resume" data-resume hidden>未完</span>
+              </a>
             </div>
           </section>
+        </section>
 
-          <section class="tool-row" aria-label="辅助工具">
-            <button type="button" data-action="note" aria-pressed="false">
-              <span aria-hidden="true">铅</span><strong>候选</strong><small>N</small>
-            </button>
-            <button type="button" data-action="erase">
-              <span aria-hidden="true">净</span><strong>擦除</strong><small>⌫</small>
-            </button>
-            <button type="button" data-action="undo">
-              <span aria-hidden="true">回</span><strong>撤销</strong><small>U</small>
-            </button>
-            <button type="button" data-action="hint">
-              <span aria-hidden="true">启</span><strong>提示</strong><small id="hint-button-count">3 次</small>
-            </button>
-          </section>
-
-          <p class="keyboard-note">
-            <span aria-hidden="true">⌨</span>
-            键盘可用方向键、1–9、N、U 与 Delete。
-          </p>
-        </aside>
+        <section class="parents" aria-labelledby="parents-title">
+          <div class="parents__heading">
+            <p class="section-mark">写给家长</p>
+            <h2 id="parents-title">玩的是棋，练的是想</h2>
+          </div>
+          <ol class="parents__list">
+            <li>
+              <span class="parents__glyph" aria-hidden="true">静</span>
+              <h3>先静下来</h3>
+              <p>一次只下一局，只做一件事。没有排行榜，也没有倒计时催促。</p>
+            </li>
+            <li>
+              <span class="parents__glyph" aria-hidden="true">理</span>
+              <h3>每步有理由</h3>
+              <p>落子前问一句“为什么走这里”。提示和悔棋都能用，想明白比赢更要紧。</p>
+            </li>
+            <li>
+              <span class="parents__glyph" aria-hidden="true">进</span>
+              <h3>一档一档来</h3>
+              <p>电脑对手分启蒙、入门、进阶三档。从启蒙开始，赢得轻松了再往上走。</p>
+            </li>
+          </ol>
+        </section>
       </main>
 
       <footer>
         <p>无账号 · 无广告 · 无外部资源</p>
-        <p>愿每一格，都有自己的答案。</p>
+        <p>愿每一局，都有自己的答案。</p>
       </footer>
     </div>
 
-    <dialog
-      class="completion-panel"
-      id="completion-panel"
-      aria-labelledby="completion-title"
-    >
-      <div class="completion-panel__paper">
-        <span class="completion-panel__seal" aria-hidden="true">已解</span>
-        <p class="section-mark">本局收笔</p>
-        <h2 id="completion-title">方寸之间，次第分明</h2>
-        <p id="completion-summary">你完成了这一局。</p>
-        <dl>
-          <div><dt>用时</dt><dd id="final-time">00:00</dd></div>
-          <div><dt>错误</dt><dd id="final-mistakes">0 次</dd></div>
-          <div><dt>提示</dt><dd id="final-hints">0 次</dd></div>
-        </dl>
-        <button class="paper-button paper-button--primary" type="button" data-action="same-difficulty">
-          同难度再来一局
-        </button>
-      </div>
-    </dialog>
-
-    <noscript>需要启用浏览器中的 JavaScript 才能开始数独练习。</noscript>
-    <script type="module" src="./js/app.js"></script>
+    <noscript>首页无需脚本即可浏览；进入棋局需要启用 JavaScript。</noscript>
+    <script type="module" src="./js/home.js"></script>
   </body>
 </html>

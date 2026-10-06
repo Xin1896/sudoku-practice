@@ -1,80 +1,169 @@
-/* 棋类页面共用：布局、设置、棋谱、规则卡与结果面板 */
+/* 对弈室：棋盘是舞台，信息与操作收进侧栏，设置和规则放进浮层 */
 
-.play-layout {
-  display: grid;
-  gap: clamp(24px, 5vw, 48px);
-  padding: clamp(20px, 5vw, 50px) clamp(12px, 4vw, 42px) clamp(28px, 5vw, 54px);
+.game-shell {
+  width: min(100%, 1480px);
 }
 
-.play-sheet,
-.play-layout .control-sheet {
+/* 顶栏 */
+
+.game-bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px clamp(10px, 2.4vw, 24px);
+  border-bottom: 1px solid rgba(74, 67, 57, 0.2);
+}
+
+.game-bar__brand {
+  justify-self: center;
+  min-width: 0;
+  gap: 9px;
+}
+
+.game-bar .brand__seal {
+  width: 34px;
+  height: 34px;
+  border-width: 1.5px;
+  font-size: 11px;
+}
+
+.game-bar .brand__eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+.game-bar .brand__name {
+  overflow: hidden;
+  font-size: 19px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-bar__tools {
+  display: flex;
+  gap: 6px;
+}
+
+.bar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: rgba(251, 248, 241, 0.6);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bar-button__mode {
+  padding-right: 9px;
+  border-right: 1px solid var(--line);
+  color: var(--cinnabar-dark);
+  font-family: var(--font-song);
+  letter-spacing: 0.04em;
+}
+
+/* 房间：竖屏时从上到下排，横屏时棋盘居左、侧栏居右 */
+
+.game-room {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "top"
+    "stage"
+    "bottom"
+    "status"
+    "actions"
+    "record";
+  gap: 8px;
+  padding: 10px clamp(10px, 3vw, 22px) 22px;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  grid-area: stage;
+  min-width: 0;
+  place-items: center;
+  container: stage / inline-size;
+}
+
+.player-strip--top {
+  grid-area: top;
+}
+
+.player-strip--bottom {
+  grid-area: bottom;
+}
+
+.room-status {
+  grid-area: status;
   min-width: 0;
 }
 
-.play-sheet {
-  width: 100%;
-  max-width: max(300px, var(--sheet-limit));
-  margin-inline: auto;
+.action-bar {
+  grid-area: actions;
+}
+
+.record {
+  grid-area: record;
+}
+
+.board-frame--game {
+  width: min(100%, max(280px, var(--frame-limit)));
+  padding: 8px;
 }
 
 .game-page--xiangqi {
-  --sheet-limit: calc((100vh - 360px) * 0.9 + 18px);
-  --sheet-limit: calc((100dvh - 360px) * 0.9 + 18px);
+  --frame-limit: calc((100vh - 344px) * 0.9 + 18px);
+  --frame-limit: calc((100dvh - 344px) * 0.9 + 18px);
 }
 
 .game-page--chess,
 .game-page--go {
-  --sheet-limit: calc(100vh - 320px);
-  --sheet-limit: calc(100dvh - 320px);
+  --frame-limit: calc(100vh - 290px);
+  --frame-limit: calc(100dvh - 290px);
 }
 
-.play-sheet .game-heading {
-  margin-bottom: 14px;
+.stage__inscription {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
-.play-sheet .game-heading h1 {
-  max-width: 14em;
-}
-
-.turn-stamp {
-  flex: 0 0 auto;
-  min-width: 34px;
-  padding: 7px 7px;
-  border: 1px solid var(--line-strong);
-  color: var(--ink);
-  font-family: var(--font-song);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-align: center;
-  writing-mode: vertical-rl;
-}
-
-.turn-stamp[data-side="red"] {
-  border-color: var(--cinnabar);
-  color: var(--cinnabar);
-}
-
-.turn-stamp[data-side="light"] {
-  border-color: #8a8270;
-  color: #5f5847;
-  background: #fffdf6;
-}
-
-.turn-stamp[data-side="dark"] {
-  border-color: var(--ink);
-  color: #f6f1e6;
-  background: var(--ink);
-}
+/* 对弈双方 */
 
 .player-strip {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 9px;
-  min-height: 40px;
-  padding: 6px 2px;
+  gap: 4px 9px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid rgba(74, 67, 57, 0.18);
   color: var(--muted);
+  background: rgba(251, 248, 241, 0.55);
   font-size: 12px;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.player-strip.is-active {
+  border-color: rgba(162, 58, 42, 0.5);
+  box-shadow: inset 3px 0 0 var(--cinnabar);
 }
 
 .player-strip strong {
@@ -82,6 +171,10 @@
   font-family: var(--font-song);
   font-size: 15px;
   letter-spacing: 0.08em;
+}
+
+.player-strip.is-active strong {
+  color: var(--cinnabar-dark);
 }
 
 .player-strip__mark {
@@ -110,14 +203,10 @@
 }
 
 .player-strip__who {
-  padding: 2px 6px;
+  padding: 1px 6px;
   border: 1px solid var(--line);
   font-size: 11px;
   letter-spacing: 0.06em;
-}
-
-.player-strip.is-active strong {
-  color: var(--cinnabar-dark);
 }
 
 .player-strip.is-active .player-strip__who {
@@ -185,82 +274,98 @@
   font-weight: 700;
 }
 
-.board-frame--game {
-  padding: 8px;
+/* 状态、操作与棋谱 */
+
+.room-status .status-line {
+  min-height: 0;
+  margin: 0;
+  padding: 2px;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-.play-layout .control-section .choice-row + .choice-row {
-  margin-top: 8px;
-}
-
-.choice-row {
+.action-bar {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: 7px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
 }
 
-.choice-row button {
+.action-button {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 5px;
   min-width: 44px;
-  min-height: 52px;
-  padding: 7px 4px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.24);
+  min-height: 62px;
+  padding: 6px 2px;
+  border: 1px solid transparent;
+  color: var(--ink);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.choice-row button[aria-checked="true"] {
+.action-button__glyph {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid currentColor;
+  font-family: var(--font-song);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.action-button--primary .action-button__glyph {
+  border-color: var(--cinnabar);
+  color: #fffaf0;
+  background: var(--cinnabar);
+  box-shadow: 2px 2px 0 rgba(108, 41, 31, 0.2);
+}
+
+.action-button[aria-pressed="true"] {
   border-color: var(--cinnabar);
   color: var(--cinnabar-dark);
   background: rgba(162, 58, 42, 0.07);
-  box-shadow: inset 0 -3px 0 var(--cinnabar);
 }
 
-.choice-row strong,
-.choice-row small {
-  display: block;
+.record {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
 }
 
-.choice-row strong {
+.record__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.record__heading h2 {
+  margin: 0;
   font-family: var(--font-song);
-  font-size: 15px;
+  font-size: 14px;
+  letter-spacing: 0.16em;
 }
 
-.choice-row small {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.choice-label {
-  margin: 12px 0 7px;
+.record__heading span {
   color: var(--muted);
   font-size: 11px;
-  letter-spacing: 0.12em;
-}
-
-.choice-label:first-of-type {
-  margin-top: 0;
-}
-
-.play-layout .game-actions {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.play-layout .game-actions .paper-button--primary {
-  grid-column: 1 / -1;
-}
-
-.paper-button[aria-pressed="true"] {
-  border-color: var(--cinnabar);
-  color: var(--cinnabar-dark);
-  background: rgba(162, 58, 42, 0.07);
+  letter-spacing: 0.08em;
 }
 
 .move-record {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
+  align-content: start;
   gap: 3px 10px;
-  max-height: 176px;
+  max-height: 150px;
   margin: 0;
   padding: 2px 4px 2px 0;
   overflow-y: auto;
@@ -311,72 +416,211 @@
   font-size: 12px;
 }
 
-.rules-card {
-  margin-top: 4px;
-  border-top: 1px solid var(--line);
+/* 设置与规则浮层：窄屏从底部升起，宽屏居中 */
+
+.sheet {
+  width: min(calc(100% - 24px), 440px);
+  max-width: none;
+  max-height: min(88vh, 700px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  background: transparent;
+  overflow: visible;
 }
 
-.rules-card summary {
+.sheet--rules {
+  width: min(calc(100% - 24px), 640px);
+}
+
+.sheet::backdrop {
+  background: rgba(31, 34, 31, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.sheet__paper {
+  max-height: min(88vh, 700px);
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  border: 1px solid #c5b9a4;
+  background: var(--paper-light);
+  box-shadow: 10px 14px 0 rgba(27, 23, 18, 0.18);
+  overscroll-behavior: contain;
+}
+
+.sheet__heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 48px;
-  padding: 10px 0;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sheet__heading h2 {
+  margin: 0;
   font-family: var(--font-song);
-  font-size: 16px;
+  font-size: 18px;
+  letter-spacing: 0.14em;
+}
+
+.sheet__close {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
   font-weight: 700;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
   cursor: pointer;
-  list-style: none;
 }
 
-.rules-card summary::-webkit-details-marker {
-  display: none;
+.setting-row {
+  display: grid;
+  grid-template-columns: 4.8em minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px dashed rgba(185, 174, 155, 0.7);
 }
 
-.rules-card summary::after {
-  color: var(--cinnabar);
-  content: "展开";
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 400;
+.setting-row__label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
   letter-spacing: 0.12em;
 }
 
-.rules-card[open] summary::after {
-  content: "收起";
+.choice-row {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  border: 1px solid var(--line-strong);
 }
 
-.rules-card dl {
+.choice-row button {
+  min-width: 44px;
+  min-height: 48px;
+  padding: 6px 4px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.choice-row button:first-child {
+  border-left: 0;
+}
+
+.choice-row button[aria-checked="true"] {
+  color: #fffaf0;
+  background: var(--cinnabar);
+}
+
+.choice-row strong,
+.choice-row small {
+  display: block;
+}
+
+.choice-row strong {
+  font-family: var(--font-song);
+  font-size: 14px;
+}
+
+.choice-row small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.choice-row button[aria-checked="true"] small {
+  color: rgba(255, 250, 240, 0.86);
+}
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px 0;
+  border: 0;
+  color: var(--ink);
+  background: transparent;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.toggle-button__track {
+  position: relative;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 180ms ease;
+}
+
+.toggle-button__track::after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  content: "";
+  transition: transform 180ms ease;
+}
+
+.toggle-button[aria-pressed="true"] .toggle-button__track {
+  border-color: var(--cinnabar);
+  background: var(--cinnabar);
+}
+
+.toggle-button[aria-pressed="true"] .toggle-button__track::after {
+  background: #fffaf0;
+  transform: translateX(18px);
+}
+
+.sheet__note {
+  margin: 12px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.sheet__action {
+  width: 100%;
+}
+
+.rules-list {
   display: grid;
-  gap: 9px;
-  margin: 0 0 14px;
+  gap: 10px;
+  margin: 14px 0 0;
   font-size: 13px;
   line-height: 1.7;
 }
 
-.rules-card dl div {
+.rules-list div {
   display: grid;
-  grid-template-columns: 3.4em minmax(0, 1fr);
-  gap: 8px;
+  grid-template-columns: 4em minmax(0, 1fr);
+  gap: 10px;
 }
 
-.rules-card dt {
+.rules-list dt {
   color: var(--cinnabar-dark);
   font-family: var(--font-song);
   font-weight: 700;
 }
 
-.rules-card dd {
+.rules-list dd {
   margin: 0;
   color: var(--muted);
-}
-
-.rules-card p {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
 }
 
 .result-panel__actions {
@@ -384,11 +628,174 @@
   gap: 8px;
 }
 
-.board-help {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.6;
+@media (hover: hover) {
+  .bar-button:hover,
+  .sheet__close:hover {
+    border-color: var(--cinnabar);
+    color: var(--cinnabar-dark);
+  }
+
+  .action-button:hover:not(:disabled) {
+    border-color: var(--line);
+  }
+
+  .choice-row button:hover:not([aria-checked="true"]) {
+    background: rgba(162, 58, 42, 0.07);
+  }
+}
+
+@media (max-width: 559px) {
+  .sheet,
+  .sheet--rules {
+    width: 100%;
+    max-height: 88vh;
+    margin: auto 0 0;
+  }
+
+  .sheet__paper {
+    max-height: 88vh;
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    border-width: 1px 0 0;
+    box-shadow: 0 -10px 30px rgba(27, 23, 18, 0.18);
+  }
+
+  .bar-button__mode,
+  .game-bar .brand__eyebrow {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .game-bar {
+    gap: 6px;
+  }
+
+  .game-bar .brand__seal {
+    display: none;
+  }
+
+  .game-bar .home-link,
+  .bar-button {
+    padding-inline: 9px;
+  }
+}
+
+/* 横屏：整页即一间对弈室，棋盘按可用高度放到最大 */
+
+@media (min-width: 700px) and (min-aspect-ratio: 1/1) and (min-height: 430px) {
+  body.game-page {
+    padding: 10px max(10px, env(safe-area-inset-right)) 10px max(10px, env(safe-area-inset-left));
+  }
+
+  .game-page .game-shell {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: calc(100vh - 20px);
+    height: calc(100dvh - 20px);
+    margin-block: 0;
+  }
+
+  .game-page footer {
+    display: none;
+  }
+
+  .game-room {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) clamp(250px, 26vw, 330px);
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "stage top"
+      "stage status"
+      "stage record"
+      "stage actions"
+      "stage bottom";
+    column-gap: clamp(18px, 2.6vw, 36px);
+    row-gap: 10px;
+    min-height: 0;
+    padding: clamp(12px, 2.2vh, 22px) clamp(14px, 2.4vw, 30px);
+  }
+
+  .game-room::before {
+    grid-row: 1 / -1;
+    grid-column: 2;
+    margin-left: calc(clamp(18px, 2.6vw, 36px) / -2);
+    border-left: 1px solid rgba(74, 67, 57, 0.16);
+    content: "";
+    pointer-events: none;
+  }
+
+  .stage {
+    height: 100%;
+    min-height: 0;
+    container: stage / size;
+  }
+
+  .game-page--xiangqi .stage {
+    --frame-fit: calc((100cqh - 54px) * 0.9 + 18px);
+  }
+
+  .game-page--chess .stage,
+  .game-page--go .stage {
+    --frame-fit: 100cqh;
+  }
+
+  .board-frame--game {
+    width: min(100cqw, var(--frame-fit));
+  }
+
+  .player-strip {
+    padding: 9px 12px;
+  }
+
+  .player-strip__captures {
+    flex: 1 0 100%;
+    margin-left: 0;
+  }
+
+  .room-status .status-line {
+    font-size: 12.5px;
+  }
+
+  .move-record {
+    flex: 1;
+    max-height: none;
+  }
+
+  @container stage (min-aspect-ratio: 5 / 4) {
+    .stage__inscription {
+      top: 50%;
+      right: calc(50cqw + min(100cqw, var(--frame-fit)) / 2 + clamp(18px, 3cqw, 40px));
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
+      color: rgba(32, 39, 37, 0.58);
+      font-family: var(--font-kai);
+      font-size: clamp(17px, 3.2cqh, 28px);
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+    }
+  }
+
+  @container stage (min-aspect-ratio: 11 / 10) {
+    .game-page--xiangqi .stage__inscription {
+      top: 50%;
+      right: calc(50cqw + min(100cqw, var(--frame-fit)) / 2 + clamp(18px, 3cqw, 40px));
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
+      color: rgba(32, 39, 37, 0.58);
+      font-family: var(--font-kai);
+      font-size: clamp(17px, 3.2cqh, 28px);
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+    }
+  }
 }
 
 /* 棋盘格子按钮（三种棋共用） */
@@ -964,10 +1371,6 @@
 }
 
 @media (hover: hover) {
-  .choice-row button:hover {
-    border-color: var(--cinnabar);
-  }
-
   .board-cell:not(:disabled):hover .xq-piece {
     transform: translateY(-1px);
   }
@@ -978,24 +1381,6 @@
 
   .chess-board .board-cell.is-selected:hover {
     box-shadow: inset 0 0 0 3px var(--cinnabar);
-  }
-}
-
-@media (min-width: 560px) {
-  .play-layout .game-actions {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 900px) {
-  .play-layout {
-    grid-template-columns: minmax(0, 620px) minmax(280px, 350px);
-    align-items: start;
-    justify-content: space-between;
-  }
-
-  .play-layout .game-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

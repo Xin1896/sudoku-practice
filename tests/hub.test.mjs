@@ -88,6 +88,26 @@ test("每个子页面都能一步回到首页", () => {
   }
 });
 
+test("棋类页面以棋盘为舞台：设置与规则收进浮层，操作集中在工具条", () => {
+  for (const { path } of GAME_PAGES.slice(1)) {
+    const page = sources.get(path);
+    assert.match(page, /<header class="game-bar">/, `${path} 需要精简顶栏`);
+    assert.match(page, /<section class="stage"[^>]*>[\s\S]*?class="board-frame board-frame--game"/);
+    assert.match(page, /data-open="settings-panel"/);
+    assert.match(page, /data-open="rules-panel"/);
+    assert.match(page, /<dialog class="sheet" id="settings-panel"[\s\S]*?data-setting="opponent"[\s\S]*?<\/dialog>/);
+    assert.match(page, /<dialog class="sheet sheet--rules" id="rules-panel"/);
+    assert.match(page, /<div class="action-bar" role="toolbar"/);
+    assert.equal((page.match(/<h1\b/g) ?? []).length, 1, `${path} 只能有一个 h1`);
+  }
+
+  const styles = sources.get("games.css");
+  assert.match(styles, /container:\s*stage\s*\/\s*size/, "横屏时舞台按可用高度计算棋盘");
+  assert.match(styles, /width:\s*min\(100cqw,\s*var\(--frame-fit\)\)/);
+  assert.match(styles, /@media \(min-width: 700px\) and \(min-aspect-ratio: 1\/1\)/);
+  assert.match(sources.get("js/game-kit.js"), /export function bindSheets\(/);
+});
+
 test("所有页面遵守严格 CSP：没有内联脚本、内联样式和内联事件", () => {
   for (const file of htmlFiles) {
     const page = sources.get(file);

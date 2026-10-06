@@ -16,42 +16,31 @@
     <link rel="stylesheet" href="/games.css" />
   </head>
   <body class="game-page game-page--go">
-    <div class="page-shell">
-      <header class="masthead">
-        <a class="brand" href="/go/">
+    <div class="page-shell game-shell">
+      <header class="game-bar">
+        <a class="home-link" href="/">
+          <span class="home-link__arrow" aria-hidden="true">←</span>
+          <span>返回首页</span>
+        </a>
+        <a class="brand game-bar__brand" href="/go/">
           <span class="brand__seal" aria-hidden="true">围棋</span>
           <span>
             <span class="brand__eyebrow">一刻游艺 · 第四开</span>
             <span class="brand__name">围棋</span>
           </span>
         </a>
-        <p class="masthead__note">黑白交替，气尽则提。</p>
-        <nav class="site-nav" aria-label="站点导航">
-          <a class="home-link" href="/">
-            <span class="home-link__arrow" aria-hidden="true">←</span>
-            <span>返回首页</span>
-          </a>
-        </nav>
+        <div class="game-bar__tools">
+          <button class="bar-button" type="button" data-open="rules-panel" aria-haspopup="dialog">规则</button>
+          <button class="bar-button bar-button--mode" type="button" data-open="settings-panel" aria-haspopup="dialog">
+            <span class="bar-button__mode" id="mode-label">人机 · 启蒙 · 9 路</span>
+            <span>设置</span>
+          </button>
+        </div>
       </header>
 
-      <main class="play-layout">
-        <section class="play-sheet" aria-labelledby="game-title">
-          <div class="game-heading">
-            <div>
-              <p class="section-mark">对局 · <span id="mode-label">人机 · 启蒙 · 9 路</span></p>
-              <h1 id="game-title">黑白之间，围地为胜</h1>
-            </div>
-            <span class="turn-stamp" id="turn-stamp" data-side="dark">黑方下</span>
-          </div>
-
-          <div class="player-strip" id="player-top">
-            <span class="player-strip__mark" data-side="light" aria-hidden="true"></span>
-            <strong>白方</strong>
-            <span class="player-strip__who">电脑</span>
-            <span class="player-strip__thinking">思考中</span>
-            <span class="player-strip__captures"></span>
-          </div>
-
+      <main class="game-room">
+        <section class="stage" aria-labelledby="game-title">
+          <h1 class="stage__inscription" id="game-title">黑白之间　围地为胜</h1>
           <div class="board-frame board-frame--game">
             <span class="board-frame__corner board-frame__corner--top" aria-hidden="true"></span>
             <div class="go-board" id="go-board">
@@ -66,20 +55,32 @@
             </div>
             <span class="board-frame__corner board-frame__corner--bottom" aria-hidden="true"></span>
           </div>
+        </section>
 
-          <div class="player-strip" id="player-bottom">
-            <span class="player-strip__mark" data-side="dark" aria-hidden="true"></span>
-            <strong>黑方</strong>
-            <span class="player-strip__who">你</span>
-            <span class="player-strip__thinking">思考中</span>
-            <span class="player-strip__captures"></span>
-          </div>
+        <div class="player-strip player-strip--top" id="player-top">
+          <span class="player-strip__mark" data-side="light" aria-hidden="true"></span>
+          <strong>白方</strong>
+          <span class="player-strip__who">电脑</span>
+          <span class="player-strip__thinking">思考中</span>
+          <span class="player-strip__captures"></span>
+        </div>
 
+        <div class="player-strip player-strip--bottom" id="player-bottom">
+          <span class="player-strip__mark" data-side="dark" aria-hidden="true"></span>
+          <strong>黑方</strong>
+          <span class="player-strip__who">你</span>
+          <span class="player-strip__thinking">思考中</span>
+          <span class="player-strip__captures"></span>
+        </div>
+
+        <div class="room-status">
           <p class="status-line" id="status-message" aria-live="polite" aria-atomic="true">
             <span class="status-line__mark" aria-hidden="true">·</span>
             <span id="status-text">黑方先下。点一个交叉点落子。</span>
           </p>
-
+          <p class="visually-hidden" id="board-help">
+            用方向键在交叉点之间移动，回车或空格落子；开启“点两下才落子”时，Esc 取消预览。
+          </p>
           <section class="go-score" id="go-score" aria-labelledby="score-title" hidden>
             <h2 class="visually-hidden" id="score-title">数子结果</h2>
             <dl class="go-score__totals">
@@ -94,92 +95,38 @@
               <button class="paper-button" type="button" data-action="resume">还没下完</button>
             </div>
           </section>
-          <p class="visually-hidden" id="board-help">
-            用方向键在交叉点之间移动，回车或空格落子。
-          </p>
+        </div>
+
+        <div class="action-bar" role="toolbar" aria-label="对局操作">
+          <button class="action-button action-button--primary" type="button" data-action="new-game">
+            <span class="action-button__glyph" aria-hidden="true">新</span>
+            <span data-label>新局</span>
+          </button>
+          <button class="action-button" type="button" data-action="undo">
+            <span class="action-button__glyph" aria-hidden="true">悔</span>
+            <span data-label>悔棋</span>
+          </button>
+          <button class="action-button" type="button" data-action="hint">
+            <span class="action-button__glyph" aria-hidden="true">启</span>
+            <span data-label>提示</span>
+          </button>
+          <button class="action-button" type="button" data-action="pass">
+            <span class="action-button__glyph" aria-hidden="true">停</span>
+            <span data-label>停一手</span>
+          </button>
+          <button class="action-button" type="button" data-action="resign">
+            <span class="action-button__glyph" aria-hidden="true">投</span>
+            <span data-label>认输</span>
+          </button>
+        </div>
+
+        <section class="record" aria-labelledby="record-title">
+          <div class="record__heading">
+            <h2 id="record-title">棋谱</h2>
+            <span id="move-count">还没下</span>
+          </div>
+          <ol class="move-record move-record--go" id="move-record" aria-labelledby="record-title"></ol>
         </section>
-
-        <aside class="control-sheet" aria-label="对局工具">
-          <section class="control-section" aria-labelledby="settings-title">
-            <div class="control-section__heading">
-              <h2 id="settings-title">对局设置</h2>
-              <span>路数在新局生效</span>
-            </div>
-            <p class="choice-label" id="opponent-label">对手</p>
-            <div class="choice-row" role="radiogroup" aria-labelledby="opponent-label" data-setting="opponent">
-              <button type="button" role="radio" data-value="ai" aria-checked="true" tabindex="0">
-                <strong>电脑</strong><small>人机对弈</small>
-              </button>
-              <button type="button" role="radio" data-value="human" aria-checked="false" tabindex="-1">
-                <strong>家人</strong><small>两人同屏</small>
-              </button>
-            </div>
-            <p class="choice-label" id="level-label">电脑难度</p>
-            <div class="choice-row" role="radiogroup" aria-labelledby="level-label" data-setting="level">
-              <button type="button" role="radio" data-value="1" aria-checked="true" tabindex="0">
-                <strong>启蒙</strong><small>会犯错</small>
-              </button>
-              <button type="button" role="radio" data-value="2" aria-checked="false" tabindex="-1">
-                <strong>入门</strong><small>懂吃子</small>
-              </button>
-              <button type="button" role="radio" data-value="3" aria-checked="false" tabindex="-1">
-                <strong>进阶</strong><small>会算地</small>
-              </button>
-            </div>
-            <p class="choice-label" id="side-label">我执</p>
-            <div class="choice-row" role="radiogroup" aria-labelledby="side-label" data-setting="side">
-              <button type="button" role="radio" data-value="1" aria-checked="true" tabindex="0">
-                <strong>黑棋</strong><small>先下</small>
-              </button>
-              <button type="button" role="radio" data-value="2" aria-checked="false" tabindex="-1">
-                <strong>白棋</strong><small>后下</small>
-              </button>
-            </div>
-            <p class="choice-label" id="size-label">棋盘</p>
-            <div class="choice-row" role="radiogroup" aria-labelledby="size-label" data-setting="size">
-              <button type="button" role="radio" data-value="9" aria-checked="true" tabindex="0">
-                <strong>9 路</strong><small>入门</small>
-              </button>
-              <button type="button" role="radio" data-value="13" aria-checked="false" tabindex="-1">
-                <strong>13 路</strong><small>进阶</small>
-              </button>
-              <button type="button" role="radio" data-value="19" aria-checked="false" tabindex="-1">
-                <strong>19 路</strong><small>正式</small>
-              </button>
-            </div>
-          </section>
-
-          <section class="control-section game-actions" aria-label="对局操作">
-            <button class="paper-button paper-button--primary" type="button" data-action="new-game">新开一局</button>
-            <button class="paper-button" type="button" data-action="undo">悔棋</button>
-            <button class="paper-button" type="button" data-action="hint">提示一步</button>
-            <button class="paper-button" type="button" data-action="pass">停一手</button>
-            <button class="paper-button" type="button" data-action="confirm-mode" aria-pressed="false">点两下落子</button>
-            <button class="paper-button" type="button" data-action="resign">认输</button>
-          </section>
-
-          <section class="control-section" aria-labelledby="record-title">
-            <div class="control-section__heading">
-              <h2 id="record-title">棋谱</h2>
-              <span id="move-count">还没下</span>
-            </div>
-            <ol class="move-record move-record--go" id="move-record" aria-labelledby="record-title"></ol>
-          </section>
-
-          <details class="rules-card">
-            <summary>简明规则</summary>
-            <dl>
-              <div><dt>落子</dt><dd>黑先白后，轮流把棋子下在交叉点上，下了就不再移动。</dd></div>
-              <div><dt>气</dt><dd>棋子上下左右相邻的空交叉点叫“气”。连在一起的棋子共用气。</dd></div>
-              <div><dt>提子</dt><dd>一块棋的气全被对方堵住，就被提掉。只剩一口气时叫“打吃”。</dd></div>
-              <div><dt>禁着点</dt><dd>下进去自己没有气、又提不掉对方棋子的点，不能下。</dd></div>
-              <div><dt>打劫</dt><dd>刚被提走一子的地方，对方不能马上提回来，要先在别处下一手。</dd></div>
-              <div><dt>终局</dt><dd>双方都觉得没地方可下时，各“停一手”，对局结束。</dd></div>
-              <div><dt>数子</dt><dd>自己的棋子加上围住的空点，白棋另加 7.5（贴目，弥补后走），多的一方获胜。</dd></div>
-            </dl>
-            <p>先用 9 路小棋盘练吃子和做眼，熟练了再换 13 路、19 路。</p>
-          </details>
-        </aside>
       </main>
 
       <footer>
@@ -188,6 +135,95 @@
         <p>一子一世界，一局一人生。</p>
       </footer>
     </div>
+
+    <dialog class="sheet" id="settings-panel" aria-labelledby="settings-title">
+      <div class="sheet__paper">
+        <div class="sheet__heading">
+          <h2 id="settings-title">对局设置</h2>
+          <button class="sheet__close" type="button" data-close>完成</button>
+        </div>
+        <div class="setting-row">
+          <p class="setting-row__label" id="opponent-label">对手</p>
+          <div class="choice-row" role="radiogroup" aria-labelledby="opponent-label" data-setting="opponent">
+            <button type="button" role="radio" data-value="ai" aria-checked="true" tabindex="0">
+              <strong>电脑</strong><small>人机对弈</small>
+            </button>
+            <button type="button" role="radio" data-value="human" aria-checked="false" tabindex="-1">
+              <strong>家人</strong><small>两人同屏</small>
+            </button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <p class="setting-row__label" id="level-label">电脑难度</p>
+          <div class="choice-row" role="radiogroup" aria-labelledby="level-label" data-setting="level">
+            <button type="button" role="radio" data-value="1" aria-checked="true" tabindex="0">
+              <strong>启蒙</strong><small>会犯错</small>
+            </button>
+            <button type="button" role="radio" data-value="2" aria-checked="false" tabindex="-1">
+              <strong>入门</strong><small>懂吃子</small>
+            </button>
+            <button type="button" role="radio" data-value="3" aria-checked="false" tabindex="-1">
+              <strong>进阶</strong><small>会算地</small>
+            </button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <p class="setting-row__label" id="side-label">我执</p>
+          <div class="choice-row" role="radiogroup" aria-labelledby="side-label" data-setting="side">
+            <button type="button" role="radio" data-value="1" aria-checked="true" tabindex="0">
+              <strong>黑棋</strong><small>先下</small>
+            </button>
+            <button type="button" role="radio" data-value="2" aria-checked="false" tabindex="-1">
+              <strong>白棋</strong><small>后下</small>
+            </button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <p class="setting-row__label" id="size-label">棋盘</p>
+          <div class="choice-row" role="radiogroup" aria-labelledby="size-label" data-setting="size">
+            <button type="button" role="radio" data-value="9" aria-checked="true" tabindex="0">
+              <strong>9 路</strong><small>入门</small>
+            </button>
+            <button type="button" role="radio" data-value="13" aria-checked="false" tabindex="-1">
+              <strong>13 路</strong><small>进阶</small>
+            </button>
+            <button type="button" role="radio" data-value="19" aria-checked="false" tabindex="-1">
+              <strong>19 路</strong><small>正式</small>
+            </button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <p class="setting-row__label">落子</p>
+          <button class="toggle-button" type="button" data-action="confirm-mode" aria-pressed="false">
+            <span class="toggle-button__track" aria-hidden="true"></span>
+            <span>点两下才落子（防误触，适合 19 路）</span>
+          </button>
+        </div>
+        <p class="sheet__note">对手、难度和执子随时生效；棋盘路数在新开一局时生效。</p>
+        <button class="paper-button paper-button--primary sheet__action" type="button" data-action="new-game" data-close>
+          按当前设置新开一局
+        </button>
+      </div>
+    </dialog>
+
+    <dialog class="sheet sheet--rules" id="rules-panel" aria-labelledby="rules-title">
+      <div class="sheet__paper">
+        <div class="sheet__heading">
+          <h2 id="rules-title">简明规则</h2>
+          <button class="sheet__close" type="button" data-close>知道了</button>
+        </div>
+        <dl class="rules-list">
+          <div><dt>落子</dt><dd>黑先白后，轮流把棋子下在交叉点上，下了就不再移动。</dd></div>
+          <div><dt>气</dt><dd>棋子上下左右相邻的空交叉点叫“气”。连在一起的棋子共用气。</dd></div>
+          <div><dt>提子</dt><dd>一块棋的气全被对方堵住，就被提掉。只剩一口气时叫“打吃”。</dd></div>
+          <div><dt>禁着点</dt><dd>下进去自己没有气、又提不掉对方棋子的点，不能下。</dd></div>
+          <div><dt>打劫</dt><dd>刚被提走一子的地方，对方不能马上提回来，要先在别处下一手。</dd></div>
+          <div><dt>终局</dt><dd>双方都觉得没地方可下时，各“停一手”，对局结束。</dd></div>
+          <div><dt>数子</dt><dd>自己的棋子加上围住的空点，白棋另加 7.5（贴目，弥补后走），多的一方获胜。</dd></div>
+        </dl>
+        <p class="sheet__note">先用 9 路小棋盘练吃子和做眼，熟练了再换 13 路、19 路。</p>
+      </div>
+    </dialog>
 
     <dialog class="completion-panel" id="result-panel" aria-labelledby="result-title">
       <div class="completion-panel__paper">

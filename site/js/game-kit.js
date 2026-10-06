@@ -320,18 +320,19 @@ export function isCancelled(error) {
 }
 
 export function createConfirmButton(button, idleLabel, confirmLabel, onConfirm) {
+  const label = button.querySelector("[data-label]") ?? button;
   let timer = null;
 
   function reset() {
     clearTimeout(timer);
     timer = null;
-    button.textContent = idleLabel;
+    label.textContent = idleLabel;
     button.removeAttribute("aria-pressed");
   }
 
   button.addEventListener("click", () => {
     if (timer === null) {
-      button.textContent = confirmLabel;
+      label.textContent = confirmLabel;
       button.setAttribute("aria-pressed", "true");
       timer = setTimeout(reset, 3200);
       return;
@@ -342,4 +343,26 @@ export function createConfirmButton(button, idleLabel, confirmLabel, onConfirm) 
   });
 
   return { reset };
+}
+
+export function bindSheets() {
+  for (const opener of document.querySelectorAll("[data-open]")) {
+    opener.addEventListener("click", () => {
+      const sheet = document.getElementById(opener.dataset.open);
+      if (sheet !== null && !sheet.open) {
+        sheet.showModal();
+      }
+    });
+  }
+
+  for (const sheet of document.querySelectorAll("dialog.sheet")) {
+    sheet.addEventListener("click", (event) => {
+      if (event.target === sheet) {
+        sheet.close();
+      }
+    });
+    for (const closer of sheet.querySelectorAll("[data-close]")) {
+      closer.addEventListener("click", () => sheet.close());
+    }
+  }
 }

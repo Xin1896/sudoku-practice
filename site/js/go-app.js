@@ -2,6 +2,7 @@ import * as go from "./go.js";
 import {
   LEVEL_NAMES,
   bindChoiceGroup,
+  bindSheets,
   bindGridKeyboard,
   createAiClient,
   createAnnouncer,
@@ -47,7 +48,6 @@ const ILLEGAL_REASONS = Object.freeze({
 const boardContainer = document.querySelector("#go-board");
 const linesElement = document.querySelector("#go-lines");
 const cellsElement = document.querySelector("#board");
-const turnStamp = document.querySelector("#turn-stamp");
 const modeLabel = document.querySelector("#mode-label");
 const moveRecord = document.querySelector("#move-record");
 const moveCount = document.querySelector("#move-count");
@@ -297,15 +297,6 @@ function renderScore() {
 
 function renderControls() {
   const game = current();
-  let stamp = `${SIDE_NAMES[game.turn]}下`;
-  if (scoring !== null) {
-    stamp = "数子";
-  } else if (result !== null) {
-    stamp = "终局";
-  }
-  turnStamp.textContent = stamp;
-  turnStamp.dataset.side = result === null && scoring === null ? (game.turn === BLACK ? "dark" : "light") : "";
-
   const opponent = settings.opponent === "ai" ? `人机 · ${LEVEL_NAMES[settings.level]}` : "两人同屏";
   modeLabel.textContent = `${opponent} · ${game.size} 路`;
   undoButton.disabled = moves.length === 0 && result?.state !== "resign";
@@ -891,7 +882,9 @@ bindGridKeyboard(
   },
 );
 
-document.querySelector('[data-action="new-game"]').addEventListener("click", newGame);
+for (const button of document.querySelectorAll('[data-action="new-game"]')) {
+  button.addEventListener("click", newGame);
+}
 undoButton.addEventListener("click", undo);
 hintButton.addEventListener("click", showHint);
 passButton.addEventListener("click", () => {
@@ -906,11 +899,13 @@ confirmModeButton.addEventListener("click", () => {
   save();
   announce(settings.confirm ? "已开启：点一次预览，再点一次落子。" : "已关闭落子确认，点一下就落子。");
 });
-createConfirmButton(resignButton, "认输", "确认认输？", resign);
+createConfirmButton(resignButton, "认输", "确认？", resign);
 scorePanel.querySelector('[data-action="confirm-score"]').addEventListener("click", confirmScore);
 scorePanel.querySelector('[data-action="resume"]').addEventListener("click", resumePlay);
 resultPanel.querySelector('[data-action="again"]').addEventListener("click", newGame);
 resultPanel.querySelector('[data-action="review"]').addEventListener("click", closeResult);
+
+bindSheets();
 
 const restored = restore();
 renderAll();

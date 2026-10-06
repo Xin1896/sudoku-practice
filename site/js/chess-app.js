@@ -2,6 +2,7 @@ import * as chess from "./chess.js";
 import {
   LEVEL_NAMES,
   bindChoiceGroup,
+  bindSheets,
   bindGridKeyboard,
   createAiClient,
   createAnnouncer,
@@ -43,7 +44,6 @@ const DRAW_REASONS = Object.freeze({
 });
 
 const boardElement = document.querySelector("#board");
-const turnStamp = document.querySelector("#turn-stamp");
 const modeLabel = document.querySelector("#mode-label");
 const moveRecord = document.querySelector("#move-record");
 const moveCount = document.querySelector("#move-count");
@@ -265,9 +265,6 @@ const choiceGroups = new Map(
 );
 
 function renderControls() {
-  const position = current();
-  turnStamp.textContent = result === null ? `${SIDE_NAMES[position.turn]}走` : "终局";
-  turnStamp.dataset.side = result === null ? (position.turn === "w" ? "light" : "dark") : "";
   modeLabel.textContent =
     settings.opponent === "ai" ? `人机 · ${LEVEL_NAMES[settings.level]}` : "两人同屏";
   undoButton.disabled = moves.length === 0 && result?.state !== "resign";
@@ -745,7 +742,9 @@ promotionPanel.addEventListener("close", () => {
   resolve?.(null);
 });
 
-document.querySelector('[data-action="new-game"]').addEventListener("click", newGame);
+for (const button of document.querySelectorAll('[data-action="new-game"]')) {
+  button.addEventListener("click", newGame);
+}
 undoButton.addEventListener("click", undo);
 hintButton.addEventListener("click", showHint);
 flipButton.addEventListener("click", () => {
@@ -755,9 +754,11 @@ flipButton.addEventListener("click", () => {
   save();
   announce("棋盘翻转过来了。");
 });
-createConfirmButton(resignButton, "认输", "确认认输？", resign);
+createConfirmButton(resignButton, "认输", "确认？", resign);
 resultPanel.querySelector('[data-action="again"]').addEventListener("click", newGame);
 resultPanel.querySelector('[data-action="review"]').addEventListener("click", closeResult);
+
+bindSheets();
 
 const restored = restore();
 renderAll();
